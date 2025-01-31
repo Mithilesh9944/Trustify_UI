@@ -14,7 +14,7 @@ import 'Util/MyRoutes.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: MyRoutes.ProductDetails,
+    initialRoute: MyRoutes.HomePage,
     routes: {
       MyRoutes.HomePage:(context) => MyHome(),
       MyRoutes.RegisterPage: (context) => MyRegister(),
