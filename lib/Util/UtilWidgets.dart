@@ -1,17 +1,17 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/Util/MyRoutes.dart';
+import 'package:flutter_project/Util/UtilPages.dart';
 
 class UtilWidgets{
- static Widget buildBackgroundContainer({required Widget child}) {
+  static Widget buildBackgroundContainer({required Widget child}) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color.fromARGB(255, 116, 195, 234), Color.fromARGB(255, 255, 255, 255)],
+          colors: [UtilitiesPages.pageColor, Colors.white],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          stops: [0.4, 0.9],
+          stops: const [0.4, 0.9],
           tileMode: TileMode.clamp,
         ),
       ),
@@ -19,14 +19,28 @@ class UtilWidgets{
     );
   }
 
+  static List<Widget> buildHelpWidgetAppBar (BuildContext context){
+    return <Widget>[
+        IconButton(onPressed: () {navigateTo(context: context, route: MyRoutes.HelpPage);}, icon: Icon(Icons.help_outline_rounded)),
+        TextButton(
+          onPressed: () {navigateTo(context: context, route: MyRoutes.HelpPage);},
+          child: Text('Help  ', style: TextStyle(fontSize: 20)),
+        ),
+    ];
+  }
+
+  static void navigateTo({required BuildContext context,required String route}){
+    Navigator.pushNamed(context,route );
+  }
+
   static AppBar buildAppBar({required String title,required IconData icon,required BuildContext context}) {
     return AppBar(
-      leading: IconButton(
-        onPressed: () {Navigator.of(context).pop();},
-        icon: Icon(Icons.arrow_back),
-      ),
+      // leading: IconButton(
+      //   onPressed: () {Navigator.of(context).pop();},
+      //   icon: Icon(Icons.arrow_back),
+      // ),
       title: Text(title),
-      backgroundColor: Color.fromARGB(255, 109, 190, 231),
+      backgroundColor: UtilitiesPages.pageColor,
       actions: <Widget>[
         IconButton(
           onPressed: () {},

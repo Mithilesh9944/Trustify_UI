@@ -6,6 +6,8 @@ import 'package:flutter_project/Util/UtilButtons.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
 
+import '../Util/MyRoutes.dart';
+
 class MyWelcome extends StatefulWidget {
   const MyWelcome({super.key});
 
@@ -29,9 +31,9 @@ class _MyWelcomeState extends State<MyWelcome> {
             children: <Widget>[
               _buildHeading(),
               SizedBox(height: UtilitiesPages.SIZE_BOX_HEIGHT),
-              UtilButtons.buildButton(context:context,route:'login',title: 'Log In'),
+              UtilButtons.buildButton(context:context,route:MyRoutes.LoginPage,title: 'Log In'),
               const SizedBox(height: 20),
-              UtilButtons.buildButton(context:context,route:'register',title: 'Register'),
+              UtilButtons.buildButton(context:context,route:MyRoutes.RegisterPage,title: 'Register'),
 
             ],
           ),
@@ -49,19 +51,7 @@ class _MyWelcomeState extends State<MyWelcome> {
       ),
       title: Text('Trustify'),
       backgroundColor: Color.fromARGB(255, 109, 190, 231),
-      actions: <Widget>[
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.help_outline_rounded),
-        ),
-        TextButton(
-          onPressed: () {},
-          child: Text(
-            'Help  ',
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-      ],
+      actions: UtilWidgets.buildHelpWidgetAppBar(context),
     );
   }
 

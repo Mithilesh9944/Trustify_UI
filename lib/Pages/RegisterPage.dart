@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_project/Security/SecurityDetails.dart';
+import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Security/SecurityPasswordField.dart';
 import 'package:flutter_project/Services/api_service.dart';
@@ -26,10 +27,7 @@ class _MyRegisterState extends State<MyRegister> {
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 109, 190, 231),
           title: Text('Trustify'),
-          actions: <Widget>[
-            IconButton(onPressed: (){}, icon: Icon(Icons.help_outline_rounded)),
-            TextButton(onPressed: (){}, child: Text('Help  ',style: TextStyle(fontSize: 20),))
-          ],
+          actions: UtilWidgets.buildHelpWidgetAppBar(context),
         ),
 
         backgroundColor: Colors.transparent,
@@ -113,13 +111,9 @@ class _MyRegisterState extends State<MyRegister> {
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       decoration: InputDecoration(
-        hintText: '    $hintText',
-        fillColor: Colors.white,
+        hintText: '$hintText',
+        fillColor: Colors.transparent,
         filled: true,
-        contentPadding: EdgeInsets.symmetric(
-          vertical: UtilitiesPages.BOX_VERTICAL_SIZE,
-          horizontal: UtilitiesPages.BOX_HORIZONTAL_SIZE,
-        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(UtilitiesPages.BOX_BORDER_RADIUS),
         ),
@@ -159,6 +153,7 @@ class _MyRegisterState extends State<MyRegister> {
     if (_validateInputs()) {
       _registerUser();
       _logUserDetails();
+      _navigateToNextPage();
     }
   }
 
@@ -227,5 +222,9 @@ class _MyRegisterState extends State<MyRegister> {
     print('Mobile: ${Details.mobile}');
     print('Email: ${Details.email}');
     print('Password: ${Details.password}');
+  }
+
+  void _navigateToNextPage(){
+    Navigator.pushNamed(context, MyRoutes.ContactDashboardPage);
   }
 }

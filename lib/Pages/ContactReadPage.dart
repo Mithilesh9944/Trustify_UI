@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_project/Pages/ContactDetailsPage.dart';
+import 'package:flutter_project/Util/UtilAppDrawer.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
 
+import '../Util/MyRoutes.dart';
 import '../Util/UtilPages.dart';
 
 class MyContactReadPage extends StatefulWidget {
@@ -39,6 +41,7 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
       home: Scaffold(
         appBar: UtilWidgets.buildAppBar(title: 'Messenger', icon: Icons.chat,context: context),
         body: UtilWidgets.buildBackgroundContainer(child: _body()),
+        drawer: AppDrawer(imgPath: "assets/profile.png"),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedTabPosition,
           onTap: (index) {
@@ -64,10 +67,15 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+
             setState(() {
               _selectedTabPosition = 2;
             });
+            Navigator.pushNamed(context, MyRoutes.CategoryList);
+
           },
+
+
           child: const Icon(
             Icons.add,
             size: 50,
@@ -75,6 +83,7 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
 
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
       ));
 
   Widget _body() {

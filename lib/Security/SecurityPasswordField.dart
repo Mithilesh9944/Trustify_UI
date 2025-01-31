@@ -43,15 +43,13 @@ class _PassphrasePasswordFieldState extends State<PassphrasePasswordField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
+        TextFormField(
           controller: PassphrasePasswordField._passwordController,
           obscureText: true,
           onChanged: (value) => _checkPasswordStrength(value),
           decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(
-                  vertical: UtilitiesPages.BOX_VERTICAL_SIZE,
-                  horizontal: UtilitiesPages.BOX_HORIZONTAL_SIZE),
-              fillColor: Colors.white,
+
+              fillColor: Colors.transparent,
               filled: true,
               hintText: 'Create password',
               hintStyle: TextStyle(

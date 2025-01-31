@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 
 class UtilitiesPages {
+  static Color pageColor = Color.fromARGB(255, 109, 190, 231);
   static double LEFT = 35;
   static double RIGHT = 35;
   static double TOP = 90;

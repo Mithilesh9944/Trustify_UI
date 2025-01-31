@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/Util/UtilWidgets.dart';
 import 'UtilPages.dart';
 
 class UtilButtons{
@@ -17,11 +18,7 @@ class UtilButtons{
       ),
       onPressed:(){
         Future.delayed(const Duration(milliseconds: 100), () {
-          Navigator.of(context).pushNamed(route);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => MyLogin()),
-          // );
+          UtilWidgets.navigateTo(context:context,route: route);
         });
       },
       child: Text(

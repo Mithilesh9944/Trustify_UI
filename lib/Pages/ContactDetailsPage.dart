@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
+import 'package:flutter_project/Util/MyRoutes.dart';
+import 'package:flutter_project/Util/UtilAppDrawer.dart';
 
 import '../Util/UtilPages.dart';
 import '../Util/UtilWidgets.dart';
@@ -19,6 +21,7 @@ class _MyContactDetailsState extends State<MyContactDetails> {
   Widget build(BuildContext context) => Scaffold(
     appBar:
     UtilWidgets.buildAppBar(title: widget.contact.displayName, icon: Icons.call,context: context),
+    //drawer: AppDrawer(imgPath: widget.contact.photo),
     body: UtilWidgets.buildBackgroundContainer(
       child: Padding(
         padding: UtilitiesPages.buildPadding(context),
@@ -61,6 +64,7 @@ class _MyContactDetailsState extends State<MyContactDetails> {
         setState(() {
           _selectedTabPosition = 2;
         });
+        Navigator.pushNamed(context, MyRoutes.AllCategoryPage);
       },
       child: const Icon(
         Icons.add,

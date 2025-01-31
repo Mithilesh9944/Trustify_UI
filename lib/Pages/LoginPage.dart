@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_project/Services/api_service.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
+import '../Util/MyRoutes.dart';
 
-import '../Util/UtilButtons.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
@@ -14,22 +15,27 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  final _formKey = GlobalKey<FormState>();
+   String buttonTitle= "Log In";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
+      backgroundColor: Colors.transparent,
       body: UtilWidgets.buildBackgroundContainer(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: UtilitiesPages.buildPadding(context),
-              child: Column(
-                children: [
-                  _buildLogo(),
-                  const SizedBox(height: 10),
-                  _buildFormContainer(),
-                ],
+        child: Padding(
+          padding: UtilitiesPages.buildPadding(context),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    _buildLogo(),
+                    const SizedBox(height: 10),
+                    _buildFormContainer(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -43,13 +49,7 @@ class _MyLoginState extends State<MyLogin> {
     return AppBar(
       title: Text('Trustify'),
       backgroundColor: Color.fromARGB(255, 109, 190, 231),
-      actions: <Widget>[
-        IconButton(onPressed: () {}, icon: Icon(Icons.help_outline_rounded)),
-        TextButton(
-          onPressed: () {},
-          child: Text('Help  ', style: TextStyle(fontSize: 20)),
-        ),
-      ],
+      actions: UtilWidgets.buildHelpWidgetAppBar(context),
     );
   }
 
@@ -73,8 +73,8 @@ class _MyLoginState extends State<MyLogin> {
           SizedBox(height: UtilitiesPages.SIZE_BOX_HEIGHT),
           _buildPasswordField(),
           const SizedBox(height: 40),
-          UtilButtons.buildButton(context:context,route:'contactRead',title: 'Log In'),
-          //_buildLoginButton(),
+          //UtilButtons.buildButton(context:context,route:'contactRead',title: 'Log In'),
+          _buildLoginButton(),
           const SizedBox(height: 20),
           _buildForgotPasswordButton(),
           const SizedBox(height: 30),
@@ -86,18 +86,21 @@ class _MyLoginState extends State<MyLogin> {
 
   // Mobile number input field
   Widget _buildMobileNumberField() {
-    return TextField(
+    return TextFormField(
       keyboardType: TextInputType.number,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(10),
       ],
+        validator: (value){
+            if(value!.isEmpty){
+              return "required *";
+            }
+            return null;
+        },
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(
-          vertical: UtilitiesPages.BOX_VERTICAL_SIZE,
-          horizontal: UtilitiesPages.BOX_HORIZONTAL_SIZE,
-        ),
-        fillColor: Colors.white,
+        labelText: 'Mobile Number',
+        fillColor: Colors.transparent,
         filled: true,
         hintText: 'Enter your Mobile Number',
         border: OutlineInputBorder(
@@ -109,14 +112,20 @@ class _MyLoginState extends State<MyLogin> {
 
   // Password input field
   Widget _buildPasswordField() {
-    return TextField(
+    return TextFormField(
       obscureText: true,
+      validator: (value){
+         if(value!.isEmpty){
+           return "required *";
+         }else if(value.length<6){
+           return "password contains atleast 6 characters";
+         }
+         return null;
+
+      },
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(
-          vertical: UtilitiesPages.BOX_VERTICAL_SIZE,
-          horizontal: UtilitiesPages.BOX_HORIZONTAL_SIZE,
-        ),
-        fillColor: Colors.white,
+        labelText: "Password",
+        fillColor: Colors.transparent,
         filled: true,
         hintText: 'Enter Your Password',
         border: OutlineInputBorder(
@@ -141,7 +150,7 @@ class _MyLoginState extends State<MyLogin> {
           ),
         ),
         child: Text(
-          'Log In',
+          buttonTitle,
           style: TextStyle(
             color: Colors.white,
             fontSize: UtilitiesPages.OPTION_FONT_SIZE,
@@ -172,44 +181,48 @@ class _MyLoginState extends State<MyLogin> {
 
   // "New User? Register" button
   Widget _buildRegisterButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width - (2 * UtilitiesPages.LEFT),
-      padding: EdgeInsets.symmetric(horizontal: UtilitiesPages.LEFT),
-      child: TextButton(
-        onPressed: _navigateToRegister,
-        child: RichText(
-          text: TextSpan(
-            text: 'New User? ',
+    return RichText(
+      text: TextSpan(
+        text: 'New User? ',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: UtilitiesPages.OPTION_FONT_SIZE,
+        ),
+        children: [
+          TextSpan(
+            text: 'Register',
             style: TextStyle(
-              color: Colors.black,
+              color: Colors.blue,
               fontSize: UtilitiesPages.OPTION_FONT_SIZE,
             ),
-            children: [
-              TextSpan(
-                text: 'Register',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: UtilitiesPages.OPTION_FONT_SIZE,
-                ),
-                recognizer: TapGestureRecognizer()..onTap = _navigateToRegister,
-              ),
-            ],
+            recognizer: TapGestureRecognizer()..onTap =()=> UtilWidgets.navigateTo(route: MyRoutes.RegisterPage,context: context),
           ),
-        ),
+        ],
       ),
     );
   }
 
   // Methods for button actions
-  void _login() {
-    // Login logic here
+  void _login() async{
+    //ApiService.LoginUser(userData)
+     if(_formKey.currentState!.validate()){
+       setState(() {
+          buttonTitle = "Logging";
+       });
+       await Future.delayed(Duration(seconds: 1));
+       _navigateTo(routes: MyRoutes.ContactDashboardPage);
+       setState(() {
+         buttonTitle= "Log In";
+       });
+     }
   }
 
+  
+  void _navigateTo({required String routes}){
+    Navigator.pushNamed(context, routes);
+  }
   void _forgotPassword() {
     // Forgot password logic here
   }
 
-  void _navigateToRegister() {
-    Navigator.pushNamed(context, "register");
-  }
 }
