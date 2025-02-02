@@ -3,6 +3,8 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_project/Pages/ContactDetailsPage.dart';
 import 'package:flutter_project/Util/UtilAppDrawer.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
+import 'package:flutter_project/Services/api_service.dart';
+import 'package:flutter_project/Security/SecurityDetails.dart';
 
 import '../Util/MyRoutes.dart';
 import '../Util/UtilPages.dart';
@@ -17,6 +19,7 @@ class MyContactReadPage extends StatefulWidget {
 class _MyContactReadPageState extends State<MyContactReadPage> {
   int _selectedTabPosition = 0;
   List<Contact>? _contacts;
+  List<String>? _normalisedContact;
   bool _permissionDenied = false;
 
   @override
@@ -31,15 +34,17 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
     } else {
       final contacts = await FlutterContacts.getContacts();
       setState(() => _contacts = contacts);
+      _contactList();
     }
   }
-  @override
 
+  @override
   @override
   Widget build(BuildContext context) => MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: UtilWidgets.buildAppBar(title: 'Messenger', icon: Icons.chat,context: context),
+        appBar: UtilWidgets.buildAppBar(
+            title: 'Messenger', icon: Icons.chat, context: context),
         body: UtilWidgets.buildBackgroundContainer(child: _body()),
         drawer: AppDrawer(imgPath: "assets/profile.png"),
         bottomNavigationBar: BottomNavigationBar(
@@ -56,34 +61,37 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
           unselectedItemColor: Colors.black12,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats',backgroundColor: Colors.transparent),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.chat),
+                label: 'Chats',
+                backgroundColor: Colors.transparent),
             BottomNavigationBarItem(icon: SizedBox.shrink(), label: 'Sell'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.favorite), label: 'My Ads'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           ],
-          selectedLabelStyle: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.lightBlueAccent),
-          unselectedLabelStyle: TextStyle(fontSize: 13,color: Colors.black,),
+          selectedLabelStyle: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+              color: Colors.lightBlueAccent),
+          unselectedLabelStyle: TextStyle(
+            fontSize: 13,
+            color: Colors.black,
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-
             setState(() {
               _selectedTabPosition = 2;
             });
             Navigator.pushNamed(context, MyRoutes.CategoryList);
-
           },
-
-
           child: const Icon(
             Icons.add,
             size: 50,
           ),
-
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
       ));
 
   Widget _body() {
@@ -98,11 +106,27 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
               onTap: () async {
                 final fullContact =
                     await FlutterContacts.getContact(_contacts![i].id);
-                await Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => MyContactDetails(fullContact!)));
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => MyContactDetails(fullContact!)));
               })),
     );
   }
+
+  void _contactList() async {
+    _normalisedContact = [];
+
+    if (_contacts != null) {
+      for (int i = 0; i < _contacts!.length; i++) {
+        final fcontact = await FlutterContacts.getContact(_contacts![i].id);
+        if (fcontact!.phones.isNotEmpty) {
+          _normalisedContact!.add(fcontact.phones.first.normalizedNumber);
+        }
+      }
+      ApiService.AddContacts({
+        "mobile_no": Details.mobile,
+        "contact_list": _normalisedContact
+      });
+    }
+    print(_normalisedContact);
+  }
 }
-
-
