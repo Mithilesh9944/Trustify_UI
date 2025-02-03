@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   static const baseUrl = "http://10.0.2.2:3000/api/v1";
-  static RegisterUser(Map<String, dynamic> userData) async {
+  static Future<bool> RegisterUser(Map<String, dynamic> userData) async {
     print(userData);
     try {
     var postUrl = Uri.parse('$baseUrl/registerUser');
@@ -16,11 +16,14 @@ class ApiService {
   body: jsonEncode(userData),);
       if (res.statusCode == 200) {
         print("user register succesfully");
+        return true;
       } else {
         print("somthing wrong please try again");
+        return false;
       }
     } catch (e) {
       debugPrint(e.toString());
+      return false;
     }
   }
   static Future<bool>  LoginUser(Map<String, dynamic> userData) async {

@@ -153,14 +153,14 @@ class _MyRegisterState extends State<MyRegister> {
     if (_validateInputs()) {
       _registerUser();
       _logUserDetails();
-      _navigateToNextPage();
     }
   }
 
   // Set user details from text controllers
   void _setDetails() {
+    String st ="+91";
     Details.userName = _userNameController.text;
-    Details.mobile = _mobileNumberController.text;
+    Details.mobile = st+_mobileNumberController.text;
     Details.password = PassphrasePasswordField.passwordController.text;
     Details.confirmPassword = _confirmPasswordController.text;
     Details.email = _emailController.text;
@@ -171,7 +171,7 @@ class _MyRegisterState extends State<MyRegister> {
     if (_isAnyFieldEmpty()) {
       _showSnackBar("All fields are required.");
       return false;
-    } else if (Details.mobile?.length != 10) {
+    } else if (Details.mobile?.length != 13) {
       _showSnackBar("Please enter a valid 10-digit mobile number.");
       return false;
     } else if (!_isValidEmail(Details.email)) {
@@ -206,14 +206,21 @@ class _MyRegisterState extends State<MyRegister> {
   }
 
   // Register user by calling the API
-  void _registerUser() {
-    var userData = {
+  void _registerUser() async{
+    bool isRegistered = await ApiService.RegisterUser({
       "userName": Details.userName,
       "mobileNo": Details.mobile,
       "password": Details.password,
       "email": Details.email,
-    };
-    ApiService.RegisterUser(userData);
+    });
+    if(isRegistered){
+      _navigateToNextPage();
+    }
+    else{
+         ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Invalid credentials, please try again.")),
+      );
+    }
   }
 
   // Log user details for debugging

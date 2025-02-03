@@ -223,7 +223,7 @@ class _MyLoginState extends State<MyLogin> {
           buttonTitle = "Logging";
         });
         await Future.delayed(Duration(seconds: 1));
-        _navigateTo(routes: MyRoutes.ContactDashboardPage);
+        _navigateTo(routes: MyRoutes.HelpPage);
         setState(() {
           buttonTitle = "Log In";
         });
