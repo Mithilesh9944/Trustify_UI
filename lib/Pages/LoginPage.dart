@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_project/Services/api_service.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
-import '../Util/MyRoutes.dart';
+import 'package:flutter_project/Security/SecurityDetails.dart';
+import 'package:flutter_project/Security/SecurityPasswordField.dart';
 
+import '../Util/MyRoutes.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
@@ -15,8 +17,11 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  final TextEditingController _mobileNumberController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
-   String buttonTitle= "Log In";
+  String buttonTitle = "Log In";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,17 +92,18 @@ class _MyLoginState extends State<MyLogin> {
   // Mobile number input field
   Widget _buildMobileNumberField() {
     return TextFormField(
+      controller: _mobileNumberController,
       keyboardType: TextInputType.number,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(10),
       ],
-        validator: (value){
-            if(value!.isEmpty){
-              return "required *";
-            }
-            return null;
-        },
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "required *";
+        }
+        return null;
+      },
       decoration: InputDecoration(
         labelText: 'Mobile Number',
         fillColor: Colors.transparent,
@@ -113,15 +119,15 @@ class _MyLoginState extends State<MyLogin> {
   // Password input field
   Widget _buildPasswordField() {
     return TextFormField(
+      controller: _passwordController,
       obscureText: true,
-      validator: (value){
-         if(value!.isEmpty){
-           return "required *";
-         }else if(value.length<6){
-           return "password contains atleast 6 characters";
-         }
-         return null;
-
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "required *";
+        } else if (value.length < 6) {
+          return "password contains atleast 6 characters";
+        }
+        return null;
       },
       decoration: InputDecoration(
         labelText: "Password",
@@ -144,7 +150,8 @@ class _MyLoginState extends State<MyLogin> {
         onPressed: _login,
         style: ElevatedButton.styleFrom(
           backgroundColor: Color.fromARGB(255, 109, 174, 231),
-          padding: EdgeInsets.symmetric(vertical: UtilitiesPages.BOX_VERTICAL_SIZE),
+          padding:
+              EdgeInsets.symmetric(vertical: UtilitiesPages.BOX_VERTICAL_SIZE),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -195,7 +202,9 @@ class _MyLoginState extends State<MyLogin> {
               color: Colors.blue,
               fontSize: UtilitiesPages.OPTION_FONT_SIZE,
             ),
-            recognizer: TapGestureRecognizer()..onTap =()=> UtilWidgets.navigateTo(route: MyRoutes.RegisterPage,context: context),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => UtilWidgets.navigateTo(
+                  route: MyRoutes.RegisterPage, context: context),
           ),
         ],
       ),
@@ -203,26 +212,41 @@ class _MyLoginState extends State<MyLogin> {
   }
 
   // Methods for button actions
-  void _login() async{
-    //ApiService.LoginUser(userData)
-     if(_formKey.currentState!.validate()){
-       setState(() {
+  void _login() async {
+    if (_formKey.currentState!.validate()) {
+      _setDetails();
+
+      bool isLoginSuccessful = await ApiService.LoginUser(
+          {"mobile": Details.mobile, "password": Details.password});
+      if (isLoginSuccessful) {
+        setState(() {
           buttonTitle = "Logging";
-       });
-       await Future.delayed(Duration(seconds: 1));
-       _navigateTo(routes: MyRoutes.ContactDashboardPage);
-       setState(() {
-         buttonTitle= "Log In";
-       });
-     }
+        });
+        await Future.delayed(Duration(seconds: 1));
+        _navigateTo(routes: MyRoutes.HelpPage);
+        setState(() {
+          buttonTitle = "Log In";
+        });
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Invalid credentials, please try again.")),
+      );
+      }
+    }
   }
 
-  
-  void _navigateTo({required String routes}){
+  void _setDetails() {
+    String st = "+91";
+    Details.mobile = st + _mobileNumberController.text;
+    Details.password = _passwordController.text;
+  }
+
+  void _navigateTo({required String routes}) {
     Navigator.pushNamed(context, routes);
   }
+
   void _forgotPassword() {
     // Forgot password logic here
   }
-
 }

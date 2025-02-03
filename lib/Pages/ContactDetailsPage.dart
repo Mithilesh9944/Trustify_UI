@@ -30,7 +30,7 @@ class _MyContactDetailsState extends State<MyContactDetails> {
             Text('First name: ${widget.contact.name.first}'),
             Text('Last name: ${widget.contact.name.last}'),
             Text(
-                'Phone number: ${widget.contact.phones.isNotEmpty ? widget.contact.phones.first.number : '(none)'}'),
+                'Phone number: ${widget.contact.phones.isNotEmpty ? widget.contact.phones.first.normalizedNumber : '(none)'}'),
             Text(
                 'Email address: ${widget.contact.emails.isNotEmpty ? widget.contact.emails.first.address : '(none)'}'),
           ]),
