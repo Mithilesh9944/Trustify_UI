@@ -11,4 +11,5 @@ class MyRoutes{
   static String AllCategoryPage="/allCategory";
   static String CategoryList="/categorylist";
   static String ProductDetails="/productDetails";
+  static String Dashboard ="/dashboard";
 }

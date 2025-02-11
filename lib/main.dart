@@ -8,13 +8,32 @@ import 'package:flutter_project/Pages/HomePage.dart';
 import 'package:flutter_project/Pages/ProductDetailPage.dart';
 import 'package:flutter_project/Pages/RegisterPage.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'Pages/LoginPage.dart';
-import 'Util/MyRoutes.dart';
+import 'Pages/Dashboard.dart';
 
-void main() {
-  runApp(MaterialApp(
+import 'Util/MyRoutes.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterSecureStorage secureStorage =  FlutterSecureStorage();
+ var mytoken  = await secureStorage.read(key: 'token');
+  runApp(MyApp(token: mytoken )); //MaterailApp
+}
+class MyApp extends StatelessWidget{
+  final token;
+  const MyApp({
+    @required this.token,
+    Key? key,
+  }): super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: MyRoutes.HomePage,
+    initialRoute: (token!=null&&!JwtDecoder.isExpired(token!)) ? MyRoutes.Dashboard : MyRoutes.HomePage,
     routes: {
       MyRoutes.HomePage:(context) => MyHome(),
       MyRoutes.RegisterPage: (context) => MyRegister(),
@@ -26,7 +45,9 @@ void main() {
       MyRoutes.AllCategoryPage:(context)=>MyAllCategoryPage(),
       MyRoutes.CategoryList:(context)=>OfferPage(),
       MyRoutes.ProductDetails:(context)=>IncludeDetailsPage(),
+      MyRoutes.Dashboard:(context)=>Dashboard(token: token),
 
     },
-  )); //MaterailApp
+  );
+  }
 }

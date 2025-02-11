@@ -1,11 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_project/Pages/Dashboard.dart';
 import 'package:flutter_project/Services/api_service.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
 import 'package:flutter_project/Security/SecurityDetails.dart';
-import 'package:flutter_project/Security/SecurityPasswordField.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../Util/MyRoutes.dart';
 
@@ -19,9 +20,11 @@ class MyLogin extends StatefulWidget {
 class _MyLoginState extends State<MyLogin> {
   final TextEditingController _mobileNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
   final _formKey = GlobalKey<FormState>();
   String buttonTitle = "Log In";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +52,6 @@ class _MyLoginState extends State<MyLogin> {
     );
   }
 
-  // AppBar with title and help actions
   AppBar _buildAppBar() {
     return AppBar(
       title: Text('Trustify'),
@@ -58,7 +60,6 @@ class _MyLoginState extends State<MyLogin> {
     );
   }
 
-  // Logo image
   Widget _buildLogo() {
     return Image.asset(
       'assets/openPage3.png',
@@ -67,7 +68,6 @@ class _MyLoginState extends State<MyLogin> {
     );
   }
 
-  // Container for all form elements
   Widget _buildFormContainer() {
     return Center(
       child: Column(
@@ -78,7 +78,6 @@ class _MyLoginState extends State<MyLogin> {
           SizedBox(height: UtilitiesPages.SIZE_BOX_HEIGHT),
           _buildPasswordField(),
           const SizedBox(height: 40),
-          //UtilButtons.buildButton(context:context,route:'contactRead',title: 'Log In'),
           _buildLoginButton(),
           const SizedBox(height: 20),
           _buildForgotPasswordButton(),
@@ -89,7 +88,6 @@ class _MyLoginState extends State<MyLogin> {
     );
   }
 
-  // Mobile number input field
   Widget _buildMobileNumberField() {
     return TextFormField(
       controller: _mobileNumberController,
@@ -116,7 +114,6 @@ class _MyLoginState extends State<MyLogin> {
     );
   }
 
-  // Password input field
   Widget _buildPasswordField() {
     return TextFormField(
       controller: _passwordController,
@@ -125,7 +122,7 @@ class _MyLoginState extends State<MyLogin> {
         if (value!.isEmpty) {
           return "required *";
         } else if (value.length < 6) {
-          return "password contains atleast 6 characters";
+          return "password contains at least 6 characters";
         }
         return null;
       },
@@ -141,7 +138,6 @@ class _MyLoginState extends State<MyLogin> {
     );
   }
 
-  // Login button
   Widget _buildLoginButton() {
     return Container(
       width: MediaQuery.of(context).size.width - (2 * UtilitiesPages.LEFT),
@@ -168,25 +164,19 @@ class _MyLoginState extends State<MyLogin> {
     );
   }
 
-  // "Forgot Password" button
   Widget _buildForgotPasswordButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width - (2 * UtilitiesPages.LEFT),
-      padding: EdgeInsets.symmetric(horizontal: UtilitiesPages.LEFT),
-      child: TextButton(
-        onPressed: _forgotPassword,
-        child: Text(
-          'Forget Password?',
-          style: TextStyle(
-            color: Colors.blue,
-            fontSize: UtilitiesPages.OPTION_FONT_SIZE,
-          ),
+    return TextButton(
+      onPressed: _forgotPassword,
+      child: Text(
+        'Forget Password?',
+        style: TextStyle(
+          color: Colors.blue,
+          fontSize: UtilitiesPages.OPTION_FONT_SIZE,
         ),
       ),
     );
   }
 
-  // "New User? Register" button
   Widget _buildRegisterButton() {
     return RichText(
       text: TextSpan(
@@ -210,43 +200,51 @@ class _MyLoginState extends State<MyLogin> {
       ),
     );
   }
+void _login() async {
+  if (_formKey.currentState!.validate()) {
+    _setDetails();
+    setState(() {
+      buttonTitle = "Logging in...";
+    });
 
-  // Methods for button actions
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      _setDetails();
+    var jsonResponse = await ApiService.LoginUser({
+      "mobile": Details.mobile,
+      "password": Details.password
+    });
 
-      bool isLoginSuccessful = await ApiService.LoginUser(
-          {"mobile": Details.mobile, "password": Details.password});
-      if (isLoginSuccessful) {
-        setState(() {
-          buttonTitle = "Logging";
-        });
-        await Future.delayed(Duration(seconds: 1));
-        _navigateTo(routes: MyRoutes.HelpPage);
-        setState(() {
-          buttonTitle = "Log In";
-        });
-      }
-      else{
-        ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Invalid credentials, please try again.")),
+    if (jsonResponse['status']) {
+      var myToken = jsonResponse['token'];
+
+      // Store the token securely
+      await secureStorage.write(key: 'token', value: myToken);
+
+      // Navigate to Dashboard only after storing the token
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Dashboard(token: myToken)),
       );
-      }
+    } else {
+      // Show error message in SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonResponse['message'] ?? "Invalid credentials."),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
-  }
 
-  void _setDetails() {
-    String st = "+91";
-    Details.mobile = st + _mobileNumberController.text;
-    Details.password = _passwordController.text;
+    setState(() {
+      buttonTitle = "Log In";
+    });
   }
+}
 
-  void _navigateTo({required String routes}) {
-    Navigator.pushNamed(context, routes);
-  }
+void _setDetails() {
+  Details.mobile = "+91" + _mobileNumberController.text.trim();
+  Details.password = _passwordController.text;
+}
 
-  void _forgotPassword() {
-    // Forgot password logic here
-  }
+void _forgotPassword() {
+  // Implement password recovery logic here
+}
 }
