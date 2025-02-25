@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OfferPage extends StatelessWidget {
-  const OfferPage({Key? key}) : super(key: key);
+  const OfferPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class OfferItem extends StatelessWidget {
   final IconData icon;
   final String label;
 
-  const OfferItem({Key? key, required this.icon, required this.label}) : super(key: key);
+  const OfferItem({super.key, required this.icon, required this.label});
 
   @override
   Widget build(BuildContext context) {

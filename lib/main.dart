@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/AllCategoryPage.dart';
 import 'package:flutter_project/Pages/CategoryPage.dart';
@@ -26,8 +25,8 @@ class MyApp extends StatelessWidget{
   final token;
   const MyApp({
     @required this.token,
-    Key? key,
-  }): super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

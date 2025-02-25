@@ -1,14 +1,28 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:typed_data';
 
 class ApiService {
  
   //static const baseUrl = "http://10.0.2.2:3000/api/v1";
   static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
-  static Future<bool> RegisterUser(Map<String, dynamic> userData) async {
+  static Future<bool> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     print(userData);
+     String? img_url;
+    if(imgBytes!=null){
+    img_url = await uploadImageOnCloudinary(imgBytes);
+
+    }
+    else{
+      img_url= await uploadImageOnCloudinary(await loadDefaultImage());
+
+    }
+   // userData['imgUrl']=img_url;
+   print("imgurl");
+   print(img_url);
     try {
       var postUrl = Uri.parse('$baseUrl/registerUser');
 
@@ -82,4 +96,27 @@ class ApiService {
       debugPrint(e.toString());
     }
   }
+  static Future<String?> uploadImageOnCloudinary(Uint8List imgBytes) async{
+    final uri = Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
+    var request=http.MultipartRequest('POST',uri)
+     ..fields['upload_preset'] = "Trustify_preset"
+    ..files.add(http.MultipartFile.fromBytes(
+      'file', 
+      imgBytes,
+      filename: "userprofile.jpg", // Cloudinary requires a filename
+    ));
+    var response = await request.send();
+      if (response.statusCode == 200) {
+    final responseData = await response.stream.bytesToString();
+    final imageUrl = jsonDecode(responseData)['secure_url'];
+    return imageUrl;
+  } else {
+    print("Failed to upload image: ${response.statusCode}");
+    return null;
+  }
+  }
+  static Future<Uint8List> loadDefaultImage() async {
+  final ByteData data = await rootBundle.load('assets/userIcon.png');
+  return data.buffer.asUint8List();
+}
 }

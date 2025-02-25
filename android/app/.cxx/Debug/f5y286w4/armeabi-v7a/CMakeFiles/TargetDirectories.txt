@@ -1,0 +1,2 @@
+/Users/devendrasuthiya/App Development/Semester/Trustify_UI/android/app/.cxx/Debug/f5y286w4/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/devendrasuthiya/App Development/Semester/Trustify_UI/android/app/.cxx/Debug/f5y286w4/armeabi-v7a/CMakeFiles/rebuild_cache.dir

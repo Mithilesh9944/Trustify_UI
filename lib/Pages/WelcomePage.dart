@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_project/Pages/LoginPage.dart';
-import 'package:flutter_project/Pages/RegisterPage.dart';
 import 'package:flutter_project/Util/UtilButtons.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';

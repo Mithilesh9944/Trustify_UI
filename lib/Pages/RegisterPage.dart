@@ -5,10 +5,12 @@ import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Security/SecurityPasswordField.dart';
 import 'package:flutter_project/Services/api_service.dart';
+import 'package:flutter_project/Util/UtilPickImage.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MyRegister extends StatefulWidget {
-  MyRegister({super.key});
+  const MyRegister({super.key});
 
   @override
   _MyRegisterState createState() => _MyRegisterState();
@@ -19,7 +21,13 @@ class _MyRegisterState extends State<MyRegister> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _mobileNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-
+ Uint8List? _img;
+  void selectImage() async {
+    Uint8List img = await pickImage (ImageSource.gallery);
+    setState(() {
+      _img=img;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return UtilWidgets.buildBackgroundContainer(
@@ -49,13 +57,39 @@ class _MyRegisterState extends State<MyRegister> {
   // User icon positioned at the top
   Widget _buildUserIcon() {
     return Positioned(
-      top: MediaQuery.of(context).size.height * 0.05,
+      top: MediaQuery.of(context).size.height * 0.001,//.15
       left: MediaQuery.of(context).size.width * 0.35,
-      child: Image.asset(
-        'assets/userIcon.png',
-        height: 70,
-        width: 70,
-      ),
+      child:Stack(
+      alignment: Alignment.center,
+      children: [
+        _img != null
+            ?  CircleAvatar(
+                radius: 50,
+                backgroundImage: MemoryImage(_img!),
+              )
+            : const CircleAvatar(
+                radius: 55,
+                backgroundImage: NetworkImage("https://www.kindpng.com/picc/m/269-2697881_computer-icons-user-clip-art-transparent-png-icon.png"),
+              ),
+        
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white, 
+              shape: BoxShape.circle,
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)], 
+            ),
+            child: IconButton(
+              onPressed: selectImage,
+              icon: const Icon(Icons.add_a_photo, color: Colors.black),
+              iconSize: 22, 
+            ),
+          ),
+        ),
+      ],
+    ),
     );
   }
 
@@ -111,7 +145,7 @@ class _MyRegisterState extends State<MyRegister> {
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       decoration: InputDecoration(
-        hintText: '$hintText',
+        hintText: hintText,
         fillColor: Colors.transparent,
         filled: true,
         border: OutlineInputBorder(
@@ -192,7 +226,7 @@ class _MyRegisterState extends State<MyRegister> {
       Details.email,
       Details.password,
       Details.confirmPassword
-    ].any((field) => field == null || field!.isEmpty);
+    ].any((field) => field == null || field.isEmpty);
   }
 
   // Validate email domain
@@ -207,12 +241,13 @@ class _MyRegisterState extends State<MyRegister> {
 
   // Register user by calling the API
   void _registerUser() async{
-    bool isRegistered = await ApiService.RegisterUser({
+    var userdata ={
       "userName": Details.userName,
       "mobileNo": Details.mobile,
       "password": Details.password,
       "email": Details.email,
-    });
+    };
+    bool isRegistered = await ApiService.RegisterUser(userdata,_img);
     if(isRegistered){
       _navigateToNextPage();
     }
