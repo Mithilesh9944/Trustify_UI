@@ -46,7 +46,7 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
         appBar: UtilWidgets.buildAppBar(
             title: 'Messenger', icon: Icons.chat, context: context),
         body: UtilWidgets.buildBackgroundContainer(child: _body()),
-        drawer: AppDrawer(imgPath: "assets/profile.png"),
+        drawer: AppDrawer(imgPath: "assets/profile.png",email: "xyz@gmail.com",mobile_no: "+91XXXXXXXXXX",),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedTabPosition,
           onTap: (index) {

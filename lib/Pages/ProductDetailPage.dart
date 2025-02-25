@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilButtons.dart';
-import 'package:flutter_project/Util/UtilWidgets.dart';
 
 import '../Util/UtilPages.dart';
 
 class IncludeDetailsPage extends StatelessWidget {
-  const IncludeDetailsPage({Key? key}) : super(key: key);
+  const IncludeDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +97,7 @@ class IncludeDetailsPage extends StatelessWidget {
 class TextFieldLabel extends StatelessWidget {
   final String label;
 
-  const TextFieldLabel({Key? key, required this.label}) : super(key: key);
+  const TextFieldLabel({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {

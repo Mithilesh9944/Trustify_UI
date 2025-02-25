@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyHelpSupportScreen extends StatelessWidget {
-  const MyHelpSupportScreen({Key? key}) : super(key: key);
+  const MyHelpSupportScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

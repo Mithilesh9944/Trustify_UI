@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyAllCategoryPage extends StatelessWidget {
-  const MyAllCategoryPage({Key? key}) : super(key: key);
+  const MyAllCategoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
