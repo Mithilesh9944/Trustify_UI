@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget{
       MyRoutes.ContactDetails:(context)=> MyContactReadPage(),
       MyRoutes.AllCategoryPage:(context)=>MyAllCategoryPage(),
       MyRoutes.CategoryList:(context)=>OfferPage(),
-      MyRoutes.ProductDetails:(context)=>IncludeDetailsPage(),
+      MyRoutes.ProductDetails:(context)=>ProductDetailsPage(),
       MyRoutes.Dashboard:(context)=>Dashboard(token: token),
 
     },

@@ -6,10 +6,9 @@ class AppDrawer extends StatelessWidget {
   final String email;
   final String mobile_no;
   const AppDrawer({super.key, required this.imgPath,required this.email,required this.mobile_no});
-
   @override
   Widget build(BuildContext context) {
-    final profileImgPath ="assets/profile.jpg";
+    final profileImgPath =imgPath!='No img url'?imgPath:"https://cdn1.vectorstock.com/i/1000x1000/93/75/user-blue-icon-isolated-on-white-background-vector-42029375.jpg";
     return Drawer(
         child: Container(
             color: UtilitiesPages.pageColor,
@@ -23,7 +22,7 @@ class AppDrawer extends StatelessWidget {
                     accountName: Text(email),
                     accountEmail: Text(mobile_no),
                     currentAccountPicture: CircleAvatar(
-                      backgroundImage: AssetImage(profileImgPath),
+                      backgroundImage: NetworkImage(profileImgPath),
                     ),
                 ),
 

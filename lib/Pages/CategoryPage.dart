@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/Pages/AllCategoryPage.dart';
+import 'package:flutter_project/ProductDetailForm/BikeDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/CarDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/CycleDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/FurnitureDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/LaptopDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/MobileDetailsPage.dart';
+//import 'package:flutter_project/Util/MyRoutes.dart';
 
 class OfferPage extends StatelessWidget {
   const OfferPage({super.key});
@@ -42,7 +50,6 @@ class OfferPage extends StatelessWidget {
                 return OfferItem(
                   icon: items[index]['icon'] as IconData,
                   label: items[index]['label'] as String,
-
                 );
               },
             ),
@@ -62,9 +69,39 @@ class OfferItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        switch (label) {
+          case 'Cars':
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CarDetailsPage()));
+            break;
+          case 'Bikes':
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => BikeDetailsPage()));
+            break;
+          case 'Cycle':
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CycleDetailsPage()));
+            break;
 
-      onTap: (){
-
+          case 'Laptop':
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LaptopDetailsPage()));
+            break;
+          case 'Mobiles':
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MobileDetailsPage()));
+            break;
+          case 'Furniture':
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FurnitureDetailsPage()));
+            break;
+          default:
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyAllCategoryPage()));
+        }
       },
       child: Container(
         decoration: BoxDecoration(
