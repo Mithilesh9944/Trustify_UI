@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
-import 'dart:typed_data';
 
 class ApiService {
  
@@ -11,18 +10,18 @@ class ApiService {
   static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
   static Future<bool> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     print(userData);
-     String? img_url;
+     String? imgUrl;
     if(imgBytes!=null){
-    img_url = await uploadImageOnCloudinary(imgBytes);
+    imgUrl = await uploadImageOnCloudinary(imgBytes);
 
     }
     else{
-      img_url= await uploadImageOnCloudinary(await loadDefaultImage());
+      imgUrl= await uploadImageOnCloudinary(await loadDefaultImage());
 
     }
-   // userData['imgUrl']=img_url;
-   print("imgurl");
-   print(img_url);
+   userData['img_url']=imgUrl;
+   print("img_url");
+   print(imgUrl);
     try {
       var postUrl = Uri.parse('$baseUrl/registerUser');
 

@@ -120,6 +120,7 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
         final fcontact = await FlutterContacts.getContact(_contacts![i].id);
         if (fcontact!.phones.isNotEmpty) {
           _normalisedContact!.add(fcontact.phones.first.normalizedNumber);
+
         }
       }
       ApiService.AddContacts({

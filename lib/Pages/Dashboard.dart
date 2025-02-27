@@ -17,6 +17,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   late String email;
   late String mobile_no;
+  late String img_url;
   int _selectedTabPosition = 0;
 
   @override
@@ -26,9 +27,12 @@ class _DashboardState extends State<Dashboard> {
       Map<String, dynamic> jwtDecoded = JwtDecoder.decode(widget.token);
       email = jwtDecoded['email'] ?? 'No Email';
       mobile_no = jwtDecoded['mobile_no'] ?? 'No Mobile Number';
+      img_url = jwtDecoded['img_url'] ?? 'No img url';
+
     } catch (e) {
       email = 'Invalid Token';
       mobile_no = 'Invalid Token';
+      img_url='Invalid url';
     }
   }
 
@@ -66,7 +70,7 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
       ),
-      drawer: AppDrawer(imgPath: "assets/profile.png",email: email,mobile_no: mobile_no,),
+      drawer: AppDrawer(imgPath:img_url ,email: email,mobile_no: mobile_no,),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color.fromARGB(255, 200, 240, 250),
         currentIndex: _selectedTabPosition,

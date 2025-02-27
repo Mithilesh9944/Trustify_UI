@@ -69,7 +69,7 @@ class _MyRegisterState extends State<MyRegister> {
               )
             : const CircleAvatar(
                 radius: 55,
-                backgroundImage: NetworkImage("https://www.kindpng.com/picc/m/269-2697881_computer-icons-user-clip-art-transparent-png-icon.png"),
+                backgroundImage: NetworkImage("https://cdn1.vectorstock.com/i/1000x1000/93/75/user-blue-icon-isolated-on-white-background-vector-42029375.jpg"),
               ),
         
         Positioned(

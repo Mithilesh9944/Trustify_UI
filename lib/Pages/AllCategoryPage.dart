@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/ProductDetailForm/BikeDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/CarDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/CycleDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/FurnitureDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/LaptopDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/MobileDetailsPage.dart';
 
 class MyAllCategoryPage extends StatelessWidget {
   const MyAllCategoryPage({super.key});
@@ -29,19 +35,65 @@ class MyAllCategoryPage extends StatelessWidget {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           return ListTile(
-            leading: Icon(categories[index]['icon'] as IconData, color: Colors.black),
+            leading: Icon(categories[index]['icon'] as IconData,
+                color: Colors.black),
             title: Text(
               categories[index]['label'] as String,
               style: const TextStyle(fontSize: 16.0, color: Colors.black),
             ),
-            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black, size: 16.0),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            trailing: const Icon(Icons.arrow_forward_ios,
+                color: Colors.black, size: 16.0),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             tileColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
             onTap: () {
-              // Handle category tap
+              switch (categories[index]['label']) {
+                case 'Cars':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CarDetailsPage()));
+                  break;
+                case 'Bikes':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BikeDetailsPage()));
+                  break;
+                case 'Cycle':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CycleDetailsPage()));
+                  break;
+
+                case 'Laptop':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LaptopDetailsPage()));
+                  break;
+                case 'Mobiles':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MobileDetailsPage()));
+                  break;
+                case 'Furniture':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FurnitureDetailsPage()));
+                  break;
+                default:
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyAllCategoryPage()));
+              }
             },
           );
         },
