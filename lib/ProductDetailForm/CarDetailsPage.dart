@@ -194,15 +194,16 @@ class _CarDetailsPageState extends State<CarDetailsPage>  {
     );
   }
   void _submitDetails(){
-    var carDetails={
+    var carDetails=<String,dynamic>{
       'brand':selectedBrand,
-      'year_of_purchase':yearController,
+      'year_of_purchase':yearController.text,
       'fule_type':selectedFuelType,
       'transmission':selectedTransmission,
-      'km_driven':kmDrivenController,
+      'km_driven':kmDrivenController.text,
       'owner':selectedOwner,
-      'p_title':titleController,
-      'p_description':descriptionController
+      'p_title':titleController.text,
+      'p_description':descriptionController.text,
+      'img_list':[]
     };
     Navigator.push(context, MaterialPageRoute(builder: (context)=>UploadImagePage(p_details: carDetails,)));
 }

@@ -106,7 +106,10 @@ class _UploadImagePageState extends State<UploadImagePage> {
               child: TextButton(
                 onPressed: _selectedPhotos.isNotEmpty ? () {
                  print(widget.p_details);
-                  widget.p_details['img_list']=_selectedPhotos;
+                 print(_selectedPhotos);
+                 print("yha kuchh gbbd hai");
+                  widget.p_details['img_list'] = _selectedPhotos;
+
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>PostAdPage(p_details:widget.p_details)));
                 } : null,
                 child: Text(

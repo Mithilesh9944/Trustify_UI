@@ -68,13 +68,14 @@ class _PostAdPageState extends State<PostAdPage> {
   }
 
   void _postAd() async {
-    widget.p_details['price'] = _priceController;
+    widget.p_details['price'] = _priceController.text;
     bool flag = await ListProduct.addProduct(widget.p_details);
     if (flag) {
       print(widget.p_details);
       print('added sucessfully');
       Navigator.pushNamed(context, MyRoutes.Dashboard);
     } else {
+      print("getting flase from adding product");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Internal sever error please try after some time."),
