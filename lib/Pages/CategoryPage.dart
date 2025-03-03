@@ -29,6 +29,7 @@ class OfferPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('What are you offering?'),
         centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 109, 190, 231),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -105,7 +106,7 @@ class OfferItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[900],
+          color: Colors.blueGrey,
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Column(

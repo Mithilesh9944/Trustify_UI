@@ -23,10 +23,13 @@ class _MyRegisterState extends State<MyRegister> {
   final TextEditingController _emailController = TextEditingController();
  Uint8List? _img;
   void selectImage() async {
-    Uint8List img = await pickImage (ImageSource.gallery);
+    XFile? file = await pickImage(ImageSource.gallery);
+    if (file != null) {
+    Uint8List img = await file.readAsBytes();
     setState(() {
-      _img=img;
+      _img = img;
     });
+  }
   }
   @override
   Widget build(BuildContext context) {
