@@ -30,6 +30,8 @@ class MyAllCategoryPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Choose a category'),
         centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 109, 190, 231),
+
       ),
       body: ListView.builder(
         itemCount: categories.length,
