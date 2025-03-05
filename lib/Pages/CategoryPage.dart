@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/Pages/AllCategoryPage.dart';
+import 'package:flutter_project/Pages/DynamicFormPage.dart';
+import 'package:flutter_project/Util/MyRoutes.dart';
+import 'package:flutter_project/Util/UtilProductForm.dart';
+//import 'package:flutter_project/Util/MyRoutes.dart';
 
 class OfferPage extends StatelessWidget {
   const OfferPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     final items = [
-      {'icon': Icons.directions_car, 'label': 'Cars'},
-      {'icon': Icons.pedal_bike, 'label': 'Cycle'},
-      {'icon': Icons.laptop, 'label': 'Laptop'},
-      {'icon': Icons.ac_unit, 'label': 'AC'},
-      {'icon': Icons.air, 'label': 'Cooler'},
-      {'icon': Icons.phone_android, 'label': 'Mobiles'},
-      {'icon': Icons.chair, 'label': 'Furniture'},
-      {'icon': Icons.pedal_bike, 'label': 'Bikes'},
-      {'icon': Icons.more_horiz, 'label': 'See all categories'},
+      {'icon': Icons.directions_car, 'label': 'Cars','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.car],)},
+      {'icon': Icons.pedal_bike, 'label': 'Cycle','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.cycle],)},
+      {'icon': Icons.laptop, 'label': 'Laptop','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.laptop],)},
+      {'icon': Icons.phone_android, 'label': 'Mobiles', 'routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.mobile])},
+      {'icon': Icons.chair, 'label': 'Furniture','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.furniture])},
+      {'icon': Icons.pedal_bike, 'label': 'Bikes','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.bike])},
+      {'icon': Icons.more_horiz, 'label': 'See all categories','routes':MyAllCategoryPage()},
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('What are you offering?'),
         centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 109, 190, 231),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -42,7 +47,7 @@ class OfferPage extends StatelessWidget {
                 return OfferItem(
                   icon: items[index]['icon'] as IconData,
                   label: items[index]['label'] as String,
-
+                  route: items[index]['routes'] as Widget
                 );
               },
             ),
@@ -56,19 +61,19 @@ class OfferPage extends StatelessWidget {
 class OfferItem extends StatelessWidget {
   final IconData icon;
   final String label;
+  final Widget route;
 
-  const OfferItem({super.key, required this.icon, required this.label});
+   OfferItem({super.key, required this.icon, required this.label,required this.route});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-
-      onTap: (){
-
+      onTap: () {
+        Navigator.push(context,MaterialPageRoute(builder: (context)=>route));
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[900],
+          color: Colors.blueGrey,
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Column(

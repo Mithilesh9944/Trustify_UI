@@ -24,25 +24,28 @@ class MyAllCategoryPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Choose a category'),
         centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 109, 190, 231),
+
       ),
       body: ListView.builder(
         itemCount: categories.length,
         itemBuilder: (context, index) {
           return ListTile(
-            leading: Icon(categories[index]['icon'] as IconData, color: Colors.black),
+            leading: Icon(categories[index]['icon'] as IconData,
+                color: Colors.black),
             title: Text(
               categories[index]['label'] as String,
               style: const TextStyle(fontSize: 16.0, color: Colors.black),
             ),
-            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black, size: 16.0),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            trailing: const Icon(Icons.arrow_forward_ios,
+                color: Colors.black, size: 16.0),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             tileColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            onTap: () {
-              // Handle category tap
-            },
+            onTap: () {},
           );
         },
         padding: const EdgeInsets.all(8.0),

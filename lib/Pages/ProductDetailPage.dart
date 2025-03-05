@@ -4,8 +4,8 @@ import 'package:flutter_project/Util/UtilButtons.dart';
 
 import '../Util/UtilPages.dart';
 
-class IncludeDetailsPage extends StatelessWidget {
-  const IncludeDetailsPage({super.key});
+class ProductDetailsPage extends StatelessWidget {
+  const ProductDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

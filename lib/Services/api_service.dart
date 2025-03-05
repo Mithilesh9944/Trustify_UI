@@ -1,28 +1,26 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
-import 'dart:typed_data';
 
 class ApiService {
  
-  //static const baseUrl = "http://10.0.2.2:3000/api/v1";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
+  static const baseUrl = "http://10.0.2.2:3000/api/v1";
+  //static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
   static Future<bool> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     print(userData);
-     String? img_url;
+     String? imgUrl;
     if(imgBytes!=null){
-    img_url = await uploadImageOnCloudinary(imgBytes);
+    imgUrl = await uploadImageOnCloudinary(imgBytes);
 
     }
     else{
-      img_url= await uploadImageOnCloudinary(await loadDefaultImage());
+      imgUrl= await uploadImageOnCloudinary(await loadDefaultImage());
 
     }
-   // userData['imgUrl']=img_url;
-   print("imgurl");
-   print(img_url);
+   userData['img_url']=imgUrl;
+   print("img_url");
+   print(imgUrl);
     try {
       var postUrl = Uri.parse('$baseUrl/registerUser');
 
@@ -100,6 +98,7 @@ class ApiService {
     final uri = Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
     var request=http.MultipartRequest('POST',uri)
      ..fields['upload_preset'] = "Trustify_preset"
+     ..fields['folder'] = 'UserProfile'
     ..files.add(http.MultipartFile.fromBytes(
       'file', 
       imgBytes,
