@@ -23,10 +23,13 @@ class _MyRegisterState extends State<MyRegister> {
   final TextEditingController _emailController = TextEditingController();
  Uint8List? _img;
   void selectImage() async {
-    Uint8List img = await pickImage (ImageSource.gallery);
+    XFile? file = await pickImage(ImageSource.gallery);
+    if (file != null) {
+    Uint8List img = await file.readAsBytes();
     setState(() {
-      _img=img;
+      _img = img;
     });
+  }
   }
   @override
   Widget build(BuildContext context) {
@@ -203,16 +206,16 @@ class _MyRegisterState extends State<MyRegister> {
   // Input validation logic
   bool _validateInputs() {
     if (_isAnyFieldEmpty()) {
-      _showSnackBar("All fields are required.");
+      UtilWidgets.showSnackBar(msg: 'All fields are required.', context: context);
       return false;
     } else if (Details.mobile?.length != 13) {
-      _showSnackBar("Please enter a valid 10-digit mobile number.");
+      UtilWidgets.showSnackBar(msg: 'Please enter a valid 10-digit mobile number', context: context);
       return false;
     } else if (!_isValidEmail(Details.email)) {
-      _showSnackBar("Please enter a valid Gmail or NIT KKR email.");
+      UtilWidgets.showSnackBar(msg: 'Please enter a valid Gmail or NIT KKR email', context: context);
       return false;
     } else if (Details.password != Details.confirmPassword) {
-      _showSnackBar("Passwords do not match.");
+      UtilWidgets.showSnackBar(msg: 'Passwords do not match.', context: context);
       return false;
     }
     return true;
@@ -235,9 +238,9 @@ class _MyRegisterState extends State<MyRegister> {
   }
 
   // Show error message in snackbar
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
+  // void UtilWidgetsshowSnackBar(String message) {
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  // }
 
   // Register user by calling the API
   void _registerUser() async{
@@ -252,9 +255,8 @@ class _MyRegisterState extends State<MyRegister> {
       _navigateToNextPage();
     }
     else{
-         ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Invalid credentials, please try again.")),
-      );
+         UtilWidgets.showSnackBar(msg: "Invalid credentials, please try again.", context: context);
+
     }
   }
 
