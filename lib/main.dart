@@ -6,7 +6,6 @@ import 'package:flutter_project/Pages/HelpInstructPage.dart';
 import 'package:flutter_project/Pages/HomePage.dart';
 import 'package:flutter_project/Pages/ProductDetailPage.dart';
 import 'package:flutter_project/Pages/RegisterPage.dart';
-import 'package:flutter_project/Pages/UploadImagePage.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'Pages/LoginPage.dart';
