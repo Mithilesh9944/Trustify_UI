@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget{
     // TODO: implement build
     return MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: (token!=null&&!JwtDecoder.isExpired(token!)) ? MyRoutes.Dashboard : MyRoutes.HomePage,
+    initialRoute: (token!=null&&!JwtDecoder.isExpired(token!)) ? MyRoutes.Dashboard : MyRoutes.CategoryList,
     routes: {
       MyRoutes.HomePage:(context) => MyHome(),
       MyRoutes.RegisterPage: (context) => MyRegister(),

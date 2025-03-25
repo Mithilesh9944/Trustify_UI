@@ -48,6 +48,10 @@ class UtilWidgets{
       ],
     );
   }
-
+  
+  static void showSnackBar({required String msg,required BuildContext context}){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+  
 
 }
