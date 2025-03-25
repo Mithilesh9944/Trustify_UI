@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/ProductDetailForm/BikeDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/CarDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/CycleDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/FurnitureDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/LaptopDetailsPage.dart';
+import 'package:flutter_project/ProductDetailForm/MobileDetailsPage.dart';
 
 class MyAllCategoryPage extends StatelessWidget {
   const MyAllCategoryPage({super.key});
@@ -45,7 +51,52 @@ class MyAllCategoryPage extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            onTap: () {},
+            onTap: () {
+              switch (categories[index]['label']) {
+                case 'Cars':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CarDetailsPage()));
+                  break;
+                case 'Bikes':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BikeDetailsPage()));
+                  break;
+                case 'Cycle':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CycleDetailsPage()));
+                  break;
+
+                case 'Laptop':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LaptopDetailsPage()));
+                  break;
+                case 'Mobiles':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MobileDetailsPage()));
+                  break;
+                case 'Furniture':
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FurnitureDetailsPage()));
+                  break;
+                default:
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyAllCategoryPage()));
+              }
+            },
           );
         },
         padding: const EdgeInsets.all(8.0),

@@ -3,6 +3,7 @@ import 'package:flutter_project/Pages/AllCategoryPage.dart';
 import 'package:flutter_project/Pages/DynamicFormPage.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilProductForm.dart';
+
 //import 'package:flutter_project/Util/MyRoutes.dart';
 
 class OfferPage extends StatelessWidget {
@@ -48,6 +49,7 @@ class OfferPage extends StatelessWidget {
                   icon: items[index]['icon'] as IconData,
                   label: items[index]['label'] as String,
                   route: items[index]['routes'] as Widget
+
                 );
               },
             ),
@@ -70,6 +72,7 @@ class OfferItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,MaterialPageRoute(builder: (context)=>route));
+
       },
       child: Container(
         decoration: BoxDecoration(
