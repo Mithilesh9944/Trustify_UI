@@ -12,12 +12,12 @@ class OfferPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final items = [
-      {'icon': Icons.directions_car, 'label': 'Cars','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.car],)},
-      {'icon': Icons.pedal_bike, 'label': 'Cycle','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.cycle],)},
-      {'icon': Icons.laptop, 'label': 'Laptop','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.laptop],)},
-      {'icon': Icons.phone_android, 'label': 'Mobiles', 'routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.mobile])},
-      {'icon': Icons.chair, 'label': 'Furniture','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.furniture])},
-      {'icon': Icons.pedal_bike, 'label': 'Bikes','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.bike])},
+      {'icon': Icons.directions_car, 'label': 'Cars','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.car],category: "Car")},
+      {'icon': Icons.pedal_bike, 'label': 'Cycle','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.cycle],category: "Cycle")},
+      {'icon': Icons.laptop, 'label': 'Laptop','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.laptop],category: "Laptop")},
+      {'icon': Icons.phone_android, 'label': 'Mobiles', 'routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.mobile],category: "Mobile")},
+      {'icon': Icons.chair, 'label': 'Furniture','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.furniture],category: "Furniture",)},
+      {'icon': Icons.pedal_bike, 'label': 'Bikes','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.bike],category: "Bike")},
       {'icon': Icons.more_horiz, 'label': 'See all categories','routes':MyAllCategoryPage()},
     ];
 

@@ -37,22 +37,30 @@ class _DashboardState extends State<Dashboard> {
 
     var response = await ListProduct.getProduct({"mobile_no": mobileNO});
     print("Fetched Products: ");
-    print(response);
 
     if (!mounted) return;
 
     if (response != null && response['success'] == true && response['data'] is List) {
       List<dynamic> sellers = response['data'];
-      List<dynamic> allProducts = [];
+      Set<dynamic> allProducts = {};
+      print("sellers");
+      print(sellers);
+      print("sellers");
+
       
       for (var seller in sellers) {
         if (seller["products"] is List) {
           allProducts.addAll(seller["products"]);
         }
       }
+      print("products");
+
+      print(allProducts);
+      print("products");
+
 
       setState(() {
-        products = allProducts;
+        products = allProducts.toList();
         isLoading = false;
       });
     } else {
