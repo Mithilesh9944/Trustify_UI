@@ -1,13 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 
 class ApiService {
  
-  //static const baseUrl = "http://10.0.2.2:3000/api/v1";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
+  static const baseUrl = "http://10.0.2.2:3000/api/v1";
+  //static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
   static Future<bool> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     print(userData);
      String? imgUrl;
@@ -78,6 +77,7 @@ class ApiService {
   static AddContacts(Map<String, dynamic> userData) async {
     try {
       var postUrl = Uri.parse('$baseUrl/updateContactList');
+      //print(userData);
 
       final res = await http.post(
         postUrl,
@@ -99,6 +99,7 @@ class ApiService {
     final uri = Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
     var request=http.MultipartRequest('POST',uri)
      ..fields['upload_preset'] = "Trustify_preset"
+     ..fields['folder'] = 'UserProfile'
     ..files.add(http.MultipartFile.fromBytes(
       'file', 
       imgBytes,
