@@ -7,8 +7,9 @@ import '../Util/UtilProductForm.dart';
 
 class DynamicFormWidget extends StatefulWidget {
   final Map<String, List<Map<String, dynamic>>>? formCategories;
+  final String category;
 
-  const DynamicFormWidget({super.key, required this.formCategories});
+  const DynamicFormWidget({super.key, required this.formCategories ,required this.category});
 
   @override
   _DynamicFormWidgetState createState() => _DynamicFormWidgetState();
@@ -49,7 +50,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
       for (var entry in _controllers.entries) {
         _formData[entry.key.toLowerCase().replaceAll(' ', '_')] = entry.value.text;
       }
-
+      _formData['category']=widget.category;
       Future.delayed(const Duration(milliseconds: 1000), () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => UploadImagePage(p_details: _formData)));
       });

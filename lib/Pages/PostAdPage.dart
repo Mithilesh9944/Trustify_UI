@@ -1,10 +1,13 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_project/Pages/TokenManager.dart';
 
 import 'package:flutter_project/Services/ListProduct.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+
 
 
 import 'ProductDetailPage.dart';
@@ -74,8 +77,12 @@ class _PostAdPageState extends State<PostAdPage> {
   }
 
   void _postAd() async {
-
+    String? token = await TokenManager.getToken();
+     
+    Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token!);
+    String? mobileNO = jwtDecoded['mobile_no'];
     widget.pDetails['price'] = _priceController.text;
+    widget.pDetails['mobile_no']=mobileNO;
     bool flag = await ListProduct.addProduct(widget.pDetails);
     if (flag) {
       print(widget.pDetails);
