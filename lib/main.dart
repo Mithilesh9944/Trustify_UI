@@ -6,8 +6,8 @@ import 'package:flutter_project/Pages/HelpInstructPage.dart';
 import 'package:flutter_project/Pages/HomePage.dart';
 import 'package:flutter_project/Pages/ProductDetailPage.dart';
 import 'package:flutter_project/Pages/RegisterPage.dart';
+import 'package:flutter_project/Pages/TokenManager.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'Pages/LoginPage.dart';
 import 'Pages/Dashboard.dart';
 
@@ -17,9 +17,8 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterSecureStorage secureStorage =  FlutterSecureStorage();
- var mytoken  = await secureStorage.read(key: 'token');
-  runApp(MyApp(token: mytoken )); //MaterailApp
+    String? userToken =  await TokenManager.getToken();
+  runApp(MyApp(token: userToken )); //MaterailApp
 }
 class MyApp extends StatelessWidget{
   final token;
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget{
       MyRoutes.AllCategoryPage:(context)=>MyAllCategoryPage(),
       MyRoutes.CategoryList:(context)=>OfferPage(),
       MyRoutes.ProductDetails:(context)=>ProductDetailsPage(),
-      MyRoutes.Dashboard:(context)=>Dashboard(token: token),
+      MyRoutes.Dashboard:(context)=>Dashboard(),
       //MyRoutes.UploadImage:(context)=>UploadImagePage(),
 
     },

@@ -1,12 +1,18 @@
+
+
 import 'package:flutter/material.dart';
-import 'package:flutter_project/ProductDetailForm/MobileDetailsPage.dart';
+
 import 'package:flutter_project/Services/ListProduct.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 
+
+import 'ProductDetailPage.dart';
+
 class PostAdPage extends StatefulWidget {
-  final Map<String, dynamic> p_details;
-  const PostAdPage({required this.p_details, super.key});
+  final Map<String, dynamic> pDetails;
+  const PostAdPage({required this.pDetails, super.key});
+
 
   @override
   State<PostAdPage> createState() => _PostAdPageState();
@@ -68,17 +74,19 @@ class _PostAdPageState extends State<PostAdPage> {
   }
 
   void _postAd() async {
-    widget.p_details['price'] = _priceController.text;
-    bool flag = await ListProduct.addProduct(widget.p_details);
+
+    widget.pDetails['price'] = _priceController.text;
+    bool flag = await ListProduct.addProduct(widget.pDetails);
     if (flag) {
-      print(widget.p_details);
+      print(widget.pDetails);
       print('added sucessfully');
       Navigator.pushNamed(context, MyRoutes.Dashboard);
     } else {
       print("getting flase from adding product");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Internal sever error please try after some time."),
+
+          content: Text("Internal server error please try after some time."),
           backgroundColor: Colors.red,
         ),
       );
