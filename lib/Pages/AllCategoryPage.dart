@@ -39,8 +39,6 @@ class MyAllCategoryPage extends StatelessWidget {
           return ListTile(
             leading: Icon(categories[index]['icon'] as IconData,
                 color: Colors.black),
-            leading: Icon(categories[index]['icon'] as IconData,
-                color: Colors.black),
             title: Text(
               categories[index]['label'] as String,
               style: const TextStyle(fontSize: 16.0, color: Colors.black),

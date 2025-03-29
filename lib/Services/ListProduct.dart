@@ -9,11 +9,11 @@ import 'dart:convert';
 class ListProduct {
     static const baseUrl = "http://10.0.2.2:3000/api/v1/product";
   //static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
-  static Future<bool>addProduct(Map<String,dynamic>p_details) async{
-    List<File> img_list = (p_details.remove('img_list') as List<dynamic>).cast<File>();
-    final List<String>img_urls = await uploadImageOnCloudinary(img_list);
-    p_details['img_urls']=img_urls;
-   print(p_details);
+  static Future<bool>addProduct(Map<String,dynamic>pDetails) async{
+    List<File> imgList = (pDetails.remove('img_list') as List<dynamic>).cast<File>();
+    final List<String>imgUrls = await uploadImageOnCloudinary(imgList);
+    pDetails['img_urls']=imgUrls;
+   print(pDetails);
    print("yha aa gye hai");
    try{
     var posturl = Uri.parse('$baseUrl/addProductCar');
@@ -22,7 +22,7 @@ class ListProduct {
       headers: {
         "Content-Type":"application/json",
       },
-      body: jsonEncode(p_details),
+      body: jsonEncode(pDetails),
 
     );
     if(res.statusCode==201){
@@ -44,10 +44,10 @@ class ListProduct {
       return false;
     }
   }
-  static Future<List<String>> uploadImageOnCloudinary(List<File>img_list) async{
-     List<String>img_urls=[];
+  static Future<List<String>> uploadImageOnCloudinary(List<File>imgList) async{
+     List<String>imgUrls=[];
     final uri = Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
-    for(File file in img_list){
+    for(File file in imgList){
  var request=http.MultipartRequest('POST',uri)
      ..fields['upload_preset'] = "Trustify_preset"
      ..fields['folder'] = 'product'
@@ -60,14 +60,14 @@ class ListProduct {
       if (response.statusCode == 200) {
     final responseData = await response.stream.bytesToString();
     final imageUrl = jsonDecode(responseData)['secure_url'];
-  img_urls.add( imageUrl);
+  imgUrls.add( imageUrl);
   } else {
     print("Failed to upload image: ${response.statusCode}");
     
   }
 
     }
-    return img_urls;
+    return imgUrls;
      
   }
 
