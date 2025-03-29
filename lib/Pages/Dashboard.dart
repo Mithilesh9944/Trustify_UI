@@ -42,25 +42,24 @@ class _DashboardState extends State<Dashboard> {
 
     if (response != null && response['success'] == true && response['data'] is List) {
       List<dynamic> sellers = response['data'];
-      Set<dynamic> allProducts = {};
-      print("sellers");
-      print(sellers);
-      print("sellers");
+   Map<dynamic, dynamic> uniqueProducts = {}; // Store products by ID
 
-      
-      for (var seller in sellers) {
-        if (seller["products"] is List) {
-          allProducts.addAll(seller["products"]);
+       for (var seller in sellers) {
+      if (seller["products"] is List) {
+        for (var product in seller["products"]) {
+          var elementId = product['elementId']; // Ensure 'elementId' exists
+          if (elementId != null) {
+            uniqueProducts[elementId] = product; // Store unique products by elementId
+          }
         }
       }
-      print("products");
-
-      print(allProducts);
-      print("products");
+    }
 
 
-      setState(() {
-        products = allProducts.toList();
+    print(uniqueProducts);
+
+    setState(() {
+      products = uniqueProducts.values.toList(); // Convert to List
         isLoading = false;
       });
     } else {

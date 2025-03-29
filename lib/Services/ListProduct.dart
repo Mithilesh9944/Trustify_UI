@@ -8,7 +8,7 @@ import 'dart:convert';
 
 class ListProduct {
     //static const baseUrl = "http://10.0.2.2:3000/api/v1/product";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
+   static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
   static Future<bool>addProduct(Map<String,dynamic>pDetails) async{
     List<File> imgList = (pDetails.remove('img_list') as List<dynamic>).cast<File>();
     final List<String>imgUrls = await uploadImageOnCloudinary(imgList);
