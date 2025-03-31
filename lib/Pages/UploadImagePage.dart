@@ -6,7 +6,6 @@ import 'package:flutter_project/Util/UtilPickImage.dart';
 import 'package:flutter_project/Pages/PostAdPage.dart';
 class UploadImagePage extends StatefulWidget {
  final Map<String,dynamic> p_details;
-
   const UploadImagePage({ required this.p_details,super.key});
 
   @override
@@ -112,7 +111,6 @@ class _UploadImagePageState extends State<UploadImagePage> {
                   widget.p_details['img_list'] = _selectedPhotos;
 
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>PostAdPage(pDetails:widget.p_details)));
-
                 } : null,
                 child: Text(
                   "Next",
