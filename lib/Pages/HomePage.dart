@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
+import 'package:flutter_project/Util/util_notification.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MyHome extends StatefulWidget {
   const MyHome({super.key});
@@ -14,6 +16,7 @@ class _MyHomeState extends State<MyHome> {
   void initState() {
     super.initState();
     // Delay for 1200 miliseconds, then navigate to Welcome page
+    notificationPermission();
     Future.delayed(const Duration(milliseconds: 1500), () {
       Navigator.pushReplacement(
         context,
@@ -63,7 +66,6 @@ class _MyHomeState extends State<MyHome> {
         ),
       ),
     );
-
- 
   }
 }
+

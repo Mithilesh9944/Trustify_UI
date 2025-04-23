@@ -17,6 +17,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int _selectedTabPosition = 0;
   List<dynamic> products = [];
+
   bool isLoading = true;
 
   @override
@@ -40,41 +41,26 @@ class _DashboardState extends State<Dashboard> {
 
     if (!mounted) return;
 
-    if (response != null && response['success'] == true && response['data'] is List) {
+    if (response != null &&
+        response['success'] == true &&
+        response['data'] is List) {
       List<dynamic> sellers = response['data'];
-   Map<dynamic, dynamic> uniqueProducts = {}; // Store products by ID
-     Map<dynamic, dynamic> sellerDetails = {}; // Store seller details
+      Map<dynamic, dynamic> uniqueProducts = {}; // Store products by ID
 
       for (var seller in sellers) {
         if (seller["products"] is List) {
           for (var product in seller["products"]) {
-            var elementId = product['elementId']; // Ensure 'elementId' exists
+            var elementId = product['elementId']; // En sure 'elementId' exists
             if (elementId != null) {
-              List<dynamic> sDetails = [
-                seller['contactName'] ?? "Unknown",
-                seller['contactMobile'] ?? "N/A"
-              ];
-              sellerDetails[elementId] = sDetails;
-              uniqueProducts[elementId] = product; // Store unique products by elementId
+              uniqueProducts[elementId] =
+                  product; // Store unique products by elementId
             }
           }
         }
       }
+      print(uniqueProducts);
 
-      setState(() {
-        products = uniqueProducts.entries.map((entry) {
-          var product = entry.value;
-          var sDetails = sellerDetails[entry.key] ?? ["Unknown", "N/A"];
-
-          // Add seller details to the product map
-          product['sellerName'] = sDetails[0];
-          product['sellerMobile'] = sDetails[1];
-
-          return product;
-        }).toList();
-
-        isLoading = false;
-      });
+      isLoading = false;
     } else {
       setState(() {
         isLoading = false;
@@ -107,14 +93,17 @@ class _DashboardState extends State<Dashboard> {
                           var properties = product['properties'] ?? {};
 
                           String title = properties['p_title'] ?? "No Title";
-                          String description = properties['p_description'] ?? "No Description";
+                          String description =
+                              properties['p_description'] ?? "No Description";
                           String brand = properties['brand'] ?? "Unknown Brand";
-                          String price = properties['price']?.toString() ?? "N/A";
+                          String price =
+                              properties['price']?.toString() ?? "N/A";
                           List<dynamic>? images = properties['p_img'];
 
                           return Card(
                             elevation: 3,
-                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
                             child: ListTile(
                               contentPadding: EdgeInsets.all(10),
                               leading: images != null && images.isNotEmpty
@@ -125,20 +114,31 @@ class _DashboardState extends State<Dashboard> {
                                       fit: BoxFit.cover,
                                     )
                                   : Icon(Icons.image, size: 50),
-                              title: Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                              title: Text(title,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold)),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Brand: $brand", style: TextStyle(fontSize: 14, color: Colors.grey[700])),
-                                  Text("Price: ₹$price", style: TextStyle(fontSize: 14, color: Colors.green)),
-                                  Text(description, maxLines: 2, overflow: TextOverflow.ellipsis),
+                                  Text("Brand: $brand",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[700])),
+                                  Text("Price: ₹$price",
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.green)),
+                                  Text(description,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis),
                                 ],
                               ),
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => CarDetailsScreen(product: product),
+                                    builder: (context) =>
+                                        product_details_page(product: product),
                                   ),
                                 );
                               },
@@ -152,32 +152,34 @@ class _DashboardState extends State<Dashboard> {
           backgroundColor: Color.fromARGB(255, 200, 240, 250),
           currentIndex: _selectedTabPosition,
           onTap: (index) {
-            switch(index){
-              case 0 :
-              Navigator.pushNamed(context, MyRoutes.Dashboard);
-              break;
+            switch (index) {
+              case 0:
+                Navigator.pushNamed(context, MyRoutes.Dashboard);
+                break;
               case 1:
-              Navigator.pushNamed(context, MyRoutes.Dashboard);
-              break;
+                Navigator.pushNamed(context, MyRoutes.Dashboard);
+                break;
               case 2:
-              Navigator.pushNamed(context, MyRoutes.CategoryList);
-              break;
+                Navigator.pushNamed(context, MyRoutes.CategoryList);
+                break;
               case 3:
-              Navigator.pushNamed(context, MyRoutes.Dashboard);
-              break;
+                Navigator.pushNamed(context, MyRoutes.Dashboard);
+                break;
               case 4:
-              Navigator.pushNamed(context, MyRoutes.Profile);
-              break;
+                Navigator.pushNamed(context, MyRoutes.Profile);
+                break;
             }
           },
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.teal,
           unselectedItemColor: Colors.black12,
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home_sharp), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home_sharp), label: 'Home'),
             BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
             BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'My Ads'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.favorite), label: 'My Ads'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           ],
         ),

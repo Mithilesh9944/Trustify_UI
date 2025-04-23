@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/AllCategoryPage.dart';
 import 'package:flutter_project/Pages/CategoryPage.dart';
@@ -8,24 +9,37 @@ import 'package:flutter_project/Pages/ProfilePage.dart';
 import 'package:flutter_project/Pages/RegisterPage.dart';
 import 'package:flutter_project/Pages/TokenManager.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'Pages/LoginPage.dart';
 import 'Pages/Dashboard.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'Util/MyRoutes.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-
+//Global Plugin To Use Anywhere
+FlutterLocalNotificationsPlugin notificationsPlugin = FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
     String? userToken =  await TokenManager.getToken();
-  runApp(MyApp(token: userToken )); //MaterailApp
+    //Android SetUp for initialization
+    AndroidInitializationSettings androidSettings = AndroidInitializationSettings("@mipmap/ic_launcher");
+    //Initialize Android Settings
+    InitializationSettings initializationSettings = InitializationSettings(android: androidSettings);
+
+    bool? initialized = await notificationsPlugin.initialize(initializationSettings);
+    //log("Notification : $initialized");
+  runApp(MyApp(token: userToken )); //MaterialApp
 }
+
 class MyApp extends StatelessWidget{
   final token;
   const MyApp({
     @required this.token,
     super.key,
   });
+
+  @override
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -46,8 +60,8 @@ class MyApp extends StatelessWidget{
       MyRoutes.Profile:(context)=>ProfilePage(),
 
       //MyRoutes.UploadImage:(context)=>UploadImagePage(),
-
     },
   );
   }
 }
+
