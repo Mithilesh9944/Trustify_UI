@@ -15,7 +15,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int _selectedTabPosition = 0;
+  int selectedTabPosition = 0;
   List<dynamic> products = [];
 
   bool isLoading = true;
@@ -59,8 +59,10 @@ class _DashboardState extends State<Dashboard> {
         }
       }
       print(uniqueProducts);
-
-      isLoading = false;
+      setState(() {
+        products = uniqueProducts.values.toList();
+        isLoading = false;
+      });
     } else {
       setState(() {
         isLoading = false;
@@ -148,53 +150,21 @@ class _DashboardState extends State<Dashboard> {
                       ),
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Color.fromARGB(255, 200, 240, 250),
-          currentIndex: _selectedTabPosition,
-          onTap: (index) {
-            switch (index) {
-              case 0:
-                Navigator.pushNamed(context, MyRoutes.Dashboard);
-                break;
-              case 1:
-                Navigator.pushNamed(context, MyRoutes.Dashboard);
-                break;
-              case 2:
-                Navigator.pushNamed(context, MyRoutes.CategoryPage);
-                break;
-              case 3:
-                Navigator.pushNamed(context, MyRoutes.Dashboard);
-                break;
-              case 4:
-                Navigator.pushNamed(context, MyRoutes.Profile);
-                break;
-            }
-          },
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.teal,
-          unselectedItemColor: Colors.black12,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home_sharp), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
-            BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.favorite), label: 'My Ads'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _selectedTabPosition = 2;
-            });
-            Navigator.pushNamed(context, MyRoutes.CategoryPage);
-          },
-          child: const Icon(
-            Icons.add,
-            size: 50,
-          ),
-        ),
+        bottomNavigationBar: UtilWidgets.createBottomNavigation(
+            selectedTabPosition: selectedTabPosition,
+            onTap: (index) {
+              setState(() {
+                selectedTabPosition = index;
+              });
+            },
+            context: context),
+        floatingActionButton: UtilWidgets.createFloatingActionButton(
+            context: context,
+            onTabChange: () {
+              setState(() {
+                selectedTabPosition = 2;
+              });
+            }),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       );
 }

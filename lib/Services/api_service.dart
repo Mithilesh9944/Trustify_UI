@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 
+
 class ApiService {
  
   static const baseUrl = "http://10.0.2.2:3000/api/v1";
@@ -11,11 +12,11 @@ class ApiService {
     print(userData);
      String? _imgUrl;
     if(imgBytes!=null){
-    _imgUrl = await uploadImageOnCloudinary(imgBytes);
+    _imgUrl = await uploadImageOnCloudinary(userData['name'],imgBytes);
 
     }
     else{
-      _imgUrl= await uploadImageOnCloudinary(await loadDefaultImage());
+      _imgUrl= await uploadImageOnCloudinary(userData['name'],await loadDefaultImage());
 
     }
    userData['profileImg']=_imgUrl;
@@ -93,7 +94,7 @@ class ApiService {
       debugPrint(e.toString());
     }
   }
-  static Future<String?> uploadImageOnCloudinary(Uint8List imgBytes) async{
+  static Future<String?> uploadImageOnCloudinary(String name,Uint8List imgBytes) async{
     final uri = Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
     var request=http.MultipartRequest('POST',uri)
      ..fields['upload_preset'] = "Trustify_preset"
@@ -101,7 +102,7 @@ class ApiService {
     ..files.add(http.MultipartFile.fromBytes(
       'file', 
       imgBytes,
-      filename: "userprofile.jpg", // Cloudinary requires a filename
+      filename: "$name.jpg", // Cloudinary requires a filename
     ));
     var response = await request.send();
       if (response.statusCode == 200) {
