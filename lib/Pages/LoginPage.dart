@@ -206,7 +206,7 @@ void _login() async {
     });
 
     var jsonResponse = await ApiService.LoginUser({
-      "mobile":"+91${_mobileNumberController.text.trim()}",
+      "mobileNo":"+91${_mobileNumberController.text.trim()}",
       "password": _passwordController.text
     });
 
@@ -217,7 +217,7 @@ void _login() async {
       await TokenManager.saveToken(myToken);
 
       // Navigate to Dashboard only after storing the token
-      Navigator.pushNamed(context, MyRoutes.Dashboard);
+      Navigator.pushNamed(context, MyRoutes.ContactReadPage);
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => Dashboard(token: myToken)),

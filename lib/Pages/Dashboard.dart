@@ -33,9 +33,9 @@ class _DashboardState extends State<Dashboard> {
     }
 
     Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token);
-    String? mobileNO = jwtDecoded['mobile_no'];
+    String? mobileNO = jwtDecoded['mobileNo'];
 
-    var response = await ListProduct.getProduct({"mobile_no": mobileNO});
+    var response = await ListProduct.getProduct({"mobileNo": mobileNO});
     print("Fetched Products: ");
 
     if (!mounted) return;
@@ -43,23 +43,36 @@ class _DashboardState extends State<Dashboard> {
     if (response != null && response['success'] == true && response['data'] is List) {
       List<dynamic> sellers = response['data'];
    Map<dynamic, dynamic> uniqueProducts = {}; // Store products by ID
+     Map<dynamic, dynamic> sellerDetails = {}; // Store seller details
 
-       for (var seller in sellers) {
-      if (seller["products"] is List) {
-        for (var product in seller["products"]) {
-          var elementId = product['elementId']; // Ensure 'elementId' exists
-          if (elementId != null) {
-            uniqueProducts[elementId] = product; // Store unique products by elementId
+      for (var seller in sellers) {
+        if (seller["products"] is List) {
+          for (var product in seller["products"]) {
+            var elementId = product['elementId']; // Ensure 'elementId' exists
+            if (elementId != null) {
+              List<dynamic> sDetails = [
+                seller['contactName'] ?? "Unknown",
+                seller['contactMobile'] ?? "N/A"
+              ];
+              sellerDetails[elementId] = sDetails;
+              uniqueProducts[elementId] = product; // Store unique products by elementId
+            }
           }
         }
       }
-    }
 
+      setState(() {
+        products = uniqueProducts.entries.map((entry) {
+          var product = entry.value;
+          var sDetails = sellerDetails[entry.key] ?? ["Unknown", "N/A"];
 
-    print(uniqueProducts);
+          // Add seller details to the product map
+          product['sellerName'] = sDetails[0];
+          product['sellerMobile'] = sDetails[1];
 
-    setState(() {
-      products = uniqueProducts.values.toList(); // Convert to List
+          return product;
+        }).toList();
+
         isLoading = false;
       });
     } else {
@@ -139,10 +152,22 @@ class _DashboardState extends State<Dashboard> {
           backgroundColor: Color.fromARGB(255, 200, 240, 250),
           currentIndex: _selectedTabPosition,
           onTap: (index) {
-            if (index != 2) {
-              setState(() {
-                _selectedTabPosition = index;
-              });
+            switch(index){
+              case 0 :
+              Navigator.pushNamed(context, MyRoutes.Dashboard);
+              break;
+              case 1:
+              Navigator.pushNamed(context, MyRoutes.Dashboard);
+              break;
+              case 2:
+              Navigator.pushNamed(context, MyRoutes.CategoryList);
+              break;
+              case 3:
+              Navigator.pushNamed(context, MyRoutes.Dashboard);
+              break;
+              case 4:
+              Navigator.pushNamed(context, MyRoutes.Profile);
+              break;
             }
           },
           type: BottomNavigationBarType.fixed,

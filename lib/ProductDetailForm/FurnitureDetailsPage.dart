@@ -39,7 +39,7 @@ class FurnitureDetailsPage extends StatelessWidget {
                 UtilButtons.buildButton(
                     title: 'Next',
                     context: context,
-                    route: MyRoutes.ContactDashboardPage)
+                    route: MyRoutes.Dashboard)
               ],
             ),
           ],

@@ -4,11 +4,15 @@ import 'package:flutter_project/Pages/DynamicFormPage.dart';
 import 'package:flutter_project/Util/UtilProductForm.dart';
 
 //import 'package:flutter_project/Util/MyRoutes.dart';
-
-class OfferPage extends StatelessWidget {
+class OfferPage extends StatefulWidget {
   const OfferPage({super.key});
 
   @override
+  State<OfferPage> createState() => _OfferPage();
+}
+
+class _OfferPage extends State<OfferPage> {
+ @override
   Widget build(BuildContext context) {
 
     final items = [
@@ -58,6 +62,60 @@ class OfferPage extends StatelessWidget {
     );
   }
 }
+
+// class OfferPage extends StatelessWidget {
+//   const OfferPage({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+
+//     final items = [
+//       {'icon': Icons.directions_car, 'label': 'Cars','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.car],category: "Car")},
+//       {'icon': Icons.pedal_bike, 'label': 'Cycle','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.cycle],category: "Cycle")},
+//       {'icon': Icons.laptop, 'label': 'Laptop','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.laptop],category: "Laptop")},
+//       {'icon': Icons.phone_android, 'label': 'Mobiles', 'routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.mobile],category: "Mobile")},
+//       {'icon': Icons.chair, 'label': 'Furniture','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.furniture],category: "Furniture",)},
+//       {'icon': Icons.pedal_bike, 'label': 'Bikes','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.bike],category: "Bike")},
+//       {'icon': Icons.more_horiz, 'label': 'See all categories','routes':MyAllCategoryPage()},
+//     ];
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('What are you offering?'),
+//         centerTitle: true,
+//         backgroundColor: Color.fromARGB(255, 109, 190, 231),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: SingleChildScrollView(
+//           child: ConstrainedBox(
+//             constraints: BoxConstraints(
+//               minHeight: MediaQuery.of(context).size.height,
+//             ),
+//             child: GridView.builder(
+//               shrinkWrap: true,
+//               physics: const NeverScrollableScrollPhysics(),
+//               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//                 crossAxisCount: 2,
+//                 crossAxisSpacing: 16.0,
+//                 mainAxisSpacing: 16.0,
+//               ),
+//               itemCount: items.length,
+//               itemBuilder: (context, index) {
+//                 return OfferItem(
+//                   icon: items[index]['icon'] as IconData,
+//                   label: items[index]['label'] as String,
+//                   route: items[index]['routes'] as Widget
+
+//                 );
+//               },
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class OfferItem extends StatelessWidget {
   final IconData icon;

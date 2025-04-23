@@ -13,17 +13,13 @@ class MyAllCategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final categories = [
       {'icon': Icons.directions_car, 'label': 'Cars'},
-      {'icon': Icons.apartment, 'label': 'Properties'},
       {'icon': Icons.phone_android, 'label': 'Mobiles'},
       {'icon': Icons.work, 'label': 'Jobs'},
       {'icon': Icons.pedal_bike, 'label': 'Bikes'},
       {'icon': Icons.kitchen, 'label': 'Electronics & Appliances'},
-      {'icon': Icons.local_shipping, 'label': 'Commercial Vehicles & Spares'},
       {'icon': Icons.chair, 'label': 'Furniture'},
-      {'icon': Icons.style, 'label': 'Fashion'},
-      {'icon': Icons.book, 'label': 'Books, Sports & Hobbies'},
+      {'icon': Icons.book, 'label': 'Books'},
       {'icon': Icons.emoji_nature, 'label': 'Pots'},
-      {'icon': Icons.design_services, 'label': 'Services'},
     ];
 
     return Scaffold(

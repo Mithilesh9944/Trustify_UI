@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class TokenManager {
-  static const String _tokenKey = "user_token";
+  static const String _tokenKey = "userToken";
     static final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   static Future<void>saveToken(String token) async{

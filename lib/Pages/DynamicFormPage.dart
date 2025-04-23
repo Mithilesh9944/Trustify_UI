@@ -27,7 +27,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
     for (var category in widget.formCategories!.values) {
       for (var field in category) {
         if (field["type"] == FormFieldType.text || field["type"] == FormFieldType.description) {
-          _controllers[field["label"]] = TextEditingController();
+          _controllers[field["value"]] = TextEditingController();
         }
       }
     }
@@ -48,7 +48,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
 
       // Collect values from controllers
       for (var entry in _controllers.entries) {
-        _formData[entry.key.toLowerCase().replaceAll(' ', '_')] = entry.value.text;
+        _formData[entry.key] = entry.value.text;
       }
       _formData['category']=widget.category;
       Future.delayed(const Duration(milliseconds: 1000), () {
@@ -100,7 +100,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
         return Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: TextFormField(
-            controller: _controllers[field["label"]],
+            controller: _controllers[field["value"]],
             maxLength: (field["keyboard"] == TextInputType.text) ? 50 : 6,
             decoration: _inputDecoration(field["label"]),
             keyboardType: field["keyboard"] ?? TextInputType.text,
@@ -115,7 +115,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
             items: (field["options"] as List<String>).map((option) {
               return DropdownMenuItem(value: option, child: Text(option));
             }).toList(),
-            onChanged: (value) => _formData[field["label"].toLowerCase().replaceAll(' ', '_')] = value,
+            onChanged: (value) => _formData[field["value"]] = value,
             validator: (value) => value == null ? "${field["label"]} is required" : null,
           ),
         );
@@ -123,7 +123,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
         return Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: TextFormField(
-            controller: _controllers[field["label"]],
+            controller: _controllers[field["value"]],
             decoration: _inputDecoration(field["label"]),
             maxLength: 4096,
             maxLines: 5,

@@ -4,7 +4,7 @@ import 'package:flutter_project/Pages/CategoryPage.dart';
 import 'package:flutter_project/Pages/ContactReadPage.dart';
 import 'package:flutter_project/Pages/HelpInstructPage.dart';
 import 'package:flutter_project/Pages/HomePage.dart';
-import 'package:flutter_project/Pages/ProductDetailPage.dart';
+import 'package:flutter_project/Pages/ProfilePage.dart';
 import 'package:flutter_project/Pages/RegisterPage.dart';
 import 'package:flutter_project/Pages/TokenManager.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
@@ -37,13 +37,14 @@ class MyApp extends StatelessWidget{
       MyRoutes.RegisterPage: (context) => MyRegister(),
       MyRoutes.LoginPage: (context) => MyLogin(),
       MyRoutes.WelcomePage: (context) => MyWelcome(),
-      MyRoutes.ContactDashboardPage:(context)=>MyContactReadPage(),
+      MyRoutes.ContactReadPage:(context)=>MyContactReadPage(),
       MyRoutes.HelpPage:(context) => MyHelpSupportScreen(),
       MyRoutes.ContactDetails:(context)=> MyContactReadPage(),
       MyRoutes.AllCategoryPage:(context)=>MyAllCategoryPage(),
       MyRoutes.CategoryList:(context)=>OfferPage(),
-      MyRoutes.ProductDetails:(context)=>ProductDetailsPage(),
       MyRoutes.Dashboard:(context)=>Dashboard(),
+      MyRoutes.Profile:(context)=>ProfilePage(),
+
       //MyRoutes.UploadImage:(context)=>UploadImagePage(),
 
     },

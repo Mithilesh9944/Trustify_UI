@@ -5,24 +5,24 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class ApiService {
  
-  //static const baseUrl = "http://10.0.2.2:3000/api/v1";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
+  static const baseUrl = "http://10.0.2.2:3000/api/v1";
+ // static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
   static Future<bool> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     print(userData);
-     String? imgUrl;
+     String? _imgUrl;
     if(imgBytes!=null){
-    imgUrl = await uploadImageOnCloudinary(imgBytes);
+    _imgUrl = await uploadImageOnCloudinary(imgBytes);
 
     }
     else{
-      imgUrl= await uploadImageOnCloudinary(await loadDefaultImage());
+      _imgUrl= await uploadImageOnCloudinary(await loadDefaultImage());
 
     }
-   userData['img_url']=imgUrl;
-   print("img_url");
-   print(imgUrl);
+   userData['profileImg']=_imgUrl;
+   print("imgUrl");
+   print(_imgUrl);
     try {
-      var postUrl = Uri.parse('$baseUrl/registerUser');
+      var postUrl = Uri.parse('$baseUrl/register');
 
       final res = await http.post(
         postUrl,
@@ -45,19 +45,17 @@ class ApiService {
   }
 
   static Future<dynamic> LoginUser(Map<String, dynamic> userData) async {
-    //print(userData); //print data for checking 
+    print(userData); //print data for checking 
     try {
-      var queryParams = userData.entries
-          .map((e) =>
-              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
-          .join('&');
-      var getUrl = Uri.parse('$baseUrl/login?$queryParams');
+      var getUrl = Uri.parse('$baseUrl/login');
 
-      final response = await http.get(
+      final response = await http.post(
         getUrl,
         headers: {
           "Content-Type": "application/json",
         },
+        body: jsonEncode(userData),
+
       );
       // if (response.statusCode == 200) {
       //   var  jsonResponse = jsonDecode(response.body);

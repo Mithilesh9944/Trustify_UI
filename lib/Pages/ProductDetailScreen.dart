@@ -15,19 +15,25 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   int _currentIndex = 0;
   late List<String> carImages;
   late Map<String, dynamic> productDetails;
+  late String sellerName;
+  late String sellerMobile;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: 0);
 
-    // Extract properties object
+    // Extract product properties
     productDetails = widget.product['properties'] ?? {};
 
     // Extract image URLs safely
     carImages = (productDetails['p_img'] as List<dynamic>?)?.cast<String>() ?? [];
 
-    // Auto-scroll every 3 seconds
+    // Extract Seller Details
+    sellerName = widget.product['sellerName'] ?? "Unknown Seller";
+    sellerMobile = widget.product['sellerMobile'] ?? "N/A";
+
+    // Auto-scroll images every 3 seconds
     if (carImages.isNotEmpty) {
       Timer.periodic(Duration(seconds: 3), (Timer timer) {
         if (_currentIndex < carImages.length - 1) {
@@ -60,7 +66,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         backgroundColor: Colors.blue,
         centerTitle: true,
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: [
           // Image Slider
           Container(
@@ -110,21 +117,27 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Product Title
                   Text(
                     productDetails['p_title'] ?? "No Title",
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   SizedBox(height: 4),
+
+                  // Product Description
                   Text(
                     productDetails['p_description'] ?? "No Description",
                     style: TextStyle(fontSize: 16, color: Colors.grey[400]),
                   ),
                   SizedBox(height: 10),
+
+                  // Price
                   Text(
                     "₹ ${productDetails['price']?.toString() ?? 'N/A'}",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.greenAccent),
                   ),
                   SizedBox(height: 20),
+
                   Divider(color: Colors.grey[700]),
 
                   // Other details
@@ -132,6 +145,18 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                   _detailRow("Fuel Type", productDetails['fuel_type']),
                   _detailRow("Transmission", productDetails['transmission']),
                   _detailRow("Year of Purchase", productDetails['year_of_purchase']?.toString()),
+
+                  Divider(color: Colors.grey[700]),
+
+                  // **🚀 Seller Details Section**
+                  SizedBox(height: 10),
+                  Text(
+                    "Seller Information",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                  ),
+                  SizedBox(height: 8),
+                  _detailRow("Seller Name", sellerName),
+                  _detailRow("Contact", sellerMobile),
 
                   Spacer(),
                   Row(
@@ -148,22 +173,11 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _customButton(String text, IconData icon, Color color, VoidCallback onPressed) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
-      icon: Icon(icon, color: Colors.white),
-      label: Text(text, style: TextStyle(fontSize: 18, color: Colors.white)),
     );
   }
 
+  /// Custom Detail Row Widget
   Widget _detailRow(String label, String? value) {
     return value != null
         ? Padding(
@@ -177,5 +191,19 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
             ),
           )
         : SizedBox.shrink();
+  }
+
+  /// Custom Button Widget
+  Widget _customButton(String text, IconData icon, Color color, VoidCallback onPressed) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+      icon: Icon(icon, color: Colors.white),
+      label: Text(text, style: TextStyle(fontSize: 18, color: Colors.white)),
+    );
   }
 }
