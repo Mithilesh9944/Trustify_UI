@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project/Pages/ProductDetailScreen.dart';
+import 'package:flutter_project/Pages/ProductDetailPage.dart';
 import 'package:flutter_project/Pages/TokenManager.dart';
 import 'package:flutter_project/Services/ListProduct.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
@@ -138,7 +138,7 @@ class _DashboardState extends State<Dashboard> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        product_details_page(product: product),
+                                        ProductDetailPage(product: product),
                                   ),
                                 );
                               },
@@ -160,7 +160,7 @@ class _DashboardState extends State<Dashboard> {
                 Navigator.pushNamed(context, MyRoutes.Dashboard);
                 break;
               case 2:
-                Navigator.pushNamed(context, MyRoutes.CategoryList);
+                Navigator.pushNamed(context, MyRoutes.CategoryPage);
                 break;
               case 3:
                 Navigator.pushNamed(context, MyRoutes.Dashboard);
@@ -188,7 +188,7 @@ class _DashboardState extends State<Dashboard> {
             setState(() {
               _selectedTabPosition = 2;
             });
-            Navigator.pushNamed(context, MyRoutes.CategoryList);
+            Navigator.pushNamed(context, MyRoutes.CategoryPage);
           },
           child: const Icon(
             Icons.add,

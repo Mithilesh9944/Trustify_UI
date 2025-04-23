@@ -4,14 +4,14 @@ import 'package:flutter_project/Pages/DynamicFormPage.dart';
 import 'package:flutter_project/Util/UtilProductForm.dart';
 
 //import 'package:flutter_project/Util/MyRoutes.dart';
-class OfferPage extends StatefulWidget {
-  const OfferPage({super.key});
+class CategoryPage extends StatefulWidget {
+  const CategoryPage({super.key});
 
   @override
-  State<OfferPage> createState() => _OfferPage();
+  State<CategoryPage> createState() => _CategoryPage();
 }
 
-class _OfferPage extends State<OfferPage> {
+class _CategoryPage extends State<CategoryPage> {
  @override
   Widget build(BuildContext context) {
 

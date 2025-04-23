@@ -5,16 +5,16 @@ import 'dart:async';
 
 import '../Util/UtilWidgets.dart';
 
-class product_details_page extends StatefulWidget {
+class ProductDetailPage extends StatefulWidget {
   final Map<String, dynamic> product;
 
-  const product_details_page({super.key, required this.product});
+  const ProductDetailPage({super.key, required this.product});
 
   @override
-  _product_details_pageState createState() => _product_details_pageState();
+  _ProductDetailPageState createState() => _ProductDetailPageState();
 }
 
-class _product_details_pageState extends State<product_details_page> {
+class _ProductDetailPageState extends State<ProductDetailPage> {
   int selectedTabPosition = 0;
   late PageController _pageController;
   int _currentIndex = 0;

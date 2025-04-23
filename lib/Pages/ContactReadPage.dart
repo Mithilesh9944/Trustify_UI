@@ -142,14 +142,14 @@ import 'package:flutter_project/Services/api_service.dart';
 import 'package:flutter_project/Security/SecurityDetails.dart';
 import '../Util/MyRoutes.dart';
 
-class MyContactReadPage extends StatefulWidget {
-  const MyContactReadPage({super.key});
+class ContactReadPage extends StatefulWidget {
+  const ContactReadPage({super.key});
 
   @override
-  _MyContactReadPageState createState() => _MyContactReadPageState();
+  _ContactReadPageState createState() => _ContactReadPageState();
 }
 
-class _MyContactReadPageState extends State<MyContactReadPage> {
+class _ContactReadPageState extends State<ContactReadPage> {
   @override
   void initState() {
     super.initState();
