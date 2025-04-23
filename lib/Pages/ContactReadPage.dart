@@ -39,7 +39,6 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) => MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
+import 'package:flutter_project/Util/util_notification.dart';
 
-class UtilWidgets{
+class UtilWidgets {
   static Widget buildBackgroundContainer({required Widget child}) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [UtilitiesPages.pageColor, Colors.white],
+          colors: [UtilitiesPages.pageColor,
+            UtilitiesPages.pageColor],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          stops: const [0.4, 0.9],
+          stops: const [0.4,0.9],
           tileMode: TileMode.clamp,
         ),
       ),
@@ -52,6 +54,50 @@ class UtilWidgets{
   static void showSnackBar({required String msg,required BuildContext context}){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
-  
+
+  static Widget createBottomNavigation({
+    required int selectedTabPosition,
+    required void Function(int index) onTap,
+    required BuildContext context,
+  }) {
+    return BottomNavigationBar(
+      backgroundColor: UtilitiesPages.pageColor,
+      currentIndex: selectedTabPosition,
+      onTap: (index) {
+        if (index != 2) {
+          onTap(index); // external control for state change
+        }
+        if(index==0){
+          Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
+        }
+      },
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.teal,
+      unselectedItemColor: Colors.white,
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home_sharp ,), label: 'Home' ),
+        BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
+        BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'My Ads'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+      ],
+    );
+  }
+
+  static Widget createFloatingActionButton({
+    required BuildContext context,
+    required VoidCallback onTabChange,
+  }){
+    return FloatingActionButton(
+      onPressed: () {
+        onTabChange();
+        Navigator.pushNamed(context, MyRoutes.CategoryList);
+      },
+      child: const Icon(
+        Icons.add,
+        size: 50,
+      ),
+    );
+  }
 
 }

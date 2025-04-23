@@ -7,6 +7,8 @@ import '../Util/UtilPages.dart';
 import '../Util/UtilWidgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
+
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -15,8 +17,9 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int _selectedTabPosition = 0;
+  int selectedTabPosition = 0;
   List<dynamic> products = [];
+
   bool isLoading = true;
 
   @override
@@ -36,26 +39,23 @@ class _DashboardState extends State<Dashboard> {
     String? mobileNO = jwtDecoded['mobile_no'];
 
     var response = await ListProduct.getProduct({"mobile_no": mobileNO});
-    print("Fetched Products: ");
 
     if (!mounted) return;
 
     if (response != null && response['success'] == true && response['data'] is List) {
       List<dynamic> sellers = response['data'];
-   Map<dynamic, dynamic> uniqueProducts = {}; // Store products by ID
+      Map<dynamic, dynamic> uniqueProducts = {}; // Store products by ID
 
        for (var seller in sellers) {
-      if (seller["products"] is List) {
-        for (var product in seller["products"]) {
-          var elementId = product['elementId']; // Ensure 'elementId' exists
-          if (elementId != null) {
-            uniqueProducts[elementId] = product; // Store unique products by elementId
+          if (seller["products"] is List) {
+            for (var product in seller["products"]) {
+              var elementId = product['elementId']; // En sure 'elementId' exists
+              if (elementId != null) {
+                uniqueProducts[elementId] = product; // Store unique products by elementId
+              }
+            }
           }
-        }
-      }
-    }
-
-
+       }
     print(uniqueProducts);
 
     setState(() {
@@ -117,7 +117,7 @@ class _DashboardState extends State<Dashboard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("Brand: $brand", style: TextStyle(fontSize: 14, color: Colors.grey[700])),
-                                  Text("Price: ₹$price", style: TextStyle(fontSize: 14, color: Colors.green)),
+                                 Text("Price: ₹$price", style: TextStyle(fontSize: 14, color: Colors.green)),
                                   Text(description, maxLines: 2, overflow: TextOverflow.ellipsis),
                                 ],
                               ),
@@ -125,7 +125,7 @@ class _DashboardState extends State<Dashboard> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => CarDetailsScreen(product: product),
+                                    builder: (context) => product_details_page(product: product),
                                   ),
                                 );
                               },
@@ -135,39 +135,20 @@ class _DashboardState extends State<Dashboard> {
                       ),
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Color.fromARGB(255, 200, 240, 250),
-          currentIndex: _selectedTabPosition,
-          onTap: (index) {
-            if (index != 2) {
-              setState(() {
-                _selectedTabPosition = index;
-              });
-            }
-          },
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.teal,
-          unselectedItemColor: Colors.black12,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home_sharp), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
-            BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'My Ads'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          ],
+        bottomNavigationBar: UtilWidgets.createBottomNavigation(selectedTabPosition: selectedTabPosition,
+            onTap: (index){
+                setState(() {
+                  selectedTabPosition=index;
+                });
+            },
+          context: context
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _selectedTabPosition = 2;
-            });
-            Navigator.pushNamed(context, MyRoutes.CategoryList);
-          },
-          child: const Icon(
-            Icons.add,
-            size: 50,
-          ),
-        ),
+        floatingActionButton: UtilWidgets.createFloatingActionButton(context: context, onTabChange: (){
+          setState(() {
+            selectedTabPosition=2;
+          });
+        }),
+
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       );
 }
