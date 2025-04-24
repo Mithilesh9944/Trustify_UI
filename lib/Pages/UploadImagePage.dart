@@ -108,7 +108,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
                 onPressed: _selectedPhotos.isNotEmpty ? () {
                  print(widget.p_details);
                  print(_selectedPhotos);
-                  widget.p_details['img_list'] = _selectedPhotos;
+                  widget.p_details['imgList'] = _selectedPhotos;
 
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>PostAdPage(pDetails:widget.p_details)));
 

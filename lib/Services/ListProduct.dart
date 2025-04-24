@@ -3,16 +3,17 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:path/path.dart' as path;
 
 
 
 class ListProduct {
-    //static const baseUrl = "http://10.0.2.2:3000/api/v1/product";
-   static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
+    static const baseUrl = "http://10.0.2.2:3000/api/v1/product";
+  // static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
   static Future<bool>addProduct(Map<String,dynamic>pDetails) async{
-    List<File> imgList = (pDetails.remove('img_list') as List<dynamic>).cast<File>();
+    List<File> imgList = (pDetails.remove('imgList') as List<dynamic>).cast<File>();
     final List<String>imgUrls = await uploadImageOnCloudinary(imgList);
-    pDetails['img_urls']=imgUrls;
+    pDetails['image']=imgUrls;
    print(pDetails);
    print("yha aa gye hai url bna di images ki ");
    try{
@@ -72,13 +73,14 @@ class ListProduct {
      List<String>imgUrls=[];
     final uri = Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
     for(File file in imgList){
+      final fileName = path.basename(file.path);
  var request=http.MultipartRequest('POST',uri)
      ..fields['upload_preset'] = "Trustify_preset"
-     ..fields['folder'] = 'product'
+     ..fields['folder'] = 'Products'
     ..files.add(await http.MultipartFile.fromPath(
       'file', 
       file.path,
-      filename: "pimg.jpg", // Cloudinary requires a filename
+      filename: fileName, // Cloudinary requires a filename
     ));
     var response = await request.send();
       if (response.statusCode == 200) {

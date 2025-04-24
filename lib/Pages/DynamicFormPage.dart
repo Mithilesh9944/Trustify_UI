@@ -1,33 +1,38 @@
+// File: dynamic_form_widget.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/UploadImagePage.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
-
 import '../Util/UtilPages.dart';
 import '../Util/UtilProductForm.dart';
 
 class DynamicFormWidget extends StatefulWidget {
   final Map<String, List<Map<String, dynamic>>>? formCategories;
-  final String category;
+  final String categoryGroup;
+  final String subCategory;
 
-  const DynamicFormWidget({super.key, required this.formCategories ,required this.category});
+  const DynamicFormWidget({
+    super.key,
+    required this.formCategories,
+    required this.categoryGroup,
+    required this.subCategory,
+  });
 
   @override
-  _DynamicFormWidgetState createState() => _DynamicFormWidgetState();
+  State<DynamicFormWidget> createState() => _DynamicFormWidgetState();
 }
 
 class _DynamicFormWidgetState extends State<DynamicFormWidget> {
   final _formKey = GlobalKey<FormState>();
-  final Map<String, dynamic> _formData = {}; // Store input values
-  final Map<String, TextEditingController> _controllers = {}; // Text field controllers
+  final Map<String, dynamic> _formData = {};
+  final Map<String, TextEditingController> _controllers = {};
 
   @override
   void initState() {
     super.initState();
-    // Initialize controllers for text fields
     for (var category in widget.formCategories!.values) {
       for (var field in category) {
         if (field["type"] == FormFieldType.text || field["type"] == FormFieldType.description) {
-          _controllers[field["label"]] = TextEditingController();
+          _controllers[field["value"]] = TextEditingController();
         }
       }
     }
@@ -35,7 +40,6 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
 
   @override
   void dispose() {
-    // Dispose controllers
     for (var controller in _controllers.values) {
       controller.dispose();
     }
@@ -45,17 +49,15 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
-      // Collect values from controllers
       for (var entry in _controllers.entries) {
-        _formData[entry.key.toLowerCase().replaceAll(' ', '_')] = entry.value.text;
+        _formData[entry.key] = entry.value.text;
       }
-      _formData['category']=widget.category;
+      _formData['lable'] = widget.categoryGroup; //lable
+      _formData['subCategory'] = widget.subCategory; //subCategory
       Future.delayed(const Duration(milliseconds: 1000), () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => UploadImagePage(p_details: _formData)));
       });
 
-      // Process form submission (API call, navigation, etc.)
       UtilWidgets.showSnackBar(msg: "Form Submitted Successfully", context: context);
     } else {
       UtilWidgets.showSnackBar(msg: "Error Occurred", context: context);
@@ -66,7 +68,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Include some Bike details'),
+        title: const Text('Include details'),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 109, 190, 231),
       ),
@@ -78,7 +80,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
             children: [
               for (var category in widget.formCategories!.entries) ...[
                 Text(
-                  category.key.toString(), // Category Title
+                  category.key.toString(),
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
@@ -93,14 +95,13 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
     );
   }
 
-  // Function to build dynamic form fields
   Widget _buildFormField(Map<String, dynamic> field) {
     switch (field["type"]) {
       case FormFieldType.text:
         return Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: TextFormField(
-            controller: _controllers[field["label"]],
+            controller: _controllers[field["value"]],
             maxLength: (field["keyboard"] == TextInputType.text) ? 50 : 6,
             decoration: _inputDecoration(field["label"]),
             keyboardType: field["keyboard"] ?? TextInputType.text,
@@ -115,7 +116,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
             items: (field["options"] as List<String>).map((option) {
               return DropdownMenuItem(value: option, child: Text(option));
             }).toList(),
-            onChanged: (value) => _formData[field["label"].toLowerCase().replaceAll(' ', '_')] = value,
+            onChanged: (value) => _formData[field["value"]] = value,
             validator: (value) => value == null ? "${field["label"]} is required" : null,
           ),
         );
@@ -123,7 +124,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
         return Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: TextFormField(
-            controller: _controllers[field["label"]],
+            controller: _controllers[field["value"]],
             decoration: _inputDecoration(field["label"]),
             maxLength: 4096,
             maxLines: 5,
@@ -138,10 +139,10 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
 
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
-      labelText: label, // Label for input box
-      hintText: label, // Placeholder text
+      labelText: label,
+      hintText: label,
       hintStyle: const TextStyle(color: Colors.grey),
-      floatingLabelBehavior: FloatingLabelBehavior.always, // Keeps label always visible
+      floatingLabelBehavior: FloatingLabelBehavior.always,
       filled: true,
       fillColor: Colors.white,
       border: OutlineInputBorder(

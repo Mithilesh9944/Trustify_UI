@@ -5,12 +5,14 @@ class MyRoutes{
   static String LoginPage = "/login";
   static String RegisterPage ="/register";
   static String WelcomePage = "/welcome";
-  static String ContactDashboardPage = "/contactDash";
+  static String ContactReadPage = "/contactDash";
   static String HelpPage = "/help";
   static String ContactDetails = "/contactDetails";
   static String AllCategoryPage="/allCategory";
-  static String CategoryList="/categorylist";
+  static String CategoryPage="/categorypage";
   static String ProductDetails="/productDetails";
   static String Dashboard ="/dashboard";
+  static String Profile ="/profile";
+
   //static String UploadImage="/upload";
 }

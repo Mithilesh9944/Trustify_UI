@@ -63,14 +63,25 @@ class UtilWidgets {
     return BottomNavigationBar(
       backgroundColor: UtilitiesPages.pageColor,
       currentIndex: selectedTabPosition,
-      onTap: (index) {
-        if (index != 2) {
-          onTap(index); // external control for state change
-        }
-        if(index==0){
-          Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
-        }
-      },
+      onTap:(index) {
+            switch (index) {
+              case 0:
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
+                break;
+              case 1:
+                Navigator.pushNamed(context, MyRoutes.Dashboard);
+                break;
+              case 2:
+                Navigator.pushNamed(context, MyRoutes.CategoryPage);
+                break;
+              case 3:
+                Navigator.pushNamed(context, MyRoutes.Dashboard);
+                break;
+              case 4:
+                Navigator.pushNamed(context, MyRoutes.Profile);
+                break;
+            }
+          },
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.teal,
       unselectedItemColor: Colors.white,
@@ -91,7 +102,7 @@ class UtilWidgets {
     return FloatingActionButton(
       onPressed: () {
         onTabChange();
-        Navigator.pushNamed(context, MyRoutes.CategoryList);
+        Navigator.pushNamed(context, MyRoutes.CategoryPage);
       },
       child: const Icon(
         Icons.add,

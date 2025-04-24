@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/util_notification.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class MyHome extends StatefulWidget {
   const MyHome({super.key});
