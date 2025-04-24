@@ -52,7 +52,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
       for (var entry in _controllers.entries) {
         _formData[entry.key] = entry.value.text;
       }
-      _formData['lable'] = widget.categoryGroup; //lable
+      _formData['label'] = widget.categoryGroup; //lable
       _formData['subCategory'] = widget.subCategory; //subCategory
       Future.delayed(const Duration(milliseconds: 1000), () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => UploadImagePage(p_details: _formData)));
