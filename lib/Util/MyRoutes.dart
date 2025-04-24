@@ -12,5 +12,7 @@ class MyRoutes{
   static String CategoryList="/categorylist";
   static String ProductDetails="/productDetails";
   static String Dashboard ="/dashboard";
+  static String ChatListPage ="/chatlist";
+  static String ChatBox ="/chatbox";
   //static String UploadImage="/upload";
 }

@@ -1,12 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_project/Pages/Dashboard.dart';
 import 'package:flutter_project/Services/api_service.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
-import 'package:flutter_project/Security/SecurityDetails.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_project/Pages/TokenManager.dart';
+
 
 import '../Util/MyRoutes.dart';
 
@@ -20,7 +19,6 @@ class MyLogin extends StatefulWidget {
 class _MyLoginState extends State<MyLogin> {
   final TextEditingController _mobileNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
   final _formKey = GlobalKey<FormState>();
   String buttonTitle = "Log In";
@@ -202,27 +200,28 @@ class _MyLoginState extends State<MyLogin> {
   }
 void _login() async {
   if (_formKey.currentState!.validate()) {
-    _setDetails();
+  
     setState(() {
       buttonTitle = "Logging in...";
     });
 
     var jsonResponse = await ApiService.LoginUser({
-      "mobile": Details.mobile,
-      "password": Details.password
+      "mobile":"+91${_mobileNumberController.text.trim()}",
+      "password": _passwordController.text
     });
 
     if (jsonResponse['status']) {
       var myToken = jsonResponse['token'];
 
       // Store the token securely
-      await secureStorage.write(key: 'token', value: myToken);
+      await TokenManager.saveToken(myToken);
 
       // Navigate to Dashboard only after storing the token
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Dashboard(token: myToken)),
-      );
+      Navigator.pushNamed(context, MyRoutes.Dashboard);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => Dashboard(token: myToken)),
+      // );
     } else {
       // Show error message in SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
@@ -239,10 +238,6 @@ void _login() async {
   }
 }
 
-void _setDetails() {
-  Details.mobile = "+91${_mobileNumberController.text.trim()}";
-  Details.password = _passwordController.text;
-}
 
 void _forgotPassword() {
   // Implement password recovery logic here

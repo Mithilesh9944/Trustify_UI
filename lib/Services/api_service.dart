@@ -5,8 +5,8 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class ApiService {
  
-  // static const baseUrl = "http://10.0.2.2:3000/api/v1";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
+  static const baseUrl = "http://10.0.2.2:3000/api/v1";
+  // static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
   static Future<bool> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     print(userData);
      String? imgUrl;
@@ -22,7 +22,7 @@ class ApiService {
    print("img_url");
    print(imgUrl);
     try {
-      var postUrl = Uri.parse('$baseUrl/registerUser');
+      var postUrl = Uri.parse('$baseUrl/register');
 
       final res = await http.post(
         postUrl,
@@ -47,17 +47,14 @@ class ApiService {
   static Future<dynamic> LoginUser(Map<String, dynamic> userData) async {
     //print(userData); //print data for checking 
     try {
-      var queryParams = userData.entries
-          .map((e) =>
-              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
-          .join('&');
-      var getUrl = Uri.parse('$baseUrl/login?$queryParams');
+      var postUrl = Uri.parse('$baseUrl/login?');
 
-      final response = await http.get(
-        getUrl,
+      final response = await http.post(
+        postUrl,
         headers: {
           "Content-Type": "application/json",
         },
+        body: jsonEncode(userData),
       );
       // if (response.statusCode == 200) {
       //   var  jsonResponse = jsonDecode(response.body);
@@ -77,6 +74,7 @@ class ApiService {
   static AddContacts(Map<String, dynamic> userData) async {
     try {
       var postUrl = Uri.parse('$baseUrl/updateContactList');
+      //print(userData);
 
       final res = await http.post(
         postUrl,

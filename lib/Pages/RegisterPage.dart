@@ -270,5 +270,6 @@ class _MyRegisterState extends State<MyRegister> {
 
   void _navigateToNextPage(){
     Navigator.pushNamed(context, MyRoutes.ContactDashboardPage);
+   
   }
 }

@@ -125,7 +125,7 @@ class _MyContactReadPageState extends State<MyContactReadPage> {
       }
       ApiService.AddContacts({
         "mobile_no": Details.mobile,
-        "contact_list": _normalisedContact
+        "contacts_list": _normalisedContact
       });
     }
     print(_normalisedContact);
