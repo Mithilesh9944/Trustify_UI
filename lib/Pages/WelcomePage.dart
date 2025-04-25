@@ -20,6 +20,7 @@ class _MyWelcomeState extends State<MyWelcome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       appBar: _buildAppBar(),
       body: UtilWidgets.buildBackgroundContainer(
         child: Padding(

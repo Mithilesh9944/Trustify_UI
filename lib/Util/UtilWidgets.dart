@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/util_notification.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UtilWidgets {
   static Widget buildBackgroundContainer({required Widget child}) {
@@ -25,13 +26,17 @@ class UtilWidgets {
         IconButton(onPressed: () {navigateTo(context: context, route: MyRoutes.HelpPage);}, icon: Icon(Icons.help_outline_rounded)),
         TextButton(
           onPressed: () {navigateTo(context: context, route: MyRoutes.HelpPage);},
-          child: Text('Help  ', style: TextStyle(fontSize: 20)),
+          child: Text('Help  ', style: GoogleFonts.poppins(
+            //color: Colors.blue,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),),
         ),
     ];
   }
 
   static void navigateTo({required BuildContext context,required String route}){
-    Navigator.pushNamed(context,route );
+    Navigator.pushReplacementNamed(context,route );
   }
 
   static AppBar buildAppBar({required String title,required IconData icon,required BuildContext context}) {
@@ -40,8 +45,15 @@ class UtilWidgets {
       //   onPressed: () {Navigator.of(context).pop();},
       //   icon: Icon(Icons.arrow_back),
       // ),
-      title: Text(title),
-      backgroundColor: UtilitiesPages.pageColor,
+      automaticallyImplyLeading: false,
+      title: Text(title,
+        style: GoogleFonts.poppins(
+          color: Colors.white,
+          //fontSize: 20,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       actions: <Widget>[
         IconButton(
           onPressed: () {},
@@ -61,8 +73,8 @@ class UtilWidgets {
     required BuildContext context,
   }) {
     return BottomNavigationBar(
-      backgroundColor: UtilitiesPages.pageColor,
-      currentIndex: selectedTabPosition,
+      //backgroundColor: UtilitiesPages.pageColor,
+      //currentIndex: selectedTabPosition,
       onTap:(index) {
             switch (index) {
               case 0:
@@ -81,16 +93,26 @@ class UtilWidgets {
                 Navigator.pushNamed(context, MyRoutes.Profile);
                 break;
             }
+
           },
+
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.teal,
-      unselectedItemColor: Colors.white,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home_sharp ,), label: 'Home' ),
-        BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
+      //selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.black87,
+      selectedLabelStyle:GoogleFonts.poppins(
+        //color: Colors.black87,
+        fontWeight: FontWeight.w500,
+      ),
+      unselectedLabelStyle: GoogleFonts.poppins(
+        //color: Colors.black87,
+        fontWeight: FontWeight.w500,
+      ),
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home_sharp ,color: UtilitiesPages.APP_BAR_COLOR,), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.chat,color: UtilitiesPages.APP_BAR_COLOR), label: 'Chats'),
         BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'My Ads'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite,color: UtilitiesPages.APP_BAR_COLOR), label: 'My Ads'),
+        BottomNavigationBarItem(icon: Icon(Icons.person,color: UtilitiesPages.APP_BAR_COLOR), label: 'Profile'),
       ],
     );
   }
@@ -104,9 +126,21 @@ class UtilWidgets {
         onTabChange();
         Navigator.pushNamed(context, MyRoutes.CategoryPage);
       },
-      child: const Icon(
+      child: Icon(
         Icons.add,
         size: 50,
+        color:UtilitiesPages.APP_BAR_COLOR,
+      ),
+    );
+  }
+  
+  static Text buildText({required String text}){
+    return Text(
+      text,
+      style: GoogleFonts.poppins(
+        color: Colors.black87,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
       ),
     );
   }
