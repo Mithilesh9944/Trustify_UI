@@ -34,9 +34,9 @@ class _DashboardState extends State<Dashboard> {
     }
 
     Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token);
-    String? mobileNO = jwtDecoded['mobileNo'];
+    String? mobileNo = jwtDecoded['mobileNo'];
 
-    var response = await ListProduct.getProduct({"mobileNo": mobileNO});
+    var response = await ListProduct.getProduct({"mobileNo": mobileNo});
     print("Fetched Products: ");
 
     if (!mounted) return;
@@ -50,10 +50,16 @@ class _DashboardState extends State<Dashboard> {
       for (var seller in sellers) {
         if (seller["products"] is List) {
           for (var product in seller["products"]) {
-            var elementId = product['elementId']; // En sure 'elementId' exists
+            var elementId = product['id']; // En sure 'elementId' exists
             if (elementId != null) {
-              uniqueProducts[elementId] =
-                  product; // Store unique products by elementId
+              uniqueProducts[elementId] = {
+                'seller': {
+                  'Name': seller['contactName'],
+                  'Mobile': seller['contactMobile'],
+                },
+                'product': product,
+              };
+              // Store unique products by elementId
             }
           }
         }
@@ -91,16 +97,17 @@ class _DashboardState extends State<Dashboard> {
                     : ListView.builder(
                         itemCount: products.length,
                         itemBuilder: (context, index) {
-                          var product = products[index];
-                          var properties = product['properties'] ?? {};
-
-                          String title = properties['p_title'] ?? "No Title";
+                          var productData = products[index];
+                          var product = productData['product'];
+                          var seller = productData['seller'];
+                          String title = product['title'] ?? "No Title";
                           String description =
-                              properties['p_description'] ?? "No Description";
-                          String brand = properties['brand'] ?? "Unknown Brand";
-                          String price =
-                              properties['price']?.toString() ?? "N/A";
-                          List<dynamic>? images = properties['p_img'];
+                              product['description'] ?? "No Description";
+                          String brand =
+                              (product['details'] as Map?)?['brand'] ??
+                                  'Unknown Brand';
+                          String price = product['price']?.toString() ?? "N/A";
+                          List<dynamic>? images = product['image'];
 
                           return Card(
                             elevation: 3,
@@ -140,7 +147,7 @@ class _DashboardState extends State<Dashboard> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        ProductDetailPage(product: product),
+                                        ProductDetailPage(product: product,seller:seller),
                                   ),
                                 );
                               },

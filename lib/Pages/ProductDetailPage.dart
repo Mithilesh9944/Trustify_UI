@@ -7,8 +7,9 @@ import '../Util/UtilWidgets.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Map<String, dynamic> product;
-
-  const ProductDetailPage({super.key, required this.product});
+  final Map<String, dynamic> seller;
+  const ProductDetailPage(
+      {super.key, required this.product, required this.seller});
 
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
@@ -20,16 +21,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   int _currentIndex = 0;
   late List<String> productImages;
   late Map<String, dynamic> productDetails;
+  late Map<String, dynamic> seller;
   bool isExpanded = false;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: 0);
-
-    productDetails = widget.product['properties'] ?? {};
+    seller = widget.seller;
+    productDetails = widget.product;
     productImages =
-        (productDetails['p_img'] as List<dynamic>?)?.cast<String>() ?? [];
+        (productDetails['image'] as List<dynamic>?)?.cast<String>() ?? [];
 
     if (productImages.isNotEmpty) {
       Timer.periodic(Duration(seconds: 3), (Timer timer) {
@@ -60,7 +62,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          productDetails['p_title'] ?? "Details",
+          productDetails['title'] ?? "Details",
           style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
         ),
         backgroundColor: UtilitiesPages.pageColor,
@@ -77,34 +79,34 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 height: MediaQuery.of(context).size.width * 0.6, // Fixed height
                 child: productImages.isNotEmpty
                     ? PageView.builder(
-                  controller: _pageController,
-                  itemCount: productImages.length,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 2,
-                            spreadRadius: 2,
-                            offset: Offset(2, 4),
-                          ),
-                        ],
-                        image: DecorationImage(
-                          image: NetworkImage(productImages[index]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  },
-                )
+                        controller: _pageController,
+                        itemCount: productImages.length,
+                        onPageChanged: (index) {
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(horizontal: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 2,
+                                  spreadRadius: 2,
+                                  offset: Offset(2, 4),
+                                ),
+                              ],
+                              image: DecorationImage(
+                                image: NetworkImage(productImages[index]),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                      )
                     : Icon(Icons.image_not_supported, size: 100),
               ),
               // Wrapping the rest of the content in SingleChildScrollView
@@ -122,7 +124,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          productDetails['p_title'] ?? "No Title",
+                          productDetails['title'] ?? "No Title",
                           style: GoogleFonts.poppins(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -131,7 +133,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ),
                         SizedBox(height: 4),
                         buildExpandableText(
-                            productDetails['p_description'] ?? "No Description"),
+                            productDetails['description'] ?? "No Description"),
                         SizedBox(height: 10),
                         Text(
                           "₹ ${productDetails['price']?.toString() ?? 'N/A'}",
@@ -143,18 +145,27 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ),
                         SizedBox(height: 20),
                         Divider(color: Colors.grey[700]),
-                        _detailRow("Brand", productDetails['brand']),
-                        _detailRow("Fuel Type", productDetails['fuel_type']),
-                        _detailRow("Transmission", productDetails['transmission']),
-                        _detailRow("Year of Purchase",
-                            productDetails['year_of_purchase']?.toString()),
+                        ...(productDetails['details'] as Map<String, dynamic>)
+                            .entries
+                            .map(
+                              (entry) =>
+                                  _detailRow(entry.key, entry.value.toString()),
+                            ),
+                        // _detailRow("Brand", productDetails['details']['brand']),
+                        // _detailRow("Fuel Type", productDetails['details']['fuelType']),
+                        // _detailRow("Transmission", productDetails['details']['transmission']),
+                        // _detailRow("Year of Purchase",
+                        //     productDetails['details']['purchasedYead']?.toString()),
+                        SizedBox(height: 20),
+                        Divider(color: Colors.grey[700]),
+                        _detailRow("Seller Name", seller['Name']),
                         SizedBox(height: 20),
                         Center(
                           child: _customButton(
                             "Verify",
                             Icons.verified,
                             Colors.deepPurple,
-                                () {
+                            () {
                               // Add your logic
                             },
                             16,
@@ -166,7 +177,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             "Make Offer",
                             Icons.local_offer,
                             Colors.green,
-                                () {
+                            () {
                               // Add your logic
                             },
                             16,
@@ -183,14 +194,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
       ),
       bottomNavigationBar: UtilWidgets.createBottomNavigation(
-        selectedTabPosition: selectedTabPosition,
-        onTap: (index) {
-          setState(() {
-            selectedTabPosition = index;
-          });
-        },
-        context: context
-      ),
+          selectedTabPosition: selectedTabPosition,
+          onTap: (index) {
+            setState(() {
+              selectedTabPosition = index;
+            });
+          },
+          context: context),
       floatingActionButton: UtilWidgets.createFloatingActionButton(
         context: context,
         onTabChange: () {
@@ -234,29 +244,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget _detailRow(String label, String? value) {
     return value != null
         ? Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  label,
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  value,
+                  style: GoogleFonts.poppins(
+                    color: Colors.black87,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
-          ),
-          Text(
-            value,
-            style: GoogleFonts.poppins(
-              color: Colors.black87,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    )
+          )
         : SizedBox.shrink();
   }
 
@@ -283,9 +293,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               color: Colors.indigo[900],
             ),
           ),
-          crossFadeState: isExpanded
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
+          crossFadeState:
+              isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
           duration: Duration(milliseconds: 300),
         ),
         InkWell(
