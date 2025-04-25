@@ -5,6 +5,7 @@ import 'package:flutter_project/Services/api_service.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
 import 'package:flutter_project/Pages/TokenManager.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 import '../Util/MyRoutes.dart';
@@ -27,7 +28,7 @@ class _MyLoginState extends State<MyLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      backgroundColor: Colors.transparent,
+     backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       body: UtilWidgets.buildBackgroundContainer(
         child: Padding(
           padding: UtilitiesPages.buildPadding(context),
@@ -52,7 +53,12 @@ class _MyLoginState extends State<MyLogin> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      title: Text('Trustify'),
+      title: Text('Trustify',
+       style:  GoogleFonts.poppins(
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       backgroundColor: Color.fromARGB(255, 109, 190, 231),
       actions: UtilWidgets.buildHelpWidgetAppBar(context),
     );
@@ -61,8 +67,8 @@ class _MyLoginState extends State<MyLogin> {
   Widget _buildLogo() {
     return Image.asset(
       'assets/openPage3.png',
-      height: 200,
-      width: 200,
+      height: 250,
+      width: 250,
     );
   }
 
@@ -101,13 +107,21 @@ class _MyLoginState extends State<MyLogin> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: 'Mobile Number',
+        label: Text(
+          'Mobile Number',
+          style: GoogleFonts.poppins(
+            color: Colors.black87,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         fillColor: Colors.transparent,
         filled: true,
         hintText: 'Enter your Mobile Number',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(UtilitiesPages.BOX_BORDER_RADIUS),
         ),
+
       ),
     );
   }
@@ -125,7 +139,14 @@ class _MyLoginState extends State<MyLogin> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Password",
+        label: Text(
+          'Password',
+          style: GoogleFonts.poppins(
+            color: Colors.black87,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         fillColor: Colors.transparent,
         filled: true,
         hintText: 'Enter Your Password',
@@ -152,10 +173,10 @@ class _MyLoginState extends State<MyLogin> {
         ),
         child: Text(
           buttonTitle,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.white,
-            fontSize: UtilitiesPages.OPTION_FONT_SIZE,
-            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
@@ -167,9 +188,10 @@ class _MyLoginState extends State<MyLogin> {
       onPressed: _forgotPassword,
       child: Text(
         'Forget Password?',
-        style: TextStyle(
+        style: GoogleFonts.poppins(
           color: Colors.blue,
-          fontSize: UtilitiesPages.OPTION_FONT_SIZE,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -179,16 +201,18 @@ class _MyLoginState extends State<MyLogin> {
     return RichText(
       text: TextSpan(
         text: 'New User? ',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: UtilitiesPages.OPTION_FONT_SIZE,
+        style:GoogleFonts.poppins(
+          color: Colors.black87,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
         ),
         children: [
           TextSpan(
             text: 'Register',
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               color: Colors.blue,
-              fontSize: UtilitiesPages.OPTION_FONT_SIZE,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () => UtilWidgets.navigateTo(
@@ -217,7 +241,7 @@ void _login() async {
       await TokenManager.saveToken(myToken);
 
       // Navigate to Dashboard only after storing the token
-      Navigator.pushNamed(context, MyRoutes.ContactReadPage);
+      Navigator.pushReplacementNamed(context, MyRoutes.ContactReadPage);
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => Dashboard(token: myToken)),
