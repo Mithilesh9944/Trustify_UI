@@ -9,6 +9,7 @@ import 'package:flutter_project/Pages/ProfilePage.dart';
 import 'package:flutter_project/Pages/RegisterPage.dart';
 import 'package:flutter_project/Pages/TokenManager.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
+import 'package:flutter_project/Pages/notificatin.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'Pages/LoginPage.dart';
 import 'Pages/Dashboard.dart';
@@ -58,6 +59,8 @@ class MyApp extends StatelessWidget{
       MyRoutes.CategoryPage:(context)=>CategoryPage(),
       MyRoutes.Dashboard:(context)=>Dashboard(),
       MyRoutes.Profile:(context)=>ProfilePage(),
+      MyRoutes.NotificationPage: (context) => NotificationPage(),
+
 
       //MyRoutes.UploadImage:(context)=>UploadImagePage(),
     },

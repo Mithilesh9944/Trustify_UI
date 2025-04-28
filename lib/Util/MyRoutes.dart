@@ -13,6 +13,8 @@ class MyRoutes{
   static String ProductDetails="/productDetails";
   static String Dashboard ="/dashboard";
   static String Profile ="/profile";
+  static String NotificationPage = "/notification";
+
 
   //static String UploadImage="/upload";
 }

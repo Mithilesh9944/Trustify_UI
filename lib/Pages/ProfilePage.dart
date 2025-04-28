@@ -4,7 +4,6 @@ import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-import '../Util/UtilPages.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -40,13 +39,13 @@ void _fetchDetails() async{
   Widget build(BuildContext context) {
     if (_name == null || _email == null || _profileImg == null) {
       return Scaffold(
-        appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context),
+        appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage),
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
-      appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context),
+      appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage),
       body: UtilWidgets.buildBackgroundContainer(
         child: SafeArea(
           child: SingleChildScrollView(

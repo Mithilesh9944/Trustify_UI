@@ -6,8 +6,8 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class ApiService {
  
-  //static const baseUrl = "http://10.0.2.2:3000/api/v1";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
+  static const baseUrl = "http://10.0.2.2:3000/api/v1";
+  //static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
   static Future<bool> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     print(userData);
      String? _imgUrl;
