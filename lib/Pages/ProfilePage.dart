@@ -39,13 +39,13 @@ void _fetchDetails() async{
   Widget build(BuildContext context) {
     if (_name == null || _email == null || _profileImg == null) {
       return Scaffold(
-        appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context),
+        appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage),
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
-      appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context),
+      appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage),
       body: UtilWidgets.buildBackgroundContainer(
         child: SafeArea(
           child: SingleChildScrollView(

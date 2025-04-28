@@ -39,7 +39,7 @@ class UtilWidgets {
     Navigator.pushReplacementNamed(context,route );
   }
 
-  static AppBar buildAppBar({required String title,required IconData icon,required BuildContext context}) {
+  static AppBar buildAppBar({required String title,required IconData icon,required BuildContext context,required String route}) {
     return AppBar(
       // leading: IconButton(
       //   onPressed: () {Navigator.of(context).pop();},
@@ -56,7 +56,9 @@ class UtilWidgets {
       backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       actions: <Widget>[
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, route);
+          },
           icon: Icon(icon),
         ),
       ],

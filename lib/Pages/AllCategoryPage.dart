@@ -1,7 +1,9 @@
 // File: MyAllCategoryPage.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/DynamicFormPage.dart';
+import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilProductForm.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyAllCategoryPage extends StatefulWidget {
   const MyAllCategoryPage({super.key});
@@ -46,9 +48,15 @@ class _MyAllCategoryPageState extends State<MyAllCategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("All Categories"),
-        backgroundColor: Colors.blueAccent,
+        automaticallyImplyLeading: false,
+        title: Text('What are you offering?',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         centerTitle: true,
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       ),
       body: ListView(
         children: categories.entries.map((categoryEntry) {

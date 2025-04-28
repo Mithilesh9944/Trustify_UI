@@ -14,7 +14,6 @@ class ProductDetailPage extends StatefulWidget {
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
 }
-String temp ="Delight is a natural and joyful emotion that brings happiness, warmth, and positivity into our lives. It allows us to share in the joy of others and celebrate life’s good moments. However, Delight can sometimes be overshadowed by negative emotions such as feelings of envy, discontent,";
 class _ProductDetailPageState extends State<ProductDetailPage> {
   int selectedTabPosition = 0;
   late PageController _pageController;
