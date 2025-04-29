@@ -1,112 +1,133 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project/Util/MyRoutes.dart';
-import 'package:flutter_project/Util/UtilButtons.dart';
-
-import '../Util/UtilPages.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'ChatBox.dart';
 
 class ProductDetailsPage extends StatelessWidget {
-  const ProductDetailsPage({super.key});
+  final Map<String, dynamic> product;
+  final String token;
+
+  const ProductDetailsPage({
+    Key? key,
+    required this.product,
+    required this.token,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Decode token to get user's mobile number
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    String myMobile = decodedToken['mobileNo'];
+    
+    // Check if the current user is the product owner
+    bool isOwner = myMobile == product['ownerMobile'];
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Include some details'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.grey), // Set AppBar arrow color to grey
+        title: Text(product['name']),
+        elevation: 1,
       ),
-      body: Padding(
-        padding: UtilitiesPages.buildPadding(context),
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Brand Dropdown
-            const TextFieldLabel(label: 'Brand*'),
-            DropdownButtonFormField<String>(
-              decoration: _inputDecoration('Brand'),
-              items: ['Brand A', 'Brand B', 'Brand C']
-                  .map((brand) => DropdownMenuItem(value: brand, child: Text(brand)))
-                  .toList(),
-              onChanged: (value) {
-                // Handle brand selection
-              },
+            // Product image
+            if (product['imageUrl'] != null)
+              Image.network(
+                product['imageUrl'],
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Product name
+                  Text(
+                    product['name'],
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  
+                  // Price
+                  Text(
+                    '₹${product['price']}',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  
+                  // Description
+                  Text(
+                    'Description',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    product['description'] ?? 'No description available',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 16),
+                  
+                  // Owner information
+                  Text(
+                    'Seller Information',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Mobile: ${product['ownerMobile']}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  
+                  // Chat button (only show if not the owner)
+                  if (!isOwner)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 24.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatBox(
+                                  token: token,
+                                  partnerMobile: product['ownerMobile'],
+                                  partnerName: 'Product Owner',
+                                ),
+                              ),
+                            );
+                          },
+                          icon: Icon(Icons.chat),
+                          label: Text('Chat with Seller'),
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            textStyle: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
-            const SizedBox(height: 16.0),
-
-            // Year TextField
-            const TextFieldLabel(label: 'Year*'),
-            TextField(
-              decoration: _inputDecoration('Year of Purchases').copyWith(counterText: '0/4'),
-              keyboardType: TextInputType.number,
-              maxLength: 4,
-            ),
-            const SizedBox(height: 16.0),
-
-            // Uses of Product
-            const TextFieldLabel(label: 'Uses time*'),
-            TextField(
-              decoration: _inputDecoration('Uses of this Product').copyWith(counterText: '0/6'),
-              keyboardType: TextInputType.number,
-              maxLength: 6,
-            ),
-            const SizedBox(height: 16.0),
-
-            // Ad Title TextField
-            const TextFieldLabel(label: 'Ad title*'),
-            TextField(
-              decoration: _inputDecoration('Key features of your item').copyWith(counterText: '0/70'),
-              maxLength: 70,
-            ),
-            const SizedBox(height: 16.0),
-
-            // Additional Information TextField
-            const TextFieldLabel(label: 'Additional information*'),
-            TextField(
-              decoration: _inputDecoration('Include condition, features and reasons for selling')
-                  .copyWith(counterText: '0/4096'),
-              maxLength: 4096,
-              maxLines: 5,
-            ),
-            const SizedBox(height: 24.0),
-
-            // Next Button
-            UtilButtons.buildButton(title: 'Next', context: context, route: MyRoutes.ContactDashboardPage)
           ],
         ),
       ),
-      backgroundColor: Colors.white,
     );
   }
-
-  InputDecoration _inputDecoration(String hint) {
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: const TextStyle(color: Colors.grey),
-      filled: true,
-      fillColor: Colors.white,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: const BorderSide(color: Colors.black),
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-    );
-  }
-}
-
-class TextFieldLabel extends StatelessWidget {
-  final String label;
-
-  const TextFieldLabel({super.key, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(
-        label,
-        style: const TextStyle(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
+} 

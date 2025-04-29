@@ -245,14 +245,14 @@ class _MyRegisterState extends State<MyRegister> {
   // Register user by calling the API
   void _registerUser() async{
     var userdata ={
-      "userName": Details.userName,
+      "name": Details.userName,
       "mobileNo": Details.mobile,
       "password": Details.password,
       "email": Details.email,
     };
     bool isRegistered = await ApiService.RegisterUser(userdata,_img);
     if(isRegistered){
-      _navigateToNextPage();
+      _showAlertDialog("Registration Successfull", "click on ok to login");
     }
     else{
          UtilWidgets.showSnackBar(msg: "Invalid credentials, please try again.", context: context);
@@ -269,7 +269,25 @@ class _MyRegisterState extends State<MyRegister> {
   }
 
   void _navigateToNextPage(){
-    Navigator.pushNamed(context, MyRoutes.ContactDashboardPage);
+    Navigator.pushNamed(context, MyRoutes.LoginPage);
    
+  }
+  void _showAlertDialog(String title,String msg){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text(title),
+          content: Text(msg),
+          actions: [
+            TextButton(
+              onPressed: _navigateToNextPage, 
+              child: Text("Ok")
+              )
+          ],
+        );
+      }
+    );
+
   }
 }

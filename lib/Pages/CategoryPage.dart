@@ -3,9 +3,14 @@ import 'package:flutter_project/Pages/AllCategoryPage.dart';
 import 'package:flutter_project/Pages/DynamicFormPage.dart';
 import 'package:flutter_project/Util/UtilProductForm.dart';
 
-class OfferPage extends StatelessWidget {
-  const OfferPage({super.key});
+class CategoryPage extends StatefulWidget {
+  const CategoryPage({super.key});
 
+  @override
+  State<CategoryPage> createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     final items = [
@@ -13,7 +18,8 @@ class OfferPage extends StatelessWidget {
         'icon': Icons.directions_car,
         'label': 'Cars',
         'routes': DynamicFormWidget(
-          formCategories: UtilProductForm.formCategories[CategoryGroup.vehicle]![SubCategory.car],
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.vehicle]![SubCategory.car],
           categoryGroup: "Vehicle",
           subCategory: "Car",
         )
@@ -22,7 +28,8 @@ class OfferPage extends StatelessWidget {
         'icon': Icons.pedal_bike,
         'label': 'Cycle',
         'routes': DynamicFormWidget(
-          formCategories: UtilProductForm.formCategories[CategoryGroup.vehicle]![SubCategory.cycle],
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.vehicle]![SubCategory.cycle],
           categoryGroup: "Vehicle",
           subCategory: "Cycle",
         )
@@ -31,7 +38,8 @@ class OfferPage extends StatelessWidget {
         'icon': Icons.laptop,
         'label': 'Laptop',
         'routes': DynamicFormWidget(
-          formCategories: UtilProductForm.formCategories[CategoryGroup.electronics]![SubCategory.laptop],
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.electronics]![SubCategory.laptop],
           categoryGroup: "Electronics",
           subCategory: "Laptop",
         )
@@ -40,7 +48,8 @@ class OfferPage extends StatelessWidget {
         'icon': Icons.phone_android,
         'label': 'Mobiles',
         'routes': DynamicFormWidget(
-          formCategories: UtilProductForm.formCategories[CategoryGroup.electronics]![SubCategory.mobile],
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.electronics]![SubCategory.mobile],
           categoryGroup: "Electronics",
           subCategory: "Mobile",
         )
@@ -49,7 +58,8 @@ class OfferPage extends StatelessWidget {
         'icon': Icons.chair,
         'label': 'Furniture',
         'routes': DynamicFormWidget(
-          formCategories: UtilProductForm.formCategories[CategoryGroup.furniture]![SubCategory.furniture],
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.furniture]![SubCategory.furniture],
           categoryGroup: "Furniture",
           subCategory: "Furniture",
         )
@@ -58,7 +68,8 @@ class OfferPage extends StatelessWidget {
         'icon': Icons.motorcycle,
         'label': 'Bikes',
         'routes': DynamicFormWidget(
-          formCategories: UtilProductForm.formCategories[CategoryGroup.vehicle]![SubCategory.bike],
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.vehicle]![SubCategory.bike],
           categoryGroup: "Vehicle",
           subCategory: "Bike",
         )
@@ -112,7 +123,11 @@ class OfferItem extends StatelessWidget {
   final String label;
   final Widget route;
 
-  const OfferItem({super.key, required this.icon, required this.label, required this.route});
+  const OfferItem(
+      {super.key,
+      required this.icon,
+      required this.label,
+      required this.route});
 
   @override
   Widget build(BuildContext context) {

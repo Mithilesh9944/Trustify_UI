@@ -14,6 +14,7 @@ class _MyHomeState extends State<MyHome> {
   void initState() {
     super.initState();
     // Delay for 1200 miliseconds, then navigate to Welcome page
+    // notificationPermission();
     Future.delayed(const Duration(milliseconds: 1500), () {
       Navigator.pushReplacement(
         context,
@@ -37,9 +38,6 @@ class _MyHomeState extends State<MyHome> {
         },
       );
     }
-    // Widget _buildImage() {
-    //   return Image.asset('assets/openPage3.png');
-    // }
     return Container(
             decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -63,7 +61,6 @@ class _MyHomeState extends State<MyHome> {
         ),
       ),
     );
-
- 
   }
 }
+
