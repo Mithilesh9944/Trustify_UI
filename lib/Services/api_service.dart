@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 
-
 class ApiService {
  
   //static const baseUrl = "http://10.0.2.2:3000/api/v1";
@@ -15,13 +14,8 @@ class ApiService {
     _imgUrl = await uploadImageOnCloudinary(userData['name'],imgBytes);
 
     }
-    else{
-      _imgUrl= await uploadImageOnCloudinary(userData['name'],await loadDefaultImage());
+    userData['profileImg'] = _imgUrl;
 
-    }
-   userData['profileImg']=_imgUrl;
-   print("imgUrl");
-   print(_imgUrl);
     try {
       var postUrl = Uri.parse('$baseUrl/register');
 
@@ -46,7 +40,7 @@ class ApiService {
   }
 
   static Future<dynamic> LoginUser(Map<String, dynamic> userData) async {
-    print(userData); //print data for checking 
+    print(userData); //print data for checking
     try {
       var getUrl = Uri.parse('$baseUrl/login');
 
@@ -56,7 +50,6 @@ class ApiService {
           "Content-Type": "application/json",
         },
         body: jsonEncode(userData),
-
       );
       // if (response.statusCode == 200) {
       //   var  jsonResponse = jsonDecode(response.body);
@@ -65,7 +58,7 @@ class ApiService {
       //   print("User Not found");
       //   return false;
       // }
-      var  jsonResponse = jsonDecode(response.body);
+      var jsonResponse = jsonDecode(response.body);
       return jsonResponse;
     } catch (e) {
       debugPrint(e.toString());
@@ -76,8 +69,6 @@ class ApiService {
   static AddContacts(Map<String, dynamic> userData) async {
     try {
       var postUrl = Uri.parse('$baseUrl/updateContactList');
-      //print(userData);
-
       final res = await http.post(
         postUrl,
         headers: {
@@ -94,28 +85,32 @@ class ApiService {
       debugPrint(e.toString());
     }
   }
-  static Future<String?> uploadImageOnCloudinary(String name,Uint8List imgBytes) async{
-    final uri = Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
-    var request=http.MultipartRequest('POST',uri)
-     ..fields['upload_preset'] = "Trustify_preset"
-     ..fields['folder'] = 'UserProfile'
-    ..files.add(http.MultipartFile.fromBytes(
-      'file', 
-      imgBytes,
-      filename: "$name.jpg", // Cloudinary requires a filename
-    ));
+
+  static Future<String?> uploadImageOnCloudinary(
+      String name, Uint8List imgBytes) async {
+    final uri =
+        Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
+    var request = http.MultipartRequest('POST', uri)
+      ..fields['upload_preset'] = "Trustify_preset"
+      ..fields['folder'] = 'UserProfile'
+      ..files.add(http.MultipartFile.fromBytes(
+        'file',
+        imgBytes,
+        filename: "$name.jpg", // Cloudinary requires a filename
+      ));
     var response = await request.send();
-      if (response.statusCode == 200) {
-    final responseData = await response.stream.bytesToString();
-    final imageUrl = jsonDecode(responseData)['secure_url'];
-    return imageUrl;
-  } else {
-    print("Failed to upload image: ${response.statusCode}");
-    return null;
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.bytesToString();
+      final imageUrl = jsonDecode(responseData)['secure_url'];
+      return imageUrl;
+    } else {
+      // print("Failed to upload image: ${response.statusCode}");
+      return null;
+    }
   }
-  }
+
   static Future<Uint8List> loadDefaultImage() async {
-  final ByteData data = await rootBundle.load('assets/userIcon.png');
-  return data.buffer.asUint8List();
-}
+    final ByteData data = await rootBundle.load('assets/userIcon.png');
+    return data.buffer.asUint8List();
+  }
 }

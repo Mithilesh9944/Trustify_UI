@@ -86,7 +86,8 @@ class _CategoryPageState extends State<CategoryPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('What are you offering?',
+        title: Text(
+          'What are you offering?',
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w500,

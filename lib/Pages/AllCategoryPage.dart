@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/DynamicFormPage.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilProductForm.dart';
+import 'package:flutter_project/Util/UtilWidgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyAllCategoryPage extends StatefulWidget {
@@ -65,16 +66,15 @@ class _MyAllCategoryPageState extends State<MyAllCategoryPage> {
           Map<String, IconData> subCats = categoryEntry.value;
 
           return ExpansionTile(
-            leading: Icon(categoryIcon, color: Colors.blue),
-            title: Text(categoryName,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            leading: Icon(categoryIcon, color: UtilitiesPages.APP_BAR_COLOR),
+            title: UtilWidgets.buildText(text: categoryName),
             children: subCats.entries.map((subCatEntry) {
               String subCatName = subCatEntry.key;
               IconData subCatIcon = subCatEntry.value;
 
               return ListTile(
-                leading: Icon(subCatIcon, color: Colors.teal),
-                title: Text(subCatName),
+                leading: Icon(subCatIcon, color: Colors.black87,size: 16,),
+                title: UtilWidgets.buildText(text: subCatName),
                 onTap: () {
                   try {
                     final categoryEnum = CategoryGroup.values.firstWhere(

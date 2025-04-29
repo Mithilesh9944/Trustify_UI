@@ -39,13 +39,13 @@ void _fetchDetails() async{
   Widget build(BuildContext context) {
     if (_name == null || _email == null || _profileImg == null) {
       return Scaffold(
-        appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage),
+        appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage,back: true),
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
-      appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage),
+      appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage,back: true),
       body: UtilWidgets.buildBackgroundContainer(
         child: SafeArea(
           child: SingleChildScrollView(
@@ -148,7 +148,7 @@ void _fetchDetails() async{
   }
   void _logOut() async{
     await TokenManager.removeToken();
-    Navigator.pushReplacementNamed(context, MyRoutes.LoginPage);
+    Navigator.pushNamedAndRemoveUntil(context, MyRoutes.LoginPage,(route)=>false);
 
   }
 }

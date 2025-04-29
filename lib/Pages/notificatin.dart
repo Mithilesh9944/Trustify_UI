@@ -91,8 +91,7 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Notification',
+        title:Text('Notifications',
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w500,

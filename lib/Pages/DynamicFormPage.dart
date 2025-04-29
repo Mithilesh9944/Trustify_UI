@@ -76,7 +76,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 109, 190, 231),
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       ),
       backgroundColor: Colors.white,
       body: Padding(
