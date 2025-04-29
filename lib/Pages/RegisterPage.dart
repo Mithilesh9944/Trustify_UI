@@ -286,7 +286,7 @@ class _MyRegisterState extends State<MyRegister> {
   }
 
   void _navigateToNextPage(){
-    Navigator.pushNamed(context, MyRoutes.LoginPage);
+    Navigator.pushNamedAndRemoveUntil(context, MyRoutes.LoginPage, (route)=>false);
    
   }
   void _showAlertDialog(String title,String msg){

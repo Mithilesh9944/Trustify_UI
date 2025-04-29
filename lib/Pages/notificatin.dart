@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/Util/UtilPages.dart';
+import 'package:flutter_project/Util/UtilWidgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../Services/socket_service.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -8,8 +11,16 @@ class NotificationPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications'),
+        title:Text('Notifications',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       ),
+
       body: notifications.isEmpty
           ? Center(child: Text('No notifications yet.'))
           : ListView.builder(

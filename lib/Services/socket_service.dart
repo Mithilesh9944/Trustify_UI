@@ -8,7 +8,7 @@ class SocketService {
   static List<Map<String, String>> notifications = [];
 
   static void connect(String mobileNo) {
-    socket = IO.io('http://10.0.2.2:3000', <String, dynamic>{
+    socket = IO.io('https://trustify-backend.onrender.com', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     });

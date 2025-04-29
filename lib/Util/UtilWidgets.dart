@@ -36,20 +36,15 @@ class UtilWidgets {
   }
 
   static void navigateTo({required BuildContext context,required String route}){
-    Navigator.pushReplacementNamed(context,route );
+    Navigator.pushNamed(context,route );
   }
 
-  static AppBar buildAppBar({required String title,required IconData icon,required BuildContext context,required String route}) {
+  static AppBar buildAppBar({required String title,required IconData icon,required BuildContext context,required String route,required bool back}) {
     return AppBar(
-      // leading: IconButton(
-      //   onPressed: () {Navigator.of(context).pop();},
-      //   icon: Icon(Icons.arrow_back),
-      // ),
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: back,
       title: Text(title,
         style: GoogleFonts.poppins(
           color: Colors.white,
-          //fontSize: 20,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -80,16 +75,16 @@ class UtilWidgets {
       onTap:(index) {
             switch (index) {
               case 0:
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
+                Navigator.pushNamed(context, MyRoutes.Dashboard);
                 break;
               case 1:
-                Navigator.pushNamed(context, MyRoutes.Dashboard);
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
                 break;
               case 2:
                 Navigator.pushNamed(context, MyRoutes.CategoryPage);
                 break;
               case 3:
-                Navigator.pushNamed(context, MyRoutes.Dashboard);
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
                 break;
               case 4:
                 Navigator.pushNamed(context, MyRoutes.Profile);

@@ -29,7 +29,7 @@ class _PostAdPageState extends State<PostAdPage> {
           ),
         ),
         //centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 109, 190, 231),
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       ),
       body: Padding(
         padding: UtilitiesPages.buildPadding(context),

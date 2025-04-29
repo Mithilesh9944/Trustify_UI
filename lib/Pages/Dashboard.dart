@@ -88,7 +88,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: UtilWidgets.buildAppBar(title: 'Products', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage),
+        appBar: UtilWidgets.buildAppBar(title: 'Products', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage,back: false),
         body: UtilWidgets.buildBackgroundContainer(
           child: Padding(
             padding: UtilitiesPages.buildPadding(context),
