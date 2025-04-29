@@ -34,10 +34,12 @@ class _DashboardState extends State<Dashboard> {
 
     Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token);
     String? mobileNo = jwtDecoded['mobileNo'];
+    String? userId = jwtDecoded['id'];
 
-    SocketService.connect(mobileNo!); // Connect to socket using mobile number
 
-    await fetchProducts(mobileNo); // Pass mobileNo to fetchProducts also
+    SocketService.connect(userId!); // Connect to socket using mobile number
+
+    await fetchProducts(mobileNo!); // Pass mobileNo to fetchProducts also
   }
 
   Future<void> fetchProducts(String mobileNo) async {
