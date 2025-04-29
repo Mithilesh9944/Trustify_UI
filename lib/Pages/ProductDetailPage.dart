@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/Pages/TokenManager.dart';
+import 'package:flutter_project/Services/ListProduct.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
-
+import 'package:jwt_decoder/jwt_decoder.dart';
 import '../Util/UtilWidgets.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -189,7 +191,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
             SizedBox(width: 16,),
             Expanded(
-              child: _customButton("Verify", Icons.verified, Colors.deepPurple, (){},10),
+              child: _customButton("Verify", Icons.verified, Colors.deepPurple, _verify,10),
             )
           ],
         ),
@@ -316,5 +318,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
       ],
     );
+  }
+  void _verify() async{
+    String?token = await TokenManager.getToken();
+     Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token!);
+    String? userId = jwtDecoded['id'];
+    String productId = widget.product['id'];
+
+    var response = await ListProduct.verifyProduct(productId, userId!);
+     return ;
   }
 }

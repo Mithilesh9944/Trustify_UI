@@ -85,13 +85,17 @@ class _PostAdPageState extends State<PostAdPage> {
   void _postAd() async {
     String? token = await TokenManager.getToken();
     Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token!);
-    String? mobileNO = jwtDecoded['mobileNo'];
+    String? mobileNo = jwtDecoded['mobileNo'];
+    String? userId = jwtDecoded['id'];
+
     widget.pDetails['price'] = _priceController.text;
-    widget.pDetails['mobileNo'] = mobileNO;
+    widget.pDetails['mobileNo'] = mobileNo;
+    widget.pDetails['id'] = userId;
+
 
     bool flag = await ListProduct.addProduct(widget.pDetails);
     if (flag) {
-      print(widget.pDetails);
+     
       print('added successfully');
       Navigator.pushReplacementNamed(context, MyRoutes.Dashboard);
     } else {
