@@ -14,10 +14,11 @@ class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({super.key, required this.productId});
 
   @override
-  State<ProductDetailPage> createState() => _ProductDetailPageState();
+  _ProductDetailPageState createState() => _ProductDetailPageState();
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+  int selectedTabPosition = 0;
   late PageController _pageController;
   int _currentIndex = 0;
   List<String> productImages = [];
@@ -201,50 +202,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                   ],
                 ),
-              ),
-            )
-          else
-            Container(
-              height: 200,
-              color: Colors.grey[300],
-              child: Center(child: Icon(Icons.image_not_supported)),
-            ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: ListView(
-                children: [
-                  Text(
-                    title,
-                    style:
-                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "₹ $price",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.green[700]),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    description,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Divider(height: 30),
-                  Text("Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  ...details.entries.map((entry) => _detailRow(entry.key, entry.value.toString())),
-                  
-                    SizedBox(height: 10),
-                    _detailRow("Seller Name", productDetails['seller'] ?? "Unknown"),
-                
-                  if (verifiedBy != null) ...[
-                    SizedBox(height: 10),
-                    _detailRow("Verified By", verifiedBy!),
-                  ],
-                ],
               ),
             ),
           ),
