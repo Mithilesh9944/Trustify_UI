@@ -301,5 +301,7 @@ class _MyLoginState extends State<MyLogin> {
     }
   }
 
-  void _forgotPassword() {}
+  void _forgotPassword() {
+    Navigator.pushNamed(context, MyRoutes.ForgotPassword);
+  }
 }
