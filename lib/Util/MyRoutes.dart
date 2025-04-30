@@ -14,6 +14,8 @@ class MyRoutes{
   static String Dashboard ="/dashboard";
   static String Profile ="/profile";
   static String NotificationPage = "/notification";
+  static String MyProductsPage = "/myproducts";
+
 
 
   //static String UploadImage="/upload";

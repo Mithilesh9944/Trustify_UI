@@ -57,35 +57,27 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   void openProductDetail(String productId) async {
-    var response = await ListProduct.getProductById(productId);
+    String? token = await TokenManager.getToken();
+    Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token!);
+    String? userId = jwtDecoded['id'];
+    var response = await ListProduct.getProductById(userId!,productId);
     if (response != null) {
-      final Map<String, dynamic> parsed = jsonDecode(response);
+      
+       final Map<String, dynamic> product = response['product'];
 
-      if (parsed['success'] == true &&
-          parsed['data'] is List &&
-          parsed['data'].isNotEmpty) {
-        final productWithSeller = parsed['data'][0];
-        final Map<String, dynamic> product =
-            Map<String, dynamic>.from(productWithSeller['products'][0]);
-
-        final Map<String, dynamic> seller = {
-          'Name': productWithSeller['contactName'],
-          'Mobile': productWithSeller['contactMobile'],
-        };
+         
 
         Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  ProductDetailPage(product: product, seller: seller),
+                  ProductDetailPage(product: product),
             ));
       } else {
         print("No product found or bad format.");
       }
-    } else {
-      print("Failed to fetch product.");
-    }
-  }
+    } 
+  
 
   @override
   Widget build(BuildContext context) {

@@ -1,38 +1,33 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_project/Pages/TokenManager.dart';
-import 'package:flutter_project/Services/ListProduct.dart';
-import 'package:flutter_project/Util/UtilPages.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import '../Util/UtilWidgets.dart';
+import 'package:flutter/material.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Map<String, dynamic> product;
-  final Map<String, dynamic> seller;
 
-  const ProductDetailPage({super.key, required this.product,required this.seller});
+  const ProductDetailPage({
+    super.key,
+    required this.product,
+  });
 
   @override
-  _ProductDetailPageState createState() => _ProductDetailPageState();
+  State<ProductDetailPage> createState() => _ProductDetailPageState();
 }
+
 class _ProductDetailPageState extends State<ProductDetailPage> {
-  int selectedTabPosition = 0;
   late PageController _pageController;
   int _currentIndex = 0;
-  late List<String> productImages;
+  List<String> productImages = [];
   late Map<String, dynamic> productDetails;
-  late Map<String, dynamic> seller;
-  bool isExpanded = false;
+  late String? verifiedBy;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: 0);
-    seller = widget.seller;
     productDetails = widget.product;
+    verifiedBy = productDetails['verifiedBy'];
     productImages =
-        (productDetails['image'] as List<dynamic>?)?.cast<String>() ?? [];
+        (productDetails['images'] as List<dynamic>?)?.cast<String>() ?? [];
 
     if (productImages.isNotEmpty) {
       Timer.periodic(Duration(seconds: 3), (Timer timer) {
@@ -52,129 +47,90 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     }
   }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
+  void _verify() {
+    // Simulate verification
+    setState(() {
+      verifiedBy = "Admin";
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Product has been verified")),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    String title = productDetails['title'] ?? "No Title";
+    String description = productDetails['description'] ?? "No Description";
+    String price = productDetails['price']?.toString() ?? "N/A";
+    Map<String, dynamic> details =
+        (productDetails['details'] as Map<String, dynamic>?) ?? {};
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          productDetails['title'] ?? "Details",
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: UtilitiesPages.pageColor,
-        centerTitle: true,
+        title: Text('Product Detail'),
+        backgroundColor: Colors.deepPurple,
       ),
-      //backgroundColor: UtilitiesPages.APP_BAR_COLOR,
-      body: Stack(
+      body: Column(
         children: [
-          // Scrollable content
-          Positioned.fill(
-            child: UtilWidgets.buildBackgroundContainer(
-              child: Padding(
-                padding: UtilitiesPages.buildPadding(context),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      height: MediaQuery.of(context).size.width * 0.6,
-                      child: productImages.isNotEmpty
-                          ? PageView.builder(
-                              controller: _pageController,
-                              itemCount: productImages.length,
-                              onPageChanged: (index) {
-                                setState(() {
-                                  _currentIndex = index;
-                                });
-                              },
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 2,
-                                        spreadRadius: 2,
-                                        offset: Offset(2, 4),
-                                      ),
-                                    ],
-                                    image: DecorationImage(
-                                      image: NetworkImage(productImages[index]),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                );
-                              },
-                            )
-                          : Icon(Icons.image_not_supported, size: 100),
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                productDetails['title'] ?? "No Title",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              buildExpandableText(
-                                  productDetails['description'] ??
-                                      "No Description"),
-                              SizedBox(height: 10),
-                              Text(
-                                "₹ ${productDetails['price']?.toString() ?? 'N/A'}",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              Divider(color: Colors.grey[700]),
-                              ...(productDetails['details'] as Map<String, dynamic>)
-                                  .entries
-                                  .map(
-                                    (entry) =>
-                                    _detailRow(entry.key, entry.value.toString()),
-                              ),
-                              SizedBox(
-                                  height:
-                                      20),
-                              Divider(color: Colors.grey[700]),
-                              _detailRow("Seller Name", seller['Name']),
-                              SizedBox(height: 20),
-                              // extra space to avoid overlap with bottom buttons
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+          if (productImages.isNotEmpty)
+            SizedBox(
+              height: 200,
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: productImages.length,
+                itemBuilder: (context, index) => Image.network(
+                  productImages[index],
+                  fit: BoxFit.cover,
+                  width: double.infinity,
                 ),
+              ),
+            )
+          else
+            Container(
+              height: 200,
+              color: Colors.grey[300],
+              child: Center(child: Icon(Icons.image_not_supported)),
+            ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListView(
+                children: [
+                  Text(
+                    title,
+                    style:
+                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "₹ $price",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.green[700]),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    description,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Divider(height: 30),
+                  Text("Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 10),
+                  ...details.entries.map((entry) => _detailRow(entry.key, entry.value.toString())),
+                  
+                    SizedBox(height: 10),
+                    _detailRow("Seller Name", productDetails['seller'] ?? "Unknown"),
+                
+                  if (verifiedBy != null) ...[
+                    SizedBox(height: 10),
+                    _detailRow("Verified By", verifiedBy!),
+                  ],
+                ],
               ),
             ),
           ),
-
-          // Fixed bottom buttons
         ],
       ),
       bottomNavigationBar: Padding(
@@ -187,145 +143,56 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         child: Row(
           children: [
             Expanded(
-              child: _customButton("Make Offer", Icons.local_offer, Colors.green, (){},10),
+              child: _customButton("Make Offer", Icons.local_offer, Colors.green, () {}, 10),
             ),
-            SizedBox(width: 16,),
+            SizedBox(width: 16),
             Expanded(
-              child: _customButton("Verify", Icons.verified, Colors.deepPurple, _verify,10),
-            )
+              child: _customButton(
+                verifiedBy != null ? "Already Verified" : "Verify",
+                Icons.verified,
+                verifiedBy != null ? Colors.grey : Colors.deepPurple,
+                verifiedBy != null ? null : _verify,
+                10,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _customButton(String text, IconData icon, Color color,
-      VoidCallback onPressed, double sizes) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double screenWidth = MediaQuery.of(context).size.width;
-        double buttonFontSize = screenWidth * 0.035; // Adjust font size
-        double iconSize = screenWidth * 0.045; // Adjust icon size
-        double horizontalPadding = screenWidth * 0.04; // Padding
-
-        return ElevatedButton.icon(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: color,
-            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 14),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            elevation: 5,
-            shadowColor: Colors.black45,
-          ),
-          icon: Icon(
-            icon,
-            color: Colors.white,
-            size: iconSize,
-          ),
-          label: Flexible(
-            child: Text(
-              text,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.poppins(
-                fontSize: buttonFontSize,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+  Widget _detailRow(String label, String value) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Text("$label:", style: TextStyle(fontWeight: FontWeight.w500)),
             ),
-          ),
-        );
-      },
-    );
-  }
+            Expanded(flex: 5, child: Text(value)),
+          ],
+        ),
+      );
 
-
-  Widget _detailRow(String label, String? value) {
-    if (value == null || value.isEmpty) return SizedBox.shrink();
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "$label: ",
-            style: GoogleFonts.poppins(
-              color: Colors.lightBlue,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              textAlign: TextAlign.right,
-              style: GoogleFonts.poppins(
-                color: Colors.black87,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
+  Widget _customButton(
+    String label,
+    IconData icon,
+    Color color,
+    VoidCallback? onPressed,
+    double horizontalPadding,
+  ) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 18),
+      label: Text(label),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        elevation: onPressed == null ? 0 : 5,
+        shadowColor: onPressed == null ? Colors.transparent : Colors.black45,
+        foregroundColor: Colors.white,
       ),
     );
-  }
-
-
-  Widget buildExpandableText(String text) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AnimatedCrossFade(
-          firstChild: Text(
-            text,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.indigo[900],
-            ),
-          ),
-          secondChild: Text(
-            text,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.indigo[900],
-            ),
-          ),
-          crossFadeState:
-              isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-          duration: Duration(milliseconds: 300),
-        ),
-        InkWell(
-          onTap: () {
-            setState(() {
-              isExpanded = !isExpanded;
-            });
-          },
-          child: Text(
-            isExpanded ? "Read Less" : "Read More",
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              color: Colors.deepPurple,
-              fontWeight: FontWeight.bold,
-              decoration: TextDecoration.underline,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-  void _verify() async{
-    String?token = await TokenManager.getToken();
-     Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token!);
-    String? userId = jwtDecoded['id'];
-    String productId = widget.product['id'];
-
-    var response = await ListProduct.verifyProduct(productId, userId!);
-     return ;
   }
 }

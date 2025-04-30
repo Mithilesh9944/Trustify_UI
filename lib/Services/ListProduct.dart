@@ -6,8 +6,8 @@ import 'dart:convert';
 import 'package:path/path.dart' as path;
 
 class ListProduct {
-  //static const baseUrl = "http://10.0.2.2:3000/api/v1/product";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
+  static const baseUrl = "http://10.0.2.2:3000/api/v1/product";
+  //static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
   static Future<bool> addProduct(Map<String, dynamic> pDetails) async {
     List<File> imgList =
         (pDetails.remove('imgList') as List<dynamic>).cast<File>();
@@ -62,9 +62,9 @@ class ListProduct {
     }
   }
 
-  static Future<dynamic> getProductById(String productId) async {
+  static Future<dynamic> getProductById(String userId ,String productId) async {
     try {
-      var getUrl = Uri.parse('$baseUrl/getProductById?productId=$productId');
+      var getUrl = Uri.parse('$baseUrl/getProductById?productId=$productId&userId=$userId');
 
       final response = await http.get(
         getUrl,
@@ -74,7 +74,29 @@ class ListProduct {
       );
       print(response);
       if (response.statusCode == 200) {
-        return response.body;
+        return jsonDecode(response.body);
+      }
+      print("Internal server error");
+      return null;
+    } catch (error) {
+      print("HTTP error: ${error.toString()}");
+      return null;
+    }
+  }
+  static Future<dynamic> myProducts(String userId) async {
+    print('i am here');
+    try {
+      var getUrl = Uri.parse('$baseUrl/myProducts?userId=$userId');
+
+      final response = await http.get(
+        getUrl,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+      if (response.statusCode == 200) {
+        print('get sucess');
+        return jsonDecode(response.body);
       }
       print("Internal server error");
       return null;
