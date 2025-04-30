@@ -3,6 +3,7 @@ import 'package:flutter_project/Pages/ChatListPage.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/util_notification.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UtilWidgets {
   static Widget buildBackgroundContainer({required Widget child}) {
@@ -26,7 +27,11 @@ class UtilWidgets {
         IconButton(onPressed: () {navigateTo(context: context, route: MyRoutes.HelpPage);}, icon: Icon(Icons.help_outline_rounded)),
         TextButton(
           onPressed: () {navigateTo(context: context, route: MyRoutes.HelpPage);},
-          child: Text('Help  ', style: TextStyle(fontSize: 20)),
+          child: Text('Help  ', style: GoogleFonts.poppins(
+            //color: Colors.blue,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),),
         ),
     ];
   }
@@ -35,17 +40,21 @@ class UtilWidgets {
     Navigator.pushNamed(context,route );
   }
 
-  static AppBar buildAppBar({required String title,required IconData icon,required BuildContext context}) {
+  static AppBar buildAppBar({required String title,required IconData icon,required BuildContext context,required String route,required bool back}) {
     return AppBar(
-      // leading: IconButton(
-      //   onPressed: () {Navigator.of(context).pop();},
-      //   icon: Icon(Icons.arrow_back),
-      // ),
-      title: Text(title),
-      backgroundColor: UtilitiesPages.pageColor,
+      automaticallyImplyLeading: back,
+      title: Text(title,
+        style: GoogleFonts.poppins(
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       actions: <Widget>[
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, route);
+          },
           icon: Icon(icon),
         ),
       ],
@@ -62,36 +71,46 @@ class UtilWidgets {
     required BuildContext context,
   }) {
     return BottomNavigationBar(
-      backgroundColor: UtilitiesPages.pageColor,
-      currentIndex: selectedTabPosition,
+      //backgroundColor: UtilitiesPages.pageColor,
+      //currentIndex: selectedTabPosition,
       onTap:(index) {
             switch (index) {
               case 0:
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
+                Navigator.pushNamed(context, MyRoutes.Dashboard);
                 break;
               case 1:
-                Navigator.push(context,MaterialPageRoute(builder: (context) => ChatListPage()),);
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
                 break;
               case 2:
                 Navigator.pushNamed(context, MyRoutes.CategoryPage);
                 break;
               case 3:
-                Navigator.pushNamed(context, MyRoutes.Dashboard);
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
                 break;
               case 4:
                 Navigator.pushNamed(context, MyRoutes.Profile);
                 break;
             }
+
           },
+
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.teal,
-      unselectedItemColor: Colors.white,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home_sharp ,), label: 'Home' ),
-        BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
+      //selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.black87,
+      selectedLabelStyle:GoogleFonts.poppins(
+        //color: Colors.black87,
+        fontWeight: FontWeight.w500,
+      ),
+      unselectedLabelStyle: GoogleFonts.poppins(
+        //color: Colors.black87,
+        fontWeight: FontWeight.w500,
+      ),
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home_sharp ,color: UtilitiesPages.APP_BAR_COLOR,), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.chat,color: UtilitiesPages.APP_BAR_COLOR), label: 'Chats'),
         BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'My Ads'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite,color: UtilitiesPages.APP_BAR_COLOR), label: 'My Ads'),
+        BottomNavigationBarItem(icon: Icon(Icons.person,color: UtilitiesPages.APP_BAR_COLOR), label: 'Profile'),
       ],
     );
   }
@@ -105,9 +124,21 @@ class UtilWidgets {
         onTabChange();
         Navigator.pushNamed(context, MyRoutes.CategoryPage);
       },
-      child: const Icon(
+      child: Icon(
         Icons.add,
         size: 50,
+        color:UtilitiesPages.APP_BAR_COLOR,
+      ),
+    );
+  }
+  
+  static Text buildText({required String text}){
+    return Text(
+      text,
+      style: GoogleFonts.poppins(
+        color: Colors.black87,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_project/Security/TokenManager.dart';
 import 'package:flutter_project/Services/ListProduct.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class PostAdPage extends StatefulWidget {
@@ -20,9 +21,15 @@ class _PostAdPageState extends State<PostAdPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Include some Car details'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 109, 190, 231),
+        title: Text('Trustify',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        //centerTitle: true,
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       ),
       body: Padding(
         padding: UtilitiesPages.buildPadding(context),
@@ -86,7 +93,7 @@ class _PostAdPageState extends State<PostAdPage> {
     if (flag) {
       print(widget.pDetails);
       print('added successfully');
-      Navigator.pushNamed(context, MyRoutes.Dashboard);
+      Navigator.pushReplacementNamed(context, MyRoutes.Dashboard);
     } else {
       print("getting false from adding product");
       ScaffoldMessenger.of(context).showSnackBar(

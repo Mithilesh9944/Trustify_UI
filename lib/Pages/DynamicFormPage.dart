@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/UploadImagePage.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../Util/UtilPages.dart';
 import '../Util/UtilProductForm.dart';
 
@@ -52,13 +53,13 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
       for (var entry in _controllers.entries) {
         _formData[entry.key] = entry.value.text;
       }
-      _formData['label'] = widget.categoryGroup; 
+      _formData['label'] = widget.categoryGroup; //lable
       _formData['subCategory'] = widget.subCategory; //subCategory
       Future.delayed(const Duration(milliseconds: 1000), () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => UploadImagePage(p_details: _formData)));
       });
 
-      UtilWidgets.showSnackBar(msg: "Form Submitted Successfully", context: context);
+      //UtilWidgets.showSnackBar(msg: "Form Submitted Successfully", context: context);
     } else {
       UtilWidgets.showSnackBar(msg: "Error Occurred", context: context);
     }
@@ -68,10 +69,16 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Include details'),
+        title:Text('Include Details',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 109, 190, 231),
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: UtilitiesPages.buildPadding(context),
         child: Form(
@@ -79,10 +86,7 @@ class _DynamicFormWidgetState extends State<DynamicFormWidget> {
           child: ListView(
             children: [
               for (var category in widget.formCategories!.entries) ...[
-                Text(
-                  category.key.toString(),
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
+                UtilWidgets.buildText(text: category.key.toString()),
                 const SizedBox(height: 10),
                 for (var field in category.value) _buildFormField(field),
                 const SizedBox(height: 20),

@@ -9,6 +9,8 @@ import 'package:flutter_project/Pages/ProfilePage.dart';
 import 'package:flutter_project/Pages/RegisterPage.dart';
 import 'package:flutter_project/Security/TokenManager.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
+import 'package:flutter_project/Pages/notificatin.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'Pages/LoginPage.dart';
 import 'Pages/Dashboard.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -60,6 +62,9 @@ class MyApp extends StatelessWidget{
       MyRoutes.ChatListPage:(context)=>ChatListPage(),
       // MyRoutes.ChatBox:(context)=>ChatBox(user1: 'kushal', user2: 'devendra',),
       // MyRoutes.Profile:(context)=>ProfilePage(),
+      MyRoutes.NotificationPage: (context) => NotificationPage(),
+
+
       //MyRoutes.UploadImage:(context)=>UploadImagePage(),
 
     },

@@ -15,6 +15,8 @@ class MyRoutes{
   static String ChatListPage ="/chatlist";
   static String ChatBox ="/chatbox";
   static String Profile ="/profile";
+  static String NotificationPage = "/notification";
+
 
   //static String UploadImage="/upload";
 }

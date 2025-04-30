@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PassphrasePasswordField extends StatefulWidget {
   const PassphrasePasswordField({super.key});
@@ -52,8 +53,10 @@ class _PassphrasePasswordFieldState extends State<PassphrasePasswordField> {
               fillColor: Colors.transparent,
               filled: true,
               hintText: 'Create password',
-              hintStyle: TextStyle(
-                fontSize: UtilitiesPages.BOX_TEXT_FONT_SIZE,
+              hintStyle: GoogleFonts.poppins(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
               ),
               border: OutlineInputBorder(
                   borderRadius:

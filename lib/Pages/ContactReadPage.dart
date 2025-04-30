@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:flutter_project/Pages/TokenManager.dart';
 import 'package:flutter_project/Services/api_service.dart';
-import 'package:flutter_project/Security/SecurityDetails.dart';
 import '../Util/MyRoutes.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+
 
 class ContactReadPage extends StatefulWidget {
   const ContactReadPage({super.key});
@@ -20,7 +22,9 @@ class _ContactReadPageState extends State<ContactReadPage> {
 
   Future<void> _handlePermissionAndProceed() async {
     bool granted = await FlutterContacts.requestPermission(readonly: true);
-
+     String? token =  await  TokenManager.getToken();
+     Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token!);
+    String? mobileNo = jwtDecoded['mobileNo'];
     if (granted) {
       final contacts = await FlutterContacts.getContacts();
       List<String> normalized = [];
@@ -31,15 +35,12 @@ class _ContactReadPageState extends State<ContactReadPage> {
           normalized.add(fullContact.phones.first.normalizedNumber);
         }
       }
-      print(normalized);
-      // Send to backend (non-blocking)
       ApiService.AddContacts({
-        "mobileNo": Details.mobile,
+        "mobileNo": mobileNo,
         "contacts": normalized,
       });
     }
 
-    // Navigate regardless of permission result
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, MyRoutes.Dashboard);
     }

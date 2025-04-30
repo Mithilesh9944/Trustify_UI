@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/AllCategoryPage.dart';
 import 'package:flutter_project/Pages/DynamicFormPage.dart';
+import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilProductForm.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});
@@ -83,10 +85,18 @@ class _CategoryPageState extends State<CategoryPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('What are you offering?'),
+        automaticallyImplyLeading: false,
+        title: Text(
+          'What are you offering?',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 109, 190, 231),
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

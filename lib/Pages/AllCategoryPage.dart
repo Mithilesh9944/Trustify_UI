@@ -1,7 +1,10 @@
 // File: MyAllCategoryPage.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/DynamicFormPage.dart';
+import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilProductForm.dart';
+import 'package:flutter_project/Util/UtilWidgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyAllCategoryPage extends StatefulWidget {
   const MyAllCategoryPage({super.key});
@@ -46,9 +49,15 @@ class _MyAllCategoryPageState extends State<MyAllCategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("All Categories"),
-        backgroundColor: Colors.blueAccent,
+        automaticallyImplyLeading: false,
+        title: Text('What are you offering?',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         centerTitle: true,
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       ),
       body: ListView(
         children: categories.entries.map((categoryEntry) {
@@ -57,16 +66,15 @@ class _MyAllCategoryPageState extends State<MyAllCategoryPage> {
           Map<String, IconData> subCats = categoryEntry.value;
 
           return ExpansionTile(
-            leading: Icon(categoryIcon, color: Colors.blue),
-            title: Text(categoryName,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            leading: Icon(categoryIcon, color: UtilitiesPages.APP_BAR_COLOR),
+            title: UtilWidgets.buildText(text: categoryName),
             children: subCats.entries.map((subCatEntry) {
               String subCatName = subCatEntry.key;
               IconData subCatIcon = subCatEntry.value;
 
               return ListTile(
-                leading: Icon(subCatIcon, color: Colors.teal),
-                title: Text(subCatName),
+                leading: Icon(subCatIcon, color: Colors.black87,size: 16,),
+                title: UtilWidgets.buildText(text: subCatName),
                 onTap: () {
                   try {
                     final categoryEnum = CategoryGroup.values.firstWhere(
