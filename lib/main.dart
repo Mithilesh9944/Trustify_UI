@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/AllCategoryPage.dart';
 import 'package:flutter_project/Pages/CategoryPage.dart';

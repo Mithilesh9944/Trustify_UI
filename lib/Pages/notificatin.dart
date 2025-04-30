@@ -18,6 +18,7 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   List<Map<String, dynamic>> notifications = [];
   bool isLoading = true;
+  String? userId;
 
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _NotificationPageState extends State<NotificationPage> {
   void getUserId() async {
     String? token = await TokenManager.getToken();
     Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token!);
-    String? userId = jwtDecoded['id'];
+    userId = jwtDecoded['id'];
     await loadNotifications(userId!);
   }
 
@@ -59,31 +60,27 @@ class _NotificationPageState extends State<NotificationPage> {
   void openProductDetail(String productId) async {
     String? token = await TokenManager.getToken();
     Map<String, dynamic> jwtDecoded = JwtDecoder.decode(token!);
-    String? userId = jwtDecoded['id'];
-    var response = await ListProduct.getProductById(userId!,productId);
+    userId = jwtDecoded['id'];
+    var response = await ListProduct.getProductById(userId!, productId);
     if (response != null) {
-
       final Map<String, dynamic> product = response['product'];
-
-
-
       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                ProductDetailPage(productId: product['id']),
-          ));
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductDetailPage(productId: product['id']),
+        ),
+      );
     } else {
       print("No product found or bad format.");
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:Text('Notifications',
+        title: Text(
+          'Notifications',
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w500,
@@ -100,30 +97,73 @@ class _NotificationPageState extends State<NotificationPage> {
         itemCount: notifications.length,
         itemBuilder: (context, index) {
           final notification = notifications[index];
-          return ListTile(
-            leading: Icon(Icons.notifications),
-            title: Text(
-              notification['title'] ?? 'Welcome to Trustify',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-            subtitle: Text(
-              notification['message'] ?? '',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-                color: Colors.black87,
-              ),
-            ),
-            trailing: Text(notification['timestamp'] ?? ''),
+          return GestureDetector(
             onTap: () {
               if (notification['productId'] != null) {
                 openProductDetail(notification['productId']);
               }
             },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 12, vertical: 6),
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.notifications,
+                          size: 28, color: Colors.blue),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              notification['title'] ??
+                                  'Welcome to Trustify',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              notification['message'] ?? '',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: Colors.black87,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 6),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                notification['timestamp'] ?? '',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         },
       ),
