@@ -5,9 +5,9 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class ApiService {
  
-  //static const baseUrl = "http://10.0.2.2:3000/api/v1";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
-  static Future<bool> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
+  static const baseUrl = "http://10.0.2.2:3000/api/v1";
+  //static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
+  static Future<dynamic> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     //print(userData);
      String? _imgUrl;
     if(imgBytes!=null){
@@ -19,23 +19,23 @@ class ApiService {
     try {
       var postUrl = Uri.parse('$baseUrl/register');
 
-      final res = await http.post(
+      final response = await http.post(
         postUrl,
         headers: {
           "Content-Type": "application/json",
         },
         body: jsonEncode(userData),
       );
-      if (res.statusCode == 200) {
+      if (response.statusCode == 200) {
         print("user register succesfully");
-        return true;
+        return jsonDecode(response.body) ;
       } else {
         print("somthing wrong please try again");
-        return false;
+        return jsonDecode(response.body);
       }
     } catch (e) {
       debugPrint(e.toString());
-      return false;
+      return null;
     }
   }
 

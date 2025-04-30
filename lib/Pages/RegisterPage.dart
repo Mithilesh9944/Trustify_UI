@@ -267,12 +267,12 @@ class _MyRegisterState extends State<MyRegister> {
       "password": Details.password,
       "email": Details.email,
     };
-    bool isRegistered = await ApiService.RegisterUser(userdata,_img);
-    if(isRegistered){
+    var response = await ApiService.RegisterUser(userdata,_img);
+    if(response !=null &&response['success']==true){
       _showAlertDialog("Registration Successfull", "click on ok to login");
     }
     else{
-         UtilWidgets.showSnackBar(msg: "Invalid credentials, please try again.", context: context);
+         UtilWidgets.showSnackBar(msg: response['error'], context: context);
 
     }
   }
