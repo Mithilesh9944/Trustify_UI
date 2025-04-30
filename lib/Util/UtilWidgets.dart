@@ -84,7 +84,7 @@ class UtilWidgets {
                 Navigator.pushNamed(context, MyRoutes.CategoryPage);
                 break;
               case 3:
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
+                Navigator.pushNamed(context,MyRoutes.MyProducts);
                 break;
               case 4:
                 Navigator.pushNamed(context, MyRoutes.Profile);

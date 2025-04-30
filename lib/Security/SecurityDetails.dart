@@ -4,5 +4,4 @@ class Details {
   static  String? password;
   static  String? confirmPassword;
   static String? email;
-
 }

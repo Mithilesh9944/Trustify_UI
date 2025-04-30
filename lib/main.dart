@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/AllCategoryPage.dart';
 import 'package:flutter_project/Pages/CategoryPage.dart';
 import 'package:flutter_project/Pages/ContactReadPage.dart';
+import 'package:flutter_project/Pages/ForgotPasswordPage.dart';
 import 'package:flutter_project/Pages/HelpInstructPage.dart';
 import 'package:flutter_project/Pages/HomePage.dart';
+import 'package:flutter_project/Pages/MyUploadedProducts.dart';
 import 'package:flutter_project/Pages/ProfilePage.dart';
 import 'package:flutter_project/Pages/RegisterPage.dart';
-import 'package:flutter_project/Pages/TokenManager.dart';
+import 'package:flutter_project/Security/TokenManager.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
 import 'package:flutter_project/Pages/notificatin.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -60,6 +62,9 @@ class MyApp extends StatelessWidget{
       MyRoutes.Dashboard:(context)=>Dashboard(),
       MyRoutes.Profile:(context)=>ProfilePage(),
       MyRoutes.NotificationPage: (context) => NotificationPage(),
+      MyRoutes.MyProducts:(context)=>MyUploadedProducts(),
+      //MyRoutes.ForgotPassword:(context)=>ForgotPasswordPage()
+
 
 
       //MyRoutes.UploadImage:(context)=>UploadImagePage(),

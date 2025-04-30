@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/ProductDetailPage.dart';
-import 'package:flutter_project/Pages/TokenManager.dart';
+import 'package:flutter_project/Security/TokenManager.dart';
 import 'package:flutter_project/Services/ListProduct.dart';
 import 'package:flutter_project/Services/socket_service.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
@@ -49,29 +49,11 @@ class _DashboardState extends State<Dashboard> {
 
     if (response != null &&
         response['success'] == true &&
-        response['data'] is List) {
-      List<dynamic> sellers = response['data'];
-      Map<dynamic, dynamic> uniqueProducts = {};
-
-      for (var seller in sellers) {
-        if (seller["products"] is List) {
-          for (var product in seller["products"]) {
-            var elementId = product['id'];
-            if (elementId != null) {
-              uniqueProducts[elementId] = {
-                'seller': {
-                  'Name': seller['contactName'],
-                  'Mobile': seller['contactMobile']
-                },
-                'product': product,
-              };
-            }
-          }
-        }
-      }
+        response['products'] is List) {
+      List<dynamic> fetchedProducts= response['products'];
 
       setState(() {
-        products = uniqueProducts.values.toList();
+        products = fetchedProducts;
         isLoading = false;
       });
     } else {
@@ -101,15 +83,15 @@ class _DashboardState extends State<Dashboard> {
                     : ListView.builder(
                         itemCount: products.length,
                         itemBuilder: (context, index) {
-                          var productData = products[index];
-                          var product = productData['product'];
-                          var seller = productData['seller'];
+                          var product = products[index];
+                          // var product = productData['product'];
+                          // var seller = productData['seller'];
 
                           String title = product['title'] ?? "No Title";
                           String description =
                               product['description'] ?? "No Description";
                           String brand =
-                              product['details']['brand'] ?? "Unknown Brand";
+                              product['details']?['brand']?? "Unknown Brand";
                           String price = product['price']?.toString() ?? "N/A";
                          List<dynamic> images = product['image'] is List ? product['image'] : [];
 
@@ -127,7 +109,7 @@ class _DashboardState extends State<Dashboard> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ProductDetailPage(
-                                        product: product, seller: seller),
+                                        productId: product['id']),
                                   ),
                                 );
                               },
