@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/ProductDetailPage.dart';
-import 'package:flutter_project/Pages/TokenManager.dart';
+import 'package:flutter_project/Security/TokenManager.dart';
 import 'package:flutter_project/Services/ListProduct.dart';
 import 'package:flutter_project/Services/socket_service.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
@@ -50,7 +50,7 @@ class _DashboardState extends State<Dashboard> {
     if (response != null &&
         response['success'] == true &&
         response['products'] is List) {
-      List<dynamic> fetchedProducts = response['products'];
+      List<dynamic> fetchedProducts= response['products'];
 
       setState(() {
         products = fetchedProducts;
@@ -88,17 +88,17 @@ class _DashboardState extends State<Dashboard> {
                         itemCount: products.length,
                         itemBuilder: (context, index) {
                           var product = products[index];
+                          // var product = productData['product'];
+                          // var seller = productData['seller'];
 
                           String title = product['title'] ?? "No Title";
                           String description =
                               product['description'] ?? "No Description";
-                          String price =
-                              product['price']?.toString() ?? "N/A";
-                          List<dynamic> images = product['image'] is List
-                              ? product['image']
-                              : [];
-                          String brand = product['details']?['brand'] ??
-                              "Unknown";
+                          String brand =
+                              product['details']?['brand']?? "Unknown Brand";
+                          String price = product['price']?.toString() ?? "N/A";
+                         List<dynamic> images = product['image'] is List ? product['image'] : [];
+
 
                           return Card(
                             elevation: 4,
@@ -114,7 +114,7 @@ class _DashboardState extends State<Dashboard> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ProductDetailPage(
-                                        product: product),
+                                        productId: product['id']),
                                   ),
                                 );
                               },

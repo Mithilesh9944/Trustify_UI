@@ -10,7 +10,7 @@ class ListProduct {
   //static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
   static Future<bool> addProduct(Map<String, dynamic> pDetails) async {
     List<File> imgList =
-        (pDetails.remove('imgList') as List<dynamic>).cast<File>();
+    (pDetails.remove('imgList') as List<dynamic>).cast<File>();
     final List<String> imgUrls = await uploadImageOnCloudinary(imgList);
     pDetails['image'] = imgUrls;
     print(pDetails);
@@ -40,7 +40,7 @@ class ListProduct {
     try {
       var queryParams = userData.entries
           .map((e) =>
-              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
+      '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
           .join('&');
       var getUrl = Uri.parse('$baseUrl/getProducts?$queryParams');
 
@@ -62,7 +62,7 @@ class ListProduct {
     }
   }
 
-  static Future<dynamic> getProductById(String userId ,String productId) async {
+  static Future<dynamic> getProductById(String userId,String productId) async {
     try {
       var getUrl = Uri.parse('$baseUrl/getProductById?productId=$productId&userId=$userId');
 
@@ -132,7 +132,7 @@ class ListProduct {
       List<File> imgList) async {
     List<String> imgUrls = [];
     final uri =
-        Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
+    Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
     for (File file in imgList) {
       final fileName = path.basename(file.path);
       var request = http.MultipartRequest('POST', uri)

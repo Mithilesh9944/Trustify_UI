@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/ProductDetailPage.dart';
-import 'package:flutter_project/Pages/TokenManager.dart';
 import 'package:flutter_project/Services/ListProduct.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import '../Security/TokenManager.dart';
 import '../Services/socket_service.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -62,22 +62,22 @@ class _NotificationPageState extends State<NotificationPage> {
     String? userId = jwtDecoded['id'];
     var response = await ListProduct.getProductById(userId!,productId);
     if (response != null) {
-      
-       final Map<String, dynamic> product = response['product'];
 
-         
+      final Map<String, dynamic> product = response['product'];
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  ProductDetailPage(product: product),
-            ));
-      } else {
-        print("No product found or bad format.");
-      }
-    } 
-  
+
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ProductDetailPage(productId: product['id']),
+          ));
+    } else {
+      print("No product found or bad format.");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,38 +95,38 @@ class _NotificationPageState extends State<NotificationPage> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : notifications.isEmpty
-              ? Center(child: Text('No notifications yet.'))
-              : ListView.builder(
-                  itemCount: notifications.length,
-                  itemBuilder: (context, index) {
-                    final notification = notifications[index];
-                    return ListTile(
-                      leading: Icon(Icons.notifications),
-                      title: Text(
-                        notification['title'] ?? 'Welcome to Trustify',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      subtitle: Text(
-                        notification['message'] ?? '',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black87,
-                        ),
-                        ),
-                      trailing: Text(notification['timestamp'] ?? ''),
-                      onTap: () {
-                        if (notification['productId'] != null) {
-                          openProductDetail(notification['productId']);
-                        }
-                      },
-                    );
-                  },
-                ),
+          ? Center(child: Text('No notifications yet.'))
+          : ListView.builder(
+        itemCount: notifications.length,
+        itemBuilder: (context, index) {
+          final notification = notifications[index];
+          return ListTile(
+            leading: Icon(Icons.notifications),
+            title: Text(
+              notification['title'] ?? 'Welcome to Trustify',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            subtitle: Text(
+              notification['message'] ?? '',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.normal,
+                color: Colors.black87,
+              ),
+            ),
+            trailing: Text(notification['timestamp'] ?? ''),
+            onTap: () {
+              if (notification['productId'] != null) {
+                openProductDetail(notification['productId']);
+              }
+            },
+          );
+        },
+      ),
     );
   }
 }
