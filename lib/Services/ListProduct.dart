@@ -6,8 +6,8 @@ import 'dart:convert';
 import 'package:path/path.dart' as path;
 
 class ListProduct {
-  static const baseUrl = "http://10.0.2.2:3000/api/v1/product";
-  //static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
+  //static const baseUrl = "http://10.0.2.2:3000/api/v1/product";
+  static const baseUrl = "https://trustify-backend.onrender.com/api/v1/product";
   static Future<bool> addProduct(Map<String, dynamic> pDetails) async {
     List<File> imgList =
     (pDetails.remove('imgList') as List<dynamic>).cast<File>();
