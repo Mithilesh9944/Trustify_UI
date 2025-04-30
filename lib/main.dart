@@ -10,6 +10,7 @@ import 'package:flutter_project/Pages/RegisterPage.dart';
 import 'package:flutter_project/Security/TokenManager.dart';
 import 'package:flutter_project/Pages/WelcomePage.dart';
 import 'package:flutter_project/Pages/notificatin.dart';
+import 'Pages/ForgotPasswordPage.dart';
 import 'Pages/LoginPage.dart';
 import 'Pages/Dashboard.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget{
       MyRoutes.Profile:(context)=>ProfilePage(),
       MyRoutes.NotificationPage: (context) => NotificationPage(),
       MyRoutes.MyProducts:(context)=>MyUploadedProducts(),
-      //MyRoutes.ForgotPassword:(context)=>ForgotPasswordPage()
+      MyRoutes.ForgotPassword:(context)=>ForgotPasswordPage()
 
 
 

@@ -268,12 +268,11 @@ class _MyRegisterState extends State<MyRegister> {
       "email": Details.email,
     };
     var response = await ApiService.RegisterUser(userdata,_img);
-    if(response !=null &&response['success']==true){
+    if(response !=null && response['success']==true){
       _showAlertDialog("Registration Successfull", "click on ok to login");
     }
     else{
-         UtilWidgets.showSnackBar(msg: response['error'], context: context);
-
+      UtilWidgets.showSnackBar(msg: response['error'], context: context);
     }
   }
 
