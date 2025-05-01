@@ -61,7 +61,7 @@ class UserService {
 
       // Upload image to Cloudinary
       String? imageUrl =
-          await ApiService.uploadImageOnCloudinary('profile', imageBytes);
+      await ApiService.uploadImageOnCloudinary('profile', imageBytes);
       if (imageUrl == null) {
         return {
           'success': false,
@@ -156,14 +156,14 @@ class UserService {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-    
+
         return {
           'success': true,
           'message': 'User verified successfully',
           'data': data
         };
       } else {
-  
+
         return {
           'success': false,
           'message': 'Failed to verify user',

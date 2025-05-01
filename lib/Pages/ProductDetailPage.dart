@@ -219,7 +219,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           children: [
             Expanded(
               child:
-              _customButton("Make Offer", Icons.local_offer, Colors.green, () {Navigator.push(context, MaterialPageRoute(builder: (context)=>MyNotification()));}, 10),
+              _customButton("Chat Now", Icons.local_offer,(userId==sellerId) ? Colors.grey: Colors.green,(userId==sellerId)?null: () {Navigator.push(context, MaterialPageRoute(builder: (context)=>MyNotification()));}, 10),
             ),
             SizedBox(width: 16),
             Expanded(
