@@ -4,8 +4,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 
 class SocketService {
-  //static const _baseUrl = 'http://10.0.2.2:3000';
-  static const _baseUrl = "https://trustify-backend.onrender.com";
+  static const _baseUrl = 'http://10.0.2.2:3000';
+  //static const _baseUrl = "https://trustify-backend.onrender.com";
   static IO.Socket? socket;
   static List<Map<String, String>> notifications = [];
 
@@ -25,7 +25,6 @@ class SocketService {
     });
 
     socket?.on('receiveNotification', (data) {
-      print('Notification received: $data');
       _showLocalNotification('New Product Added', data['message']);
 
       // Save in notifications list

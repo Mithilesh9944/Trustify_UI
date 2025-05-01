@@ -35,6 +35,8 @@ class _ContactReadPageState extends State<ContactReadPage> {
           normalized.add(fullContact.phones.first.normalizedNumber);
         }
       }
+      print('nomalized');
+      print(normalized);
       ApiService.AddContacts({
         "mobileNo": mobileNo,
         "contacts": normalized,

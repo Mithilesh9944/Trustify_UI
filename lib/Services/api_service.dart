@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart' show rootBundle;
 
 class ApiService {
  
-  //static const baseUrl = "http://10.0.2.2:3000/api/v1";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
-  static Future<dynamic> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
+  static const baseUrl = "http://10.0.2.2:3000/api/v1";
+  //static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
+  static Future<dynamic> registerUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     //print(userData);
      String? _imgUrl;
     if(imgBytes!=null){
@@ -39,7 +38,7 @@ class ApiService {
     }
   }
 
-  static Future<dynamic> LoginUser(Map<String, dynamic> userData) async {
+  static Future<dynamic> loginUser(Map<String, dynamic> userData) async {
     print(userData); //print data for checking
     try {
       var getUrl = Uri.parse('$baseUrl/login');
@@ -109,8 +108,5 @@ class ApiService {
     }
   }
 
-  static Future<Uint8List> loadDefaultImage() async {
-    final ByteData data = await rootBundle.load('assets/userIcon.png');
-    return data.buffer.asUint8List();
-  }
+ 
 }
