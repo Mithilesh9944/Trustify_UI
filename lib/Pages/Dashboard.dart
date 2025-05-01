@@ -19,6 +19,7 @@ class _DashboardState extends State<Dashboard> {
   int selectedTabPosition = 0;
   List<dynamic> products = [];
   bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -36,10 +37,9 @@ class _DashboardState extends State<Dashboard> {
     String? mobileNo = jwtDecoded['mobileNo'];
     String? userId = jwtDecoded['id'];
 
+    SocketService.connect(userId!); // Connect to socket using userId
 
-    SocketService.connect(userId!); // Connect to socket using mobile number
-
-    await fetchProducts(mobileNo!); // Pass mobileNo to fetchProducts also
+    await fetchProducts(mobileNo!);
   }
 
   Future<void> fetchProducts(String mobileNo) async {
@@ -51,15 +51,13 @@ class _DashboardState extends State<Dashboard> {
         response['success'] == true &&
         response['products'] is List) {
       List<dynamic> fetchedProducts= response['products'];
-
+     
       setState(() {
         products = fetchedProducts;
         isLoading = false;
       });
     } else {
-      setState(() {
-        isLoading = false;
-      });
+      setState(() => isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to load products")),
       );
@@ -72,7 +70,13 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: UtilWidgets.buildAppBar(title: 'Products', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage,back: false),
+        appBar: UtilWidgets.buildAppBar(
+          title: 'Products',
+          icon: Icons.notifications,
+          context: context,
+          route: MyRoutes.NotificationPage,
+          back: false,
+        ),
         body: UtilWidgets.buildBackgroundContainer(
           child: Padding(
             padding: UtilitiesPages.buildPadding(context),
@@ -99,7 +103,8 @@ class _DashboardState extends State<Dashboard> {
                           return Card(
                             elevation: 4,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                             margin: EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 15),
                             child: InkWell(
@@ -118,7 +123,7 @@ class _DashboardState extends State<Dashboard> {
                                 padding: EdgeInsets.all(8),
                                 child: Row(
                                   children: [
-                                    // Left side image
+                                    // Product Image
                                     Container(
                                       width: 100,
                                       height: double.infinity,
@@ -126,7 +131,8 @@ class _DashboardState extends State<Dashboard> {
                                         borderRadius: BorderRadius.circular(12),
                                         image: images.isNotEmpty
                                             ? DecorationImage(
-                                                image: NetworkImage(images[0]),
+                                                image:
+                                                    NetworkImage(images[0]),
                                                 fit: BoxFit.cover,
                                               )
                                             : null,
@@ -138,7 +144,7 @@ class _DashboardState extends State<Dashboard> {
                                           : null,
                                     ),
                                     SizedBox(width: 12),
-                                    // Right side text content
+                                    // Product Info
                                     Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -203,20 +209,22 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
         bottomNavigationBar: UtilWidgets.createBottomNavigation(
-            selectedTabPosition: selectedTabPosition,
-            onTap: (index) {
-              setState(() {
-                selectedTabPosition = index;
-              });
-            },
-            context: context),
+          selectedTabPosition: selectedTabPosition,
+          onTap: (index) {
+            setState(() {
+              selectedTabPosition = index;
+            });
+          },
+          context: context,
+        ),
         floatingActionButton: UtilWidgets.createFloatingActionButton(
-            context: context,
-            onTabChange: () {
-              setState(() {
-                selectedTabPosition = 2;
-              });
-            }),
+          context: context,
+          onTabChange: () {
+            setState(() {
+              selectedTabPosition = 2;
+            });
+          },
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       );
 }

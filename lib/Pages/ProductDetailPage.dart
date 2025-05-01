@@ -5,7 +5,6 @@ import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../Util/MyRoutes.dart';
 import '../Util/UtilWidgets.dart';
 import '../Util/util_notification.dart';
