@@ -1,0 +1,2 @@
+D:/SemesterProject/Trustify_UI/android/app/.cxx/RelWithDebInfo/41474tq6/x86/CMakeFiles/edit_cache.dir
+D:/SemesterProject/Trustify_UI/android/app/.cxx/RelWithDebInfo/41474tq6/x86/CMakeFiles/rebuild_cache.dir
