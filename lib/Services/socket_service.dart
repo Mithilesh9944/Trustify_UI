@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_project/main.dart'; // For notification plugin
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -5,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class SocketService {
   //static const _baseUrl = 'http://10.0.2.2:3000';
-  static const _baseUrl = "https://trustify-backend.onrender.com";
+  static const _baseUrl = "https://trustify-backend-csm6.onrender.com";
   static IO.Socket? socket;
   static List<Map<String, String>> notifications = [];
 
@@ -24,8 +26,24 @@ class SocketService {
       socket?.emit('register', userId);
     });
 
+    socket?.on('receiveMessage', (data) {
+      Map<String, dynamic> messageData;
+
+      if (data is String) {
+        messageData = Map<String, dynamic>.from(json.decode(data));
+      } else if (data is Map) {
+        messageData = Map<String, dynamic>.from(data);
+      } else {
+        print("Unknown message format: $data");
+        return;
+      }
+
+      if (_onMessageReceived != null) {
+        _onMessageReceived!(messageData);
+      }
+    });
+
     socket?.on('receiveNotification', (data) {
-      print('Notification received: $data');
       _showLocalNotification('New Product Added', data['message']);
 
       // Save in notifications list
@@ -34,6 +52,7 @@ class SocketService {
         'message': data['message'],
       });
     });
+
 
     socket?.onDisconnect((_) {
       print('Disconnected from socket server');
@@ -50,7 +69,7 @@ class SocketService {
     );
 
     var generalNotificationDetails =
-        NotificationDetails(android: androidDetails);
+    NotificationDetails(android: androidDetails);
 
     await notificationsPlugin.show(
       0,
@@ -82,5 +101,18 @@ class SocketService {
       print("HTTP error: ${error.toString()}");
       return null;
     }
+  }
+  static void sendMessage(String senderId, String receiverId, String msg) {
+    socket?.emit("sendMessage", {
+      "senderId": senderId,
+      "receiverId": receiverId,
+      "text": msg,
+    });
+  }
+
+  // Callback registration
+  static Function(Map<String, dynamic>)? _onMessageReceived;
+  static void setMessageListener(Function(Map<String, dynamic>) callback) {
+    _onMessageReceived = callback;
   }
 }
