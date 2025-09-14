@@ -65,7 +65,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       productImages = (productDetails!['image'] as List<dynamic>?)
           ?.cast<String>() ??
           [];
-
       if (productImages.isNotEmpty) {
         Timer.periodic(Duration(seconds: 3), (Timer timer) {
           if (!mounted) return;

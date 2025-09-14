@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
+
 
 class ApiService {
   //static const baseUrl = "http://10.0.2.2:3000/api/v1";
   static const baseUrl = "https://trustify-backend-csm6.onrender.com/api/v1";
   static Future<dynamic> registerUser(
       Map<String, dynamic> userData, Uint8List? imgBytes) async {
+
+
     //print(userData);
     String? _imgUrl;
     if (imgBytes != null) {
@@ -107,6 +111,7 @@ class ApiService {
     }
   }
 
+
   static Future<List<Map<String, dynamic>>> getChatList(
       String currentUserId) async {
     try {
@@ -173,5 +178,11 @@ class ApiService {
       print("Error fetching messages: $e");
       return [];
     }
+
+
+  static Future<Uint8List> loadDefaultImage() async {
+    final ByteData data = await rootBundle.load('assets/userIcon.png');
+    return data.buffer.asUint8List();
+
   }
 }
