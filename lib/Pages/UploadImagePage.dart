@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
+import 'package:flutter_project/Util/UtilWidgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_project/Util/UtilPickImage.dart';
 import 'package:flutter_project/Pages/PostAdPage.dart';
 class UploadImagePage extends StatefulWidget {
  final Map<String,dynamic> p_details;
+
   const UploadImagePage({ required this.p_details,super.key});
 
   @override
@@ -27,12 +29,15 @@ class _UploadImagePageState extends State<UploadImagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text("Upload your photos", style: TextStyle(color: Colors.white)),
         backgroundColor: Color.fromARGB(255, 109, 190, 231),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       backgroundColor: Colors.white,
@@ -105,13 +110,9 @@ class _UploadImagePageState extends State<UploadImagePage> {
               ),
               child: TextButton(
                 onPressed: _selectedPhotos.isNotEmpty ? () {
-                 print(widget.p_details);
-                 print(_selectedPhotos);
-                 print("yha kuchh gbbd hai");
-                  widget.p_details['img_list'] = _selectedPhotos;
-
+                  widget.p_details['imgList'] = _selectedPhotos;
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>PostAdPage(pDetails:widget.p_details)));
-                } : null,
+                } :(){UtilWidgets.showSnackBar(msg: "Please select an Image", context: context);},
                 child: Text(
                   "Next",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

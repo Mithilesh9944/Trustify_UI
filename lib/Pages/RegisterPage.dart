@@ -7,6 +7,7 @@ import 'package:flutter_project/Security/SecurityPasswordField.dart';
 import 'package:flutter_project/Services/api_service.dart';
 import 'package:flutter_project/Util/UtilPickImage.dart';
 import 'package:flutter_project/Util/UtilWidgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MyRegister extends StatefulWidget {
@@ -33,45 +34,56 @@ class _MyRegisterState extends State<MyRegister> {
   }
   @override
   Widget build(BuildContext context) {
-    return UtilWidgets.buildBackgroundContainer(
-      child: Scaffold(
+    return
+       Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Color.fromARGB(255, 109, 190, 231),
-          title: Text('Trustify'),
+          title: Text(
+            'Trustify',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           actions: UtilWidgets.buildHelpWidgetAppBar(context),
         ),
 
-        backgroundColor: Colors.transparent,
-        body: Padding(
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
+        body:UtilWidgets.buildBackgroundContainer(child:  Padding(
           padding:UtilitiesPages.buildPadding(context),
-          child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                _buildUserIcon(),
-                _buildFormContainer(),
-              ],
-            ),
+          child: Column(
+            children: [
+              SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    _buildUserIcon(),
+                    _buildFormContainer(),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ),
-      ),
-    );
+        )),
+      );
   }
 
   // User icon positioned at the top
   Widget _buildUserIcon() {
     return Positioned(
-      top: MediaQuery.of(context).size.height * 0.001,//.15
-      left: MediaQuery.of(context).size.width * 0.35,
+      top: MediaQuery.of(context).size.height * 0.01,//.15
+      left: MediaQuery.of(context).size.width * 0.30,
+
       child:Stack(
       alignment: Alignment.center,
       children: [
         _img != null
             ?  CircleAvatar(
-                radius: 50,
+                radius: 40,
                 backgroundImage: MemoryImage(_img!),
               )
             : const CircleAvatar(
-                radius: 55,
+                radius: 45,
                 backgroundImage: NetworkImage("https://cdn1.vectorstock.com/i/1000x1000/93/75/user-blue-icon-isolated-on-white-background-vector-42029375.jpg"),
               ),
         
@@ -82,12 +94,12 @@ class _MyRegisterState extends State<MyRegister> {
             decoration: BoxDecoration(
               color: Colors.white, 
               shape: BoxShape.circle,
-              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)], 
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
             ),
             child: IconButton(
               onPressed: selectImage,
               icon: const Icon(Icons.add_a_photo, color: Colors.black),
-              iconSize: 22, 
+              iconSize: 15,
             ),
           ),
         ),
@@ -149,6 +161,11 @@ class _MyRegisterState extends State<MyRegister> {
       inputFormatters: inputFormatters,
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle:  GoogleFonts.poppins(
+          color: Colors.black87,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
         fillColor: Colors.transparent,
         filled: true,
         border: OutlineInputBorder(
@@ -234,8 +251,9 @@ class _MyRegisterState extends State<MyRegister> {
 
   // Validate email domain
   bool _isValidEmail(String? email) {
-    return email != null && (email.endsWith("@gmail.com") || email.endsWith("@nitkkr.ac.in"));
-  }
+  final regex = RegExp(r'^[a-zA-Z0-9._%-]+@(gmail\.com|nitkkr\.ac\.in)$');
+  return email != null && regex.hasMatch(email);
+}
 
   // Show error message in snackbar
   // void UtilWidgetsshowSnackBar(String message) {
@@ -245,18 +263,17 @@ class _MyRegisterState extends State<MyRegister> {
   // Register user by calling the API
   void _registerUser() async{
     var userdata ={
-      "userName": Details.userName,
+      "name": Details.userName,
       "mobileNo": Details.mobile,
       "password": Details.password,
       "email": Details.email,
     };
-    bool isRegistered = await ApiService.RegisterUser(userdata,_img);
-    if(isRegistered){
-      _navigateToNextPage();
+    var response = await ApiService.registerUser(userdata,_img);
+    if(response !=null && response['success']==true){
+      _showAlertDialog("Registration Successfull", "click on ok to login");
     }
     else{
-         UtilWidgets.showSnackBar(msg: "Invalid credentials, please try again.", context: context);
-
+      UtilWidgets.showSnackBar(msg: response['error'], context: context);
     }
   }
 
@@ -269,6 +286,25 @@ class _MyRegisterState extends State<MyRegister> {
   }
 
   void _navigateToNextPage(){
-    Navigator.pushNamed(context, MyRoutes.ContactDashboardPage);
+    Navigator.pushNamedAndRemoveUntil(context, MyRoutes.LoginPage, (route)=>false);
+   
+  }
+  void _showAlertDialog(String title,String msg){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text(title),
+          content: Text(msg),
+          actions: [
+            TextButton(
+              onPressed: _navigateToNextPage, 
+              child: Text("Ok")
+              )
+          ],
+        );
+      }
+    );
+
   }
 }

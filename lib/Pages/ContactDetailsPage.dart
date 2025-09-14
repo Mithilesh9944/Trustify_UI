@@ -17,8 +17,8 @@ class _MyContactDetailsState extends State<MyContactDetails> {
   int _selectedTabPosition =0;
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar:
-    UtilWidgets.buildAppBar(title: widget.contact.displayName, icon: Icons.call,context: context),
+  appBar: UtilWidgets.buildAppBar(title: 'Trustify', icon: Icons.notifications, context: context,route:MyRoutes.NotificationPage,back: true),
+
     //drawer: AppDrawer(imgPath: widget.contact.photo),
     body: UtilWidgets.buildBackgroundContainer(
       child: Padding(

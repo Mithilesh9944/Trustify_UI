@@ -1,33 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/Pages/AllCategoryPage.dart';
 import 'package:flutter_project/Pages/DynamicFormPage.dart';
-import 'package:flutter_project/Util/MyRoutes.dart';
+import 'package:flutter_project/Util/UtilPages.dart';
 import 'package:flutter_project/Util/UtilProductForm.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-//import 'package:flutter_project/Util/MyRoutes.dart';
-
-class OfferPage extends StatelessWidget {
-  const OfferPage({super.key});
+class CategoryPage extends StatefulWidget {
+  const CategoryPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<CategoryPage> createState() => _CategoryPageState();
+}
 
+class _CategoryPageState extends State<CategoryPage> {
+  @override
+  Widget build(BuildContext context) {
     final items = [
-      {'icon': Icons.directions_car, 'label': 'Cars','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.car],)},
-      {'icon': Icons.pedal_bike, 'label': 'Cycle','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.cycle],)},
-      {'icon': Icons.laptop, 'label': 'Laptop','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.laptop],)},
-      {'icon': Icons.phone_android, 'label': 'Mobiles', 'routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.mobile])},
-      {'icon': Icons.chair, 'label': 'Furniture','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.furniture])},
-      {'icon': Icons.pedal_bike, 'label': 'Bikes','routes':DynamicFormWidget(formCategories: UtilProductForm.formCategories[Category.bike])},
-      {'icon': Icons.more_horiz, 'label': 'See all categories','routes':MyAllCategoryPage()},
+      {
+        'icon': Icons.directions_car,
+        'label': 'Cars',
+        'routes': DynamicFormWidget(
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.vehicle]![SubCategory.car],
+          categoryGroup: "Vehicle",
+          subCategory: "Car",
+        )
+      },
+      {
+        'icon': Icons.pedal_bike,
+        'label': 'Cycle',
+        'routes': DynamicFormWidget(
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.vehicle]![SubCategory.cycle],
+          categoryGroup: "Vehicle",
+          subCategory: "Cycle",
+        )
+      },
+      {
+        'icon': Icons.laptop,
+        'label': 'Laptop',
+        'routes': DynamicFormWidget(
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.electronics]![SubCategory.laptop],
+          categoryGroup: "Electronics",
+          subCategory: "Laptop",
+        )
+      },
+      {
+        'icon': Icons.phone_android,
+        'label': 'Mobiles',
+        'routes': DynamicFormWidget(
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.electronics]![SubCategory.mobile],
+          categoryGroup: "Electronics",
+          subCategory: "Mobile",
+        )
+      },
+      {
+        'icon': Icons.chair,
+        'label': 'Furniture',
+        'routes': DynamicFormWidget(
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.furniture]![SubCategory.furniture],
+          categoryGroup: "Furniture",
+          subCategory: "Furniture",
+        )
+      },
+      {
+        'icon': Icons.motorcycle,
+        'label': 'Bikes',
+        'routes': DynamicFormWidget(
+          formCategories: UtilProductForm
+              .formCategories[CategoryGroup.vehicle]![SubCategory.bike],
+          categoryGroup: "Vehicle",
+          subCategory: "Bike",
+        )
+      },
+      {
+        'icon': Icons.more_horiz,
+        'label': 'See all categories',
+        'routes': MyAllCategoryPage(),
+      },
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('What are you offering?'),
+        automaticallyImplyLeading: false,
+        title: Text(
+          'What are you offering?',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 109, 190, 231),
+        backgroundColor: UtilitiesPages.APP_BAR_COLOR,
       ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -48,8 +117,7 @@ class OfferPage extends StatelessWidget {
                 return OfferItem(
                   icon: items[index]['icon'] as IconData,
                   label: items[index]['label'] as String,
-                  route: items[index]['routes'] as Widget
-
+                  route: items[index]['routes'] as Widget,
                 );
               },
             ),
@@ -65,14 +133,17 @@ class OfferItem extends StatelessWidget {
   final String label;
   final Widget route;
 
-   OfferItem({super.key, required this.icon, required this.label,required this.route});
+  const OfferItem(
+      {super.key,
+      required this.icon,
+      required this.label,
+      required this.route});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,MaterialPageRoute(builder: (context)=>route));
-
+        Navigator.push(context, MaterialPageRoute(builder: (context) => route));
       },
       child: Container(
         decoration: BoxDecoration(
