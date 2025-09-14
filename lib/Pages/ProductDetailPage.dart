@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/Security/TokenManager.dart';
 import 'package:flutter_project/Services/ListProduct.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
+import 'package:flutter_project/Util/util_chat.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../Util/MyRoutes.dart';
 import '../Util/UtilWidgets.dart';
-import '../Util/util_notification.dart';
+
 
 class ProductDetailPage extends StatefulWidget {
   final String productId;
@@ -219,7 +220,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           children: [
             Expanded(
               child:
-              _customButton("Chat Now", Icons.local_offer,(userId==sellerId) ? Colors.grey: Colors.green,(userId==sellerId)?null: () {Navigator.push(context, MaterialPageRoute(builder: (context)=>MyNotification()));}, 10),
+              _customButton("Chat Now", Icons.local_offer,(userId==sellerId) ? Colors.grey: Colors.green,(userId==sellerId)?null: () {Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatPage(senderUserId: userId!, receiverUserId: sellerId!, receiverName: sellerName!)));}, 10),
             ),
             SizedBox(width: 16),
             Expanded(

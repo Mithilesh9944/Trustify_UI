@@ -274,7 +274,7 @@ class _MyLoginState extends State<MyLogin> {
         buttonTitle = "Logging in...";
       });
 
-      var jsonResponse = await ApiService.LoginUser({
+      var jsonResponse = await ApiService.loginUser({
         "mobileNo": "+${selectedCountry.phoneCode}${_mobileNumberController.text.trim()}",
         "password": _passwordController.text
       });

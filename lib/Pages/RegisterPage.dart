@@ -251,8 +251,9 @@ class _MyRegisterState extends State<MyRegister> {
 
   // Validate email domain
   bool _isValidEmail(String? email) {
-    return email != null && (email.endsWith("@gmail.com") || email.endsWith("@nitkkr.ac.in"));
-  }
+  final regex = RegExp(r'^[a-zA-Z0-9._%-]+@(gmail\.com|nitkkr\.ac\.in)$');
+  return email != null && regex.hasMatch(email);
+}
 
   // Show error message in snackbar
   // void UtilWidgetsshowSnackBar(String message) {
@@ -267,7 +268,7 @@ class _MyRegisterState extends State<MyRegister> {
       "password": Details.password,
       "email": Details.email,
     };
-    var response = await ApiService.RegisterUser(userdata,_img);
+    var response = await ApiService.registerUser(userdata,_img);
     if(response !=null && response['success']==true){
       _showAlertDialog("Registration Successfull", "click on ok to login");
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/Pages/chats_page.dart';
 import 'package:flutter_project/Util/MyRoutes.dart';
 import 'package:flutter_project/Util/UtilPages.dart';
-import 'package:flutter_project/Util/util_notification.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UtilWidgets {
@@ -78,7 +78,7 @@ class UtilWidgets {
                 Navigator.pushNamed(context, MyRoutes.Dashboard);
                 break;
               case 1:
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>MyNotification()));
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>ChatListPage()));
                 break;
               case 2:
                 Navigator.pushNamed(context, MyRoutes.CategoryPage);

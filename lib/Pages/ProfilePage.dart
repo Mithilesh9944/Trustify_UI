@@ -57,41 +57,41 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future<void> _updateProfile() async {
-    if (nameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Name cannot be empty')),
-      );
-      return;
-    }
+  // Future<void> _updateProfile() async {
+  //   if (nameController.text.isEmpty) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Name cannot be empty')),
+  //     );
+  //     return;
+  //   }
 
-    setState(() => isLoading = true);
+  //   setState(() => isLoading = true);
 
-    try {
-      final response = await UserService.updateProfile({'name': nameController.text});
+  //   try {
+  //     final response = await UserService.updateProfile({'name': nameController.text});
 
-      if (response != null && response['success']) {
-        setState(() {
-          name = nameController.text;
-          isEditing = false;
-          isLoading = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully')),
-        );
-      } else {
-        setState(() => isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response?['message'] ?? 'Failed to update profile')),
-        );
-      }
-    } catch (e) {
-      setState(() => isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating profile: $e')),
-      );
-    }
-  }
+  //     if (response != null && response['success']) {
+  //       setState(() {
+  //         name = nameController.text;
+  //         isEditing = false;
+  //         isLoading = false;
+  //       });
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Profile updated successfully')),
+  //       );
+  //     } else {
+  //       setState(() => isLoading = false);
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text(response?['message'] ?? 'Failed to update profile')),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     setState(() => isLoading = false);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Error updating profile: $e')),
+  //     );
+  //   }
+  // }
 
   Future<void> _updatePassword() async {
     if (currentPasswordController.text.isEmpty ||

@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart' show rootBundle;
 
 class ApiService {
  
   //static const baseUrl = "http://10.0.2.2:3000/api/v1";
-  static const baseUrl = "https://trustify-backend.onrender.com/api/v1";
-  static Future<dynamic> RegisterUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
+  static const baseUrl = "https://trustify-backend-csm6.onrender.com/api/v1";
+  static Future<dynamic> registerUser(Map<String, dynamic> userData,Uint8List? imgBytes) async {
     //print(userData);
      String? _imgUrl;
     if(imgBytes!=null){
@@ -39,7 +38,7 @@ class ApiService {
     }
   }
 
-  static Future<dynamic> LoginUser(Map<String, dynamic> userData) async {
+  static Future<dynamic> loginUser(Map<String, dynamic> userData) async {
     print(userData); //print data for checking
     try {
       var getUrl = Uri.parse('$baseUrl/login');
@@ -108,9 +107,72 @@ class ApiService {
       return null;
     }
   }
+  
+   static Future<List<Map<String, dynamic>>> getChatList(String currentUserId) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/chat/list/$currentUserId"),
+      );
 
-  static Future<Uint8List> loadDefaultImage() async {
-    final ByteData data = await rootBundle.load('assets/userIcon.png');
-    return data.buffer.asUint8List();
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data["success"] == true) {
+          final List<dynamic> chatList = data["chatList"];
+
+          return chatList.map<Map<String, dynamic>>((chat) {
+            return {
+              "receiverId": chat["partnerId"],
+                "receiverName": chat["partnerName"],
+              "lastMessage": chat["lastMessage"]["text"],
+              "time": chat["lastMessage"]["timestamp"],
+            };
+          }).toList();
+        }
+      }
+      return [];
+    } catch (e) {
+      print("Error fetching chats: $e");
+      return [];
+    }
   }
+  static Future<List<Map<String, dynamic>>> getIndividualMessages(
+      String senderId, String receiverId) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$baseUrl/chat/messages"),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({
+          "senderId": senderId,
+          "receiverId": receiverId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data["success"] == true) {
+          final List<dynamic> messages = data["messages"];
+
+          return messages.map<Map<String, dynamic>>((msg) {
+            return {
+              "senderId": msg["senderId"],
+            "senderName": msg["senderName"],       
+            "receiverId": msg["receiverId"],
+            "receiverName": msg["receiverName"],   
+            "text": msg["text"],
+            "timestamp": msg["timestamp"],
+            "read": msg["read"] ?? false,
+            };
+          }).toList();
+        }
+      }
+      return [];
+    } catch (e) {
+      print("Error fetching messages: $e");
+      return [];
+    }
+  }
+  
+ 
 }
