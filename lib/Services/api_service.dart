@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart' show rootBundle;
+
 
 
 class ApiService {
@@ -9,6 +9,7 @@ class ApiService {
   static const baseUrl = "https://trustify-backend-csm6.onrender.com/api/v1";
   static Future<dynamic> registerUser(
       Map<String, dynamic> userData, Uint8List? imgBytes) async {
+
 
 
     //print(userData);
@@ -91,7 +92,7 @@ class ApiService {
   static Future<String?> uploadImageOnCloudinary(
       String name, Uint8List imgBytes) async {
     final uri =
-        Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
+    Uri.parse("https://api.cloudinary.com/v1_1/dvfz67hyi/image/upload");
     var request = http.MultipartRequest('POST', uri)
       ..fields['upload_preset'] = "Trustify_preset"
       ..fields['folder'] = 'UserProfile'
@@ -112,8 +113,10 @@ class ApiService {
   }
 
 
+
   static Future<List<Map<String, dynamic>>> getChatList(
       String currentUserId) async {
+
     try {
       final response = await http.get(
         Uri.parse("$baseUrl/chat/list/$currentUserId"),
@@ -140,6 +143,7 @@ class ApiService {
       print("Error fetching chats: $e");
       return [];
     }
+
   }
 
   static Future<List<Map<String, dynamic>>> getIndividualMessages(
@@ -184,5 +188,45 @@ class ApiService {
     final ByteData data = await rootBundle.load('assets/userIcon.png');
     return data.buffer.asUint8List();
 
+
   }
+  static Future<List<Map<String, dynamic>>> getIndividualMessages(
+      String senderId, String receiverId) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$baseUrl/chat/messages"),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({
+          "senderId": senderId,
+          "receiverId": receiverId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data["success"] == true) {
+          final List<dynamic> messages = data["messages"];
+
+          return messages.map<Map<String, dynamic>>((msg) {
+            return {
+              "senderId": msg["senderId"],
+              "senderName": msg["senderName"],
+              "receiverId": msg["receiverId"],
+              "receiverName": msg["receiverName"],
+              "text": msg["text"],
+              "timestamp": msg["timestamp"],
+              "read": msg["read"] ?? false,
+            };
+          }).toList();
+        }
+      }
+      return [];
+    } catch (e) {
+      print("Error fetching messages: $e");
+      return [];
+    }
+  }
+
+
 }
